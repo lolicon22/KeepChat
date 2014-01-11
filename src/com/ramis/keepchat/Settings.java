@@ -2,6 +2,7 @@ package com.ramis.keepchat;
 
 import android.content.Intent;
 import net.rdrei.android.dirchooser.DirectoryChooserActivity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -24,7 +25,7 @@ public class Settings extends PreferenceFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		getPreferenceManager().setSharedPreferencesMode(1);
+		getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
 		// Load the preferences from an XML resource
 		addPreferencesFromResource(R.xml.preferences);
 

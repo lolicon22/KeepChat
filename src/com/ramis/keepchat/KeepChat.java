@@ -800,6 +800,8 @@ public class KeepChat implements IXposedHookLoadPackage {
 					logging("File deleted successfully");
 				else
 					logging("Could not delete file.");
+				
+				logging("---------------------------------------------------------");
 			}
 		});
 		// 3. Get the AlertDialog from create()
