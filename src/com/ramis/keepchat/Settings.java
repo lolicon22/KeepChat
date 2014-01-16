@@ -22,6 +22,7 @@ public class Settings extends PreferenceFragment implements
 	public static final String PREF_KEY_TOASTS_DURATION = "pref_key_toasts_duration";
 	public static final String PREF_KEY_SAVE_LOCATION = "pref_key_save_location";
 
+	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
