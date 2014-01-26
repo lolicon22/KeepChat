@@ -174,7 +174,6 @@ public class KeepChat implements IXposedHookLoadPackage {
 					.log("---------------------------------------------------------");
 
 			// get new Preferences
-			prefs = new XSharedPreferences(PACKAGE_NAME);
 			refreshPreferences();
 			printSettings();
 
@@ -204,7 +203,6 @@ public class KeepChat implements IXposedHookLoadPackage {
 								logging("Not Saving Image");
 								logging("---------------------------------------------------------");
 							} else {
-
 								String sender = (String) callMethod(
 										param.thisObject,
 										names.get(FUNCTION_RECEIVEDSNAP_GETSENDER));
@@ -597,7 +595,6 @@ public class KeepChat implements IXposedHookLoadPackage {
 						protected void afterHookedMethod(MethodHookParam param)
 								throws Throwable {
 							refreshPreferences();
-
 							isSnapVideo = false;
 							isSnapImage = true;
 
@@ -656,11 +653,11 @@ public class KeepChat implements IXposedHookLoadPackage {
 							refreshPreferences();
 							// check if its save ask AND that it doesn't exist
 							if (displayDialog == true) {
+								logging("display if");
 								if (((isSnapImage == true)
 										&& (isSaved == false) && (imagesSnapSavingMode == SAVE_ASK))
 										|| ((isSnapVideo == true)
 												&& (isSaved == false) && (videosSnapSavingMode == SAVE_ASK))) {
-
 									showDialog(context);
 									displayDialog = false;
 								}
@@ -770,7 +767,6 @@ public class KeepChat implements IXposedHookLoadPackage {
 	private void showDialog(final Context dContext) {
 		// 1. Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(dContext);
-
 		// 2. Chain together various setter methods to set the dialog
 		// characteristics
 		final String mediaTypeStr = isSnapImage ? "image" : "video";
@@ -780,7 +776,6 @@ public class KeepChat implements IXposedHookLoadPackage {
 		builder.setPositiveButton("Save",
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						logging("User choose to save. Keep saved file.");
 						runMediaScanAndToast(dContext);
 					}
 				});
@@ -788,7 +783,6 @@ public class KeepChat implements IXposedHookLoadPackage {
 		builder.setNegativeButton("Discard",
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						logging("User choose not to save.");
 						dialog.cancel();
 					}
 				});
@@ -806,6 +800,7 @@ public class KeepChat implements IXposedHookLoadPackage {
 		});
 		// 3. Get the AlertDialog from create()
 		AlertDialog dialog = builder.create();
+		logging("dialog show");
 		dialog.show();
 	}
 
@@ -873,7 +868,8 @@ public class KeepChat implements IXposedHookLoadPackage {
 
 	// refresh all preferences
 	private void refreshPreferences() {
-
+		
+		prefs = new XSharedPreferences(PACKAGE_NAME);
 		prefs.reload();
 		savePath = prefs.getString("pref_key_save_location", "");
 		imagesSnapSavingMode = Integer.parseInt(prefs.getString(
