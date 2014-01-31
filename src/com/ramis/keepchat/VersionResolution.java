@@ -42,7 +42,8 @@ public class VersionResolution {
 	private SparseArray<String> names_obfuscated_4022B = new SparseArray<String>();
 	private SparseArray<String> names_obfuscated_4101 = new SparseArray<String>();
 	private SparseArray<String> names_obfuscated_4107 = new SparseArray<String>();
-
+	private SparseArray<String> names_obfuscated_4108B = new SparseArray<String>();
+	
 	public VersionResolution(String version){
 		this.version = version;
 		legacy = versionCompare(version, "4.0.20") <= 0;
@@ -63,13 +64,19 @@ public class VersionResolution {
 		versionResolution.put("4.1.06 Beta", names_obfuscated_4101);
 		versionResolution.put("4.1.07 Beta", names_obfuscated_4107);
 		versionResolution.put("4.1.07", names_obfuscated_4107);
-		
+		versionResolution.put("4.1.08 Beta", names_obfuscated_4108B);
+		versionResolution.put("4.1.09 Beta", names_obfuscated_4108B);
+		versionResolution.put("4.1.10 Beta", names_obfuscated_4108B);
 		
 		setNames();
 	}
 
 	public boolean getLegacy(){
 		return legacy;
+	}
+	
+	public boolean disableSentSave(){
+		return (version.equals("4.1.08 Beta") || version.equals("4.1.09 Beta") || version.equals("4.1.10 Beta"));
 	}
 	
 	public boolean videoStoryLegacy(){
@@ -205,6 +212,31 @@ public class VersionResolution {
 		names_obfuscated_4107.put(FUNCTION_SNAPPREVIEWFRAGMENT_VIDEOURI, "c");
 		names_obfuscated_4107.put(FUNCTION_SNAPPREVIEWFRAGMENT_GETSNAPBITMAP,"getSnapBitmap");
 		names_obfuscated_4107.put(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPEDITORVIEW, "a");
+
+
+		names_obfuscated_4108B.put(CLASS_RECEIVEDSNAP, basename + "model.ReceivedSnap");
+		names_obfuscated_4108B.put(CLASS_STORY, basename + "model.Story");
+		names_obfuscated_4108B.put(CLASS_SNAPVIEW, basename + "ui.SnapView");
+		names_obfuscated_4108B.put(CLASS_SNAP_PREVIEW_FRAGMENT,basename + "SnapPreviewFragment");
+		names_obfuscated_4108B.put(CLASS_SNAPUPDATE, basename + "model.server.SnapUpdate");
+		names_obfuscated_4108B.put(CLASS_STORYVIEWRECORD, basename + "model.StoryViewRecord");
+		names_obfuscated_4108B.put(FUNCTION_RECEIVEDSNAP_GETIMAGEBITMAP, "a");
+		names_obfuscated_4108B.put(FUNCTION_RECEIVEDSNAP_GETVIDEOURI,"C");		
+		names_obfuscated_4108B.put(FUNCTION_RECEIVEDSNAP_GETSENDER,"e");		
+		names_obfuscated_4108B.put(FUNCTION_RECEIVEDSNAP_MARKVIEWED,"j");		
+		names_obfuscated_4108B.put(FUNCTION_STORY_GETIMAGEBITMAP, "a");		
+		names_obfuscated_4108B.put(FUNCTION_STORY_GETVIDEOURI, "N/A");		
+		names_obfuscated_4108B.put(FUNCTION_STORY_GETSENDER, "e");		
+		names_obfuscated_4108B.put(FUNCTION_SNAPVIEW_SHOWIMAGE, "m");		
+		names_obfuscated_4108B.put(FUNCTION_SNAPVIEW_SHOWVIDEO, "a");		
+		names_obfuscated_4108B.put(FUNCTION_SNAP_GETTIMESTAMP, "O");
+		
+		names_obfuscated_4108B.put(FUNCTION_SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING, "q");
+		names_obfuscated_4108B.put(VARIABLE_SNAPPREVIEWFRAGMENT_ISVIDEOSNAP, "o");
+		names_obfuscated_4108B.put(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPCAPTUREDEVENT, "w");
+		names_obfuscated_4108B.put(FUNCTION_SNAPPREVIEWFRAGMENT_VIDEOURI, "c");
+		names_obfuscated_4108B.put(FUNCTION_SNAPPREVIEWFRAGMENT_GETSNAPBITMAP,"getSnapBitmap");
+		names_obfuscated_4108B.put(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPEDITORVIEW, "a");
 
 		//@formatter:on
 	}

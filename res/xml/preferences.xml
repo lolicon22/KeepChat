@@ -77,6 +77,13 @@
             android:summaryOn="@string/pref_sort_files_mode_summary_on"
             android:title="@string/pref_sort_files_mode_title_checkbox" />
         <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_key_sort_files_username"
+            android:summaryOff="@string/pref_sort_files_username_summary_off"
+            android:summaryOn="@string/pref_sort_files_username_summary_on"
+            android:title="@string/pref_sort_files_username_title_checkbox" 
+            android:dependency="pref_key_sort_files_mode"/>
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="pref_key_debug_mode"
             android:summaryOff="@string/pref_debug_mode_summary_off"

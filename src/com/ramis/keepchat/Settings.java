@@ -5,6 +5,7 @@ import net.rdrei.android.dirchooser.DirectoryChooserActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.ListPreference;
@@ -26,7 +27,8 @@ public class Settings extends PreferenceFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
+		getPreferenceManager().setSharedPreferencesMode(
+				Context.MODE_WORLD_READABLE);
 		// Load the preferences from an XML resource
 		addPreferencesFromResource(R.xml.preferences);
 
@@ -55,6 +57,21 @@ public class Settings extends PreferenceFragment implements
 						return true;
 					}
 				});
+
+
+		String versionName;
+		try {
+			PackageInfo piSnapChat = getActivity().getPackageManager()
+					.getPackageInfo("com.snapchat.android", 0);
+			versionName = piSnapChat.versionName;
+			if (versionName.equals("4.1.08 Beta")
+					|| versionName.equals("4.1.09 Beta")
+					|| versionName.equals("4.1.10 Beta")) {
+				Preference save_sent_snaps = findPreference("pref_key_save_sent_snaps");
+				save_sent_snaps.setEnabled(false);				
+			}
+		} catch (Exception e) {
+		}
 
 		updateSummary(PREF_KEY_SNAP_IMAGES);
 		updateSummary(PREF_KEY_SNAP_VIDEOS);

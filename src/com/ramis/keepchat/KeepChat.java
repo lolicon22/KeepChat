@@ -1,8 +1,3 @@
-//TO DO 
-// MOVE FILES WHEN FOLDER CHANGES
-// make errors appear all the time
-// new option
-// new logging to display errors and initial start
 
 package com.ramis.keepchat;
 
@@ -30,6 +25,7 @@ import android.util.SparseArray;
 import android.widget.Toast;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
+import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
@@ -103,6 +99,7 @@ public class KeepChat implements IXposedHookLoadPackage {
 	private boolean saveSentSnaps;
 	private boolean debugMode;
 	private boolean sortFilesMode;
+	private boolean sortFileUsername;
 
 	// loading package
 	@Override
@@ -216,7 +213,7 @@ public class KeepChat implements IXposedHookLoadPackage {
 										+ (fnameDateFormat.format(timestamp));
 
 								File file = createFile(filename + ".jpg",
-										"/RecievedSnaps");
+										"/RecievedSnaps", sender);
 								logging(mediaPath);
 								if (file.exists()) {
 									logging("Image Snap already Exists");
@@ -276,7 +273,7 @@ public class KeepChat implements IXposedHookLoadPackage {
 										+ (fnameDateFormat.format(timestamp));
 
 								File file = createFile(filename + ".jpg",
-										"/Stories");
+										"/Stories", sender);
 								logging(mediaPath);
 								if (file.exists()) {
 									logging("Image Story already Exists");
@@ -351,7 +348,7 @@ public class KeepChat implements IXposedHookLoadPackage {
 													.format(timestamp));
 
 									File file = createFile(filename + ".mp4",
-											"/Stories");
+											"/Stories", sender);
 									logging(mediaPath);
 									if (file.exists()) {
 										isSaved = true;
@@ -398,7 +395,7 @@ public class KeepChat implements IXposedHookLoadPackage {
 													.format(timestamp));
 
 									File file = createFile(filename + ".mp4",
-											"/RecievedSnaps");
+											"/RecievedSnaps", sender);
 									logging(mediaPath);
 									if (file.exists()) {
 										isSaved = true;
@@ -461,7 +458,7 @@ public class KeepChat implements IXposedHookLoadPackage {
 													.format(timestamp));
 
 									File file = createFile(filename + ".mp4",
-											"/Stories");
+											"/Stories", sender);
 									logging(mediaPath);
 									if (file.exists()) {
 										isSaved = true;
@@ -486,94 +483,96 @@ public class KeepChat implements IXposedHookLoadPackage {
 			}
 
 			// hook for saving sent snaps
-			findAndHookMethod(
-					names.get(CLASS_SNAP_PREVIEW_FRAGMENT),
-					lpparam.classLoader,
-					names.get(FUNCTION_SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING),
-					new XC_MethodHook() {
+			if (resolution.disableSentSave() == false) {
+				findAndHookMethod(
+						names.get(CLASS_SNAP_PREVIEW_FRAGMENT),
+						lpparam.classLoader,
+						names.get(FUNCTION_SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING),
+						new XC_MethodHook() {
 
-						@Override
-						protected void afterHookedMethod(MethodHookParam param)
-								throws Throwable {
+							@Override
+							protected void afterHookedMethod(
+									MethodHookParam param) throws Throwable {
 
-							refreshPreferences();
-							if (saveSentSnaps == true) {
-								printSettings();
-								logging("\n----------------------- KEEPCHAT ------------------------");
-								Date cDate = new Date();
-								String filename = new SimpleDateFormat(
-										"yyyy-MM-dd_HH-mm-ss", Locale
-												.getDefault()).format(cDate);
+								refreshPreferences();
+								if (saveSentSnaps == true) {
+									printSettings();
+									logging("\n----------------------- KEEPCHAT ------------------------");
+									Date cDate = new Date();
+									String filename = new SimpleDateFormat(
+											"yyyy-MM-dd_HH-mm-ss", Locale
+													.getDefault())
+											.format(cDate);
 
-								if (getBooleanField(
-										param.thisObject,
-										names.get(VARIABLE_SNAPPREVIEWFRAGMENT_ISVIDEOSNAP))) {
-									logging("Video Sent Snap");
-									File file = createFile(filename + ".mp4",
-											"/SentSnaps");
-									logging(mediaPath);
-									if (file.exists()) {
-										logging("Video Sent Snap already Exists");
-										toastMessage = "This video already exists.";
-									} else {
-										Object obj = getObjectField(
-												param.thisObject,
-												names.get(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPCAPTUREDEVENT));
-										String videoUri = ((Uri) callMethod(
-												obj,
-												names.get(FUNCTION_SNAPPREVIEWFRAGMENT_VIDEOURI)))
-												.getPath();
-
-										if (saveVideo(videoUri, file)) {
-											logging("Video Sent Snap has been Saved");
-											toastMessage = "The video has been saved.";
-										} else {
-											logging("Error Saving Video Sent Snap. Error 3.");
-											toastMessage = "The video could not be saved. Error 3.";
-										}
-									}
-								} else {
-									// snap is a image
-									logging("Image Sent Snap");
-									File file = createFile(filename + ".jpg",
-											"/SentSnaps");
-									logging(mediaPath);
-									if (file.exists()) {
-										logging("file already exists");
-										toastMessage = "The image already exists";
-									} else {
-										Bitmap image;
-										if (legacy) {
-											image = (Bitmap) callMethod(
-													param.thisObject,
-													names.get(FUNCTION_SNAPPREVIEWFRAGMENT_GETSNAPBITMAP));
+									if (getBooleanField(
+											param.thisObject,
+											names.get(VARIABLE_SNAPPREVIEWFRAGMENT_ISVIDEOSNAP))) {
+										logging("Video Sent Snap");
+										File file = createFile(filename
+												+ ".mp4", "/SentSnaps", "");
+										logging(mediaPath);
+										if (file.exists()) {
+											logging("Video Sent Snap already Exists");
+											toastMessage = "This video already exists.";
 										} else {
 											Object obj = getObjectField(
 													param.thisObject,
-													names.get(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPEDITORVIEW));
-											image = (Bitmap) callMethod(
+													names.get(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPCAPTUREDEVENT));
+											String videoUri = ((Uri) callMethod(
 													obj,
-													names.get(FUNCTION_SNAPPREVIEWFRAGMENT_GETSNAPBITMAP));
+													names.get(FUNCTION_SNAPPREVIEWFRAGMENT_VIDEOURI)))
+													.getPath();
+
+											if (saveVideo(videoUri, file)) {
+												logging("Video Sent Snap has been Saved");
+												toastMessage = "The video has been saved.";
+											} else {
+												logging("Error Saving Video Sent Snap. Error 3.");
+												toastMessage = "The video could not be saved. Error 3.";
+											}
+										}
+									} else {
+										// snap is a image
+										logging("Image Sent Snap");
+										File file = createFile(filename
+												+ ".jpg", "/SentSnaps", "");
+										logging(mediaPath);
+										if (file.exists()) {
+											logging("file already exists");
+											toastMessage = "The image already exists";
+										} else {
+											Bitmap image;
+											if (legacy) {
+												image = (Bitmap) callMethod(
+														param.thisObject,
+														names.get(FUNCTION_SNAPPREVIEWFRAGMENT_GETSNAPBITMAP));
+											} else {
+												Object obj = getObjectField(
+														param.thisObject,
+														names.get(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPEDITORVIEW));
+												image = (Bitmap) callMethod(
+														obj,
+														names.get(FUNCTION_SNAPPREVIEWFRAGMENT_GETSNAPBITMAP));
+											}
+
+											if (saveImage(image, file)) {
+												logging("Image Sent Snap has been Saved");
+												toastMessage = "The image has been saved.";
+											} else {
+												logging("Error Saving Image Sent Snap. Error 3.");
+												toastMessage = "The image could not be saved. Error 3.";
+											}
 										}
 
-										if (saveImage(image, file)) {
-											logging("Image Sent Snap has been Saved");
-											toastMessage = "The image has been saved.";
-										} else {
-											logging("Error Saving Image Sent Snap. Error 3.");
-											toastMessage = "The image could not be saved. Error 3.";
-										}
 									}
 
+									runMediaScanAndToast((Context) callMethod(
+											param.thisObject, "getActivity"));
 								}
-
-								runMediaScanAndToast((Context) callMethod(
-										param.thisObject, "getActivity"));
 							}
-						}
 
-					});
-
+						});
+			}
 			/*
 			 * showVideo() and showImage() hooks Because getVideoUri() and
 			 * getImageBitmap() do not handily provide a context, nor do their
@@ -794,7 +793,7 @@ public class KeepChat implements IXposedHookLoadPackage {
 					logging("File deleted successfully");
 				else
 					logging("Could not delete file.");
-				
+
 				logging("---------------------------------------------------------");
 			}
 		});
@@ -844,11 +843,16 @@ public class KeepChat implements IXposedHookLoadPackage {
 	}
 
 	// creates file
-	private File createFile(String fileName, String savePathSuffix) {
+	private File createFile(String fileName, String savePathSuffix, String sender) {
 
 		File myDir;
 		if (sortFilesMode == true) {
-			myDir = new File(savePath + savePathSuffix);
+			if (sortFileUsername == true){
+				myDir = new File(savePath + savePathSuffix + "/" + sender);
+			} else {
+				myDir = new File(savePath + savePathSuffix);	
+			}
+			
 		} else {
 			myDir = new File(savePath);
 		}
@@ -868,9 +872,10 @@ public class KeepChat implements IXposedHookLoadPackage {
 
 	// refresh all preferences
 	private void refreshPreferences() {
-		
+
 		prefs = new XSharedPreferences(PACKAGE_NAME);
 		prefs.reload();
+		sortFileUsername = prefs.getBoolean("pref_key_sort_files_username", true);
 		savePath = prefs.getString("pref_key_save_location", "");
 		imagesSnapSavingMode = Integer.parseInt(prefs.getString(
 				"pref_key_snaps_images", Integer.toString(SAVE_AUTO)));
@@ -940,7 +945,22 @@ public class KeepChat implements IXposedHookLoadPackage {
 		logging("saveSentSnaps: " + saveSentSnaps);
 		logging("toastLength: " + toastLength);
 		logging("sortFilesMode: " + sortFilesMode);
+		logging("sortFileUsername: " + sortFileUsername);
 		logging("---------------------------------------------------------");
 	}
 
+	
+	public void loadPrefs() {
+		prefs = new XSharedPreferences(PACKAGE_NAME);
+		prefs.makeWorldReadable();
+	}
+	
+	public void initCmdApp(de.robv.android.xposed.IXposedHookCmdInit.StartupParam startupParam) throws Throwable {
+		loadPrefs();
+    }
+	
+	public void initZygote(IXposedHookZygoteInit.StartupParam startupParam) throws Throwable {
+		loadPrefs();
+	}
+	
 }
