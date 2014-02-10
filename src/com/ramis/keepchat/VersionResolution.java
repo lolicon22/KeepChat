@@ -10,28 +10,34 @@ public class VersionResolution {
 	private String version;
 	private boolean legacy;
 
-	private int CLASS_RECEIVEDSNAP = 0;                     				 // ReceivedSnap class name
-    private int FUNCTION_RECEIVEDSNAP_GETIMAGEBITMAP = 1;    				 // ReceivedSnap.getImageBitmap() function name
-    private int FUNCTION_RECEIVEDSNAP_GETVIDEOURI = 2;      				 // ReceivedSnap.getVideoUri() function name
-    private int CLASS_STORY = 3;                             				 // Story class name
-    private int FUNCTION_STORY_GETIMAGEBITMAP = 4;          				 // Story.getImageBitmap() function name
-    private int FUNCTION_STORY_GETVIDEOURI = 5;             				 // Story.getVideoUri() function name
-    private int FUNCTION_RECEIVEDSNAP_MARKVIEWED = 6;       				 // ReceivedSnap.markViewed() function name
-    private int CLASS_SNAPVIEW = 7;                        				 // SnapView class name
-    private int FUNCTION_SNAPVIEW_SHOWIMAGE = 8;           				 // SnapView.showImage() function name
-    private int FUNCTION_SNAPVIEW_SHOWVIDEO = 9;           				 // SnapView.showVideo() function name
-    private int FUNCTION_RECEIVEDSNAP_GETSENDER = 10;       				 // ReceivedSnap.getSender() function name
-    private int FUNCTION_STORY_GETSENDER = 11;              				 // Story.getSender()
-    private int FUNCTION_SNAP_GETTIMESTAMP = 12;            				 // Snap.getTimestamp()
-    private int CLASS_SNAP_PREVIEW_FRAGMENT = 13;			  				 // SnapPreviewFragment class name
-    private int FUNCTION_SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING = 14;	 // SnapPreviewFragment.prepareSnapForSending() function name
-    private int VARIABLE_SNAPPREVIEWFRAGMENT_ISVIDEOSNAP = 15; 			 // SnapPreviewFragment.mIsVideoSnap variable name
-    private int VARIABLE_SNAPPREVIEWFRAGMENT_SNAPCAPTUREDEVENT = 16;		 // SnapPreviewFragment.SnapCapturedEvent variable name
-    private int FUNCTION_SNAPPREVIEWFRAGMENT_VIDEOURI = 17;				 // SnapPreviewFragment.SnapCapturedEvent.getVideoUri() function name
-    private int FUNCTION_SNAPPREVIEWFRAGMENT_GETSNAPBITMAP = 18;		 	 // SnapPreviewFragment.getSnapBitmap() function name
-    private int VARIABLE_SNAPPREVIEWFRAGMENT_SNAPEDITORVIEW = 19;			 // SnapPreviewFragment.SnapEditorView variable name
-    private int CLASS_SNAPUPDATE = 20;									 // SnapUpdate class name
-    private int CLASS_STORYVIEWRECORD = 21;								 // StoryViewRecord class name
+	//@formatter:off
+	final static int CLASS_RECEIVEDSNAP = 0;                     				 // ReceivedSnap class name
+	final static int FUNCTION_RECEIVEDSNAP_GETIMAGEBITMAP = 1;    				 // ReceivedSnap.getImageBitmap() function name
+	final static int FUNCTION_RECEIVEDSNAP_GETVIDEOURI = 2;      				 // ReceivedSnap.getVideoUri() function name
+	final static int CLASS_STORY = 3;                             				 // Story class name
+	final static int FUNCTION_STORY_GETIMAGEBITMAP = 4;          				 // Story.getImageBitmap() function name
+    final static int FUNCTION_STORY_GETVIDEOURI = 5;             				 // Story.getVideoUri() function name
+    final static int FUNCTION_RECEIVEDSNAP_MARKVIEWED = 6;       				 // ReceivedSnap.markViewed() function name
+    final static int CLASS_SNAPVIEW = 7;                        				 // SnapView class name
+    final static int FUNCTION_SNAPVIEW_SHOWIMAGE = 8;           				 // SnapView.showImage() function name
+    final static int FUNCTION_SNAPVIEW_SHOWVIDEO = 9;           				 // SnapView.showVideo() function name
+    final static int FUNCTION_RECEIVEDSNAP_GETSENDER = 10;       				 // ReceivedSnap.getSender() function name
+    final static int FUNCTION_STORY_GETSENDER = 11;              				 // Story.getSender()
+    final static int FUNCTION_SNAP_GETTIMESTAMP = 12;            				 // Snap.getTimestamp()
+    final static int CLASS_SNAP_PREVIEW_FRAGMENT = 13;			  				 // SnapPreviewFragment class name
+    final static int FUNCTION_SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING = 14;	 // SnapPreviewFragment.prepareSnapForSending() function name
+    final static int VARIABLE_SNAPPREVIEWFRAGMENT_ISVIDEOSNAP = 15; 			 // SnapPreviewFragment.mIsVideoSnap variable name
+    final static int VARIABLE_SNAPPREVIEWFRAGMENT_SNAPCAPTUREDEVENT = 16;		 // SnapPreviewFragment.SnapCapturedEvent variable name
+    final static int FUNCTION_SNAPPREVIEWFRAGMENT_VIDEOURI = 17;				 // SnapPreviewFragment.SnapCapturedEvent.getVideoUri() function name
+    final static int FUNCTION_SNAPPREVIEWFRAGMENT_GETSNAPBITMAP = 18;		 	 // SnapPreviewFragment.getSnapBitmap() function name
+    final static int VARIABLE_SNAPPREVIEWFRAGMENT_SNAPEDITORVIEW = 19;			 // SnapPreviewFragment.SnapEditorView variable name
+    final static int CLASS_SNAPUPDATE = 20;										 // SnapUpdate class name
+    final static int CLASS_STORYVIEWRECORD = 21;								 // StoryViewRecord class name
+    final static int VARIABLE_SNAPPREVIEWFRAGMENT_SNAPBYRO = 22;				 // SnapBryo class variable name
+    final static int FUNCTION_SNAPBRYO_GETSNAPBITMAP = 23;						 // Function name to get image
+    final static int FUNCTION_SNAPBRYO_VIDEOURI = 24;							 // function name to get video uri
+    final static int FUNCTION_SNAPBRYO_ISIMAGE = 25;						     // function name to get media type. image = 0 
+    //@formatter:on
 
     Map<String, SparseArray<String>> versionResolution = new HashMap<String, SparseArray<String>>();
    	private SparseArray<String> currentVersionNames = new SparseArray<String>();
@@ -43,6 +49,7 @@ public class VersionResolution {
 	private SparseArray<String> names_obfuscated_4101 = new SparseArray<String>();
 	private SparseArray<String> names_obfuscated_4107 = new SparseArray<String>();
 	private SparseArray<String> names_obfuscated_4108B = new SparseArray<String>();
+	private SparseArray<String> names_obfuscated_4111B = new SparseArray<String>();
 	
 	public VersionResolution(String version){
 		this.version = version;
@@ -67,6 +74,7 @@ public class VersionResolution {
 		versionResolution.put("4.1.08 Beta", names_obfuscated_4108B);
 		versionResolution.put("4.1.09 Beta", names_obfuscated_4108B);
 		versionResolution.put("4.1.10 Beta", names_obfuscated_4108B);
+		versionResolution.put("4.1.11 Beta", names_obfuscated_4111B);
 		
 		setNames();
 	}
@@ -75,8 +83,8 @@ public class VersionResolution {
 		return legacy;
 	}
 	
-	public boolean disableSentSave(){
-		return (version.equals("4.1.08 Beta") || version.equals("4.1.09 Beta") || version.equals("4.1.10 Beta"));
+	public boolean isLegacySaveSent(){
+		return (versionCompare(version, "4.1.07 Beta") <= 0);
 	}
 	
 	public boolean videoStoryLegacy(){
@@ -230,13 +238,33 @@ public class VersionResolution {
 		names_obfuscated_4108B.put(FUNCTION_SNAPVIEW_SHOWIMAGE, "m");		
 		names_obfuscated_4108B.put(FUNCTION_SNAPVIEW_SHOWVIDEO, "a");		
 		names_obfuscated_4108B.put(FUNCTION_SNAP_GETTIMESTAMP, "O");
-		
 		names_obfuscated_4108B.put(FUNCTION_SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING, "q");
-		names_obfuscated_4108B.put(VARIABLE_SNAPPREVIEWFRAGMENT_ISVIDEOSNAP, "o");
-		names_obfuscated_4108B.put(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPCAPTUREDEVENT, "w");
-		names_obfuscated_4108B.put(FUNCTION_SNAPPREVIEWFRAGMENT_VIDEOURI, "c");
-		names_obfuscated_4108B.put(FUNCTION_SNAPPREVIEWFRAGMENT_GETSNAPBITMAP,"getSnapBitmap");
-		names_obfuscated_4108B.put(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPEDITORVIEW, "a");
+		names_obfuscated_4108B.put(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPBYRO, "v");
+		names_obfuscated_4108B.put(FUNCTION_SNAPBRYO_GETSNAPBITMAP, "x");
+		names_obfuscated_4108B.put(FUNCTION_SNAPBRYO_VIDEOURI, "z");
+		names_obfuscated_4108B.put(FUNCTION_SNAPBRYO_ISIMAGE,"u");
+		
+		names_obfuscated_4111B.put(CLASS_RECEIVEDSNAP, basename + "model.ReceivedSnap");
+		names_obfuscated_4111B.put(CLASS_STORY, basename + "model.Story");
+		names_obfuscated_4111B.put(CLASS_SNAPVIEW, basename + "ui.SnapView");
+		names_obfuscated_4111B.put(CLASS_SNAP_PREVIEW_FRAGMENT,basename + "SnapPreviewFragment");
+		names_obfuscated_4111B.put(CLASS_SNAPUPDATE, basename + "model.server.SnapUpdate");
+		names_obfuscated_4111B.put(CLASS_STORYVIEWRECORD, basename + "model.StoryViewRecord");
+		names_obfuscated_4111B.put(FUNCTION_RECEIVEDSNAP_GETIMAGEBITMAP, "a");
+		names_obfuscated_4111B.put(FUNCTION_RECEIVEDSNAP_GETVIDEOURI,"C");		
+		names_obfuscated_4111B.put(FUNCTION_RECEIVEDSNAP_GETSENDER,"e");		
+		names_obfuscated_4111B.put(FUNCTION_RECEIVEDSNAP_MARKVIEWED,"j");		
+		names_obfuscated_4111B.put(FUNCTION_STORY_GETIMAGEBITMAP, "a");		
+		names_obfuscated_4111B.put(FUNCTION_STORY_GETVIDEOURI, "N/A");		
+		names_obfuscated_4111B.put(FUNCTION_STORY_GETSENDER, "e");		
+		names_obfuscated_4111B.put(FUNCTION_SNAPVIEW_SHOWIMAGE, "m");		
+		names_obfuscated_4111B.put(FUNCTION_SNAPVIEW_SHOWVIDEO, "a");		
+		names_obfuscated_4111B.put(FUNCTION_SNAP_GETTIMESTAMP, "O");
+		names_obfuscated_4111B.put(FUNCTION_SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING, "s");
+		names_obfuscated_4111B.put(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPBYRO, "v");
+		names_obfuscated_4111B.put(FUNCTION_SNAPBRYO_GETSNAPBITMAP, "A");
+		names_obfuscated_4111B.put(FUNCTION_SNAPBRYO_VIDEOURI, "C");
+		names_obfuscated_4111B.put(FUNCTION_SNAPBRYO_ISIMAGE,"x");
 
 		//@formatter:on
 	}

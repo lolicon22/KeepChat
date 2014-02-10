@@ -1,11 +1,17 @@
 package com.ramis.keepchat;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import android.content.Intent;
 import net.rdrei.android.dirchooser.DirectoryChooserActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.ListPreference;
@@ -16,12 +22,17 @@ import android.preference.PreferenceManager;
 public class Settings extends PreferenceFragment implements
 		OnSharedPreferenceChangeListener {
 
+	private final String PACKAGE_NAME = "com.ramis.keepchat";
+
 	public static final String PREF_KEY_SNAP_IMAGES = "pref_key_snaps_images";
 	public static final String PREF_KEY_SNAP_VIDEOS = "pref_key_snaps_videos";
 	public static final String PREF_KEY_STORIES_IMAGES = "pref_key_stories_images";
 	public static final String PREF_KEY_STORIES_VIDEOS = "pref_key_stories_videos";
 	public static final String PREF_KEY_TOASTS_DURATION = "pref_key_toasts_duration";
 	public static final String PREF_KEY_SAVE_LOCATION = "pref_key_save_location";
+
+	private File source; 
+	private File dest;
 
 	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,27 +69,29 @@ public class Settings extends PreferenceFragment implements
 					}
 				});
 
-
-		String versionName;
-		try {
-			PackageInfo piSnapChat = getActivity().getPackageManager()
-					.getPackageInfo("com.snapchat.android", 0);
-			versionName = piSnapChat.versionName;
-			if (versionName.equals("4.1.08 Beta")
-					|| versionName.equals("4.1.09 Beta")
-					|| versionName.equals("4.1.10 Beta")) {
-				Preference save_sent_snaps = findPreference("pref_key_save_sent_snaps");
-				save_sent_snaps.setEnabled(false);				
-			}
-		} catch (Exception e) {
-		}
-
 		updateSummary(PREF_KEY_SNAP_IMAGES);
 		updateSummary(PREF_KEY_SNAP_VIDEOS);
 		updateSummary(PREF_KEY_STORIES_IMAGES);
 		updateSummary(PREF_KEY_STORIES_VIDEOS);
 		updateSummary(PREF_KEY_TOASTS_DURATION);
 		updateSummary(PREF_KEY_SAVE_LOCATION);
+
+		source = new File(Environment.getDataDirectory(), "data/"
+				+ PACKAGE_NAME + "/shared_prefs/" + PACKAGE_NAME + "_preferences"
+				+ ".xml");
+		dest = new File(getActivity().getExternalFilesDir(null), PACKAGE_NAME
+				+ "_preferences" + ".xml");
+
+		if (source.exists()) {
+			try {
+				copy(source, dest);
+			} catch (IOException e) {
+			}
+			try {
+				copy(source, dest);
+			} catch (IOException e) {
+			}
+		}
 	}
 
 	@Override
@@ -104,6 +117,18 @@ public class Settings extends PreferenceFragment implements
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		updateSummary(key);
+
+		if (source.exists()) {
+			try {
+				copy(source, dest);
+			} catch (IOException e) {
+			}
+			try {
+				copy(source, dest);
+			} catch (IOException e) {
+			}
+		}
+
 	}
 
 	private void updateSummary(String key) {
@@ -135,6 +160,24 @@ public class Settings extends PreferenceFragment implements
 		super.onPause();
 		getPreferenceScreen().getSharedPreferences()
 				.unregisterOnSharedPreferenceChangeListener(this);
+	}
+
+	public void copy(File src, File dst) throws IOException {
+		
+		if (dst.exists()){
+			dst.delete();
+		}
+		InputStream in = new FileInputStream(src);
+		OutputStream out = new FileOutputStream(dst);
+
+		// Transfer bytes from in to out
+		byte[] buf = new byte[1024];
+		int len;
+		while ((len = in.read(buf)) > 0) {
+			out.write(buf, 0, len);
+		}
+		in.close();
+		out.close();
 	}
 
 }
