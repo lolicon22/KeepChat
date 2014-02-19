@@ -739,11 +739,17 @@ public class KeepChat implements IXposedHookLoadPackage {
 						findClass(names.get(VersionResolution.CLASS_SNAPUPDATE),
 								lpparam.classLoader), Long.class, Integer.class);
 
-			} else {
+			} else if (resolution.snapUpdateLegacy()) {
 				constructor = findConstructorBestMatch(
 						findClass(names.get(VersionResolution.CLASS_SNAPUPDATE),
 								lpparam.classLoader), Long.class,
 						Integer.class, Integer.class);
+			} else {
+				constructor = findConstructorBestMatch(
+						findClass(names.get(VersionResolution.CLASS_SNAPUPDATE),
+								lpparam.classLoader), Long.class,
+						Integer.class, Integer.class, Double.class);
+				
 			}
 
 			XposedBridge.hookMethod(constructor, new XC_MethodHook() {
