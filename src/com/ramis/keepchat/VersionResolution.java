@@ -77,6 +77,7 @@ public class VersionResolution {
 		versionResolution.put("4.1.10 Beta", names_obfuscated_4108B);
 		versionResolution.put("4.1.11 Beta", names_obfuscated_4111B);
 		versionResolution.put("4.1.12 Beta", names_obfuscated_4112B);
+		versionResolution.put("4.1.13 Beta", names_obfuscated_4112B);
 
 		setNames();
 	}
