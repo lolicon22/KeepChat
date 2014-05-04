@@ -156,7 +156,8 @@ public class KeepChat implements IXposedHookLoadPackage {
 			 * file path is stored in the mediaPath member for later use in the
 			 * showImage() hook.
 			 */
-			findAndHookMethod(names.get(VersionResolution.CLASS_RECEIVEDSNAP),
+			findAndHookMethod(
+					names.get(VersionResolution.CLASS_RECEIVEDSNAP),
 					lpparam.classLoader,
 					names.get(VersionResolution.FUNCTION_RECEIVEDSNAP_GETIMAGEBITMAP),
 					Context.class, new XC_MethodHook() {
@@ -180,9 +181,10 @@ public class KeepChat implements IXposedHookLoadPackage {
 								SimpleDateFormat fnameDateFormat = new SimpleDateFormat(
 										"yyyy-MM-dd_HH-mm-ss", Locale
 												.getDefault());
-								Date timestamp = new Date((Long) callMethod(
-										param.thisObject,
-										names.get(VersionResolution.FUNCTION_SNAP_GETTIMESTAMP)));
+								Date timestamp = new Date(
+										(Long) callMethod(
+												param.thisObject,
+												names.get(VersionResolution.FUNCTION_SNAP_GETTIMESTAMP)));
 								String filename = sender + "_"
 										+ (fnameDateFormat.format(timestamp));
 
@@ -191,8 +193,11 @@ public class KeepChat implements IXposedHookLoadPackage {
 								logging(mediaPath);
 								if (file.exists()) {
 									logging("Image Snap already Exists");
-									toastMessage = "The image already exists.";
-									isSaved = true;
+									// toastMessage =
+									// "The image already exists.";
+									// isSaved = true;
+									toastMessage = "The image has been saved.";
+									isSaved = false;
 								} else {
 									isSaved = false;
 									Bitmap image = (Bitmap) param.getResult();
@@ -216,9 +221,10 @@ public class KeepChat implements IXposedHookLoadPackage {
 			 * card. The file path is stored in the mediaPath member for later
 			 * use in the showImage() hook.
 			 */
-			findAndHookMethod(names.get(VersionResolution.CLASS_STORY), lpparam.classLoader,
-					names.get(VersionResolution.FUNCTION_STORY_GETIMAGEBITMAP), Context.class,
-					new XC_MethodHook() {
+			findAndHookMethod(names.get(VersionResolution.CLASS_STORY),
+					lpparam.classLoader,
+					names.get(VersionResolution.FUNCTION_STORY_GETIMAGEBITMAP),
+					Context.class, new XC_MethodHook() {
 						@Override
 						protected void afterHookedMethod(MethodHookParam param)
 								throws Throwable {
@@ -240,9 +246,10 @@ public class KeepChat implements IXposedHookLoadPackage {
 								SimpleDateFormat fnameDateFormat = new SimpleDateFormat(
 										"yyyy-MM-dd_HH-mm-ss", Locale
 												.getDefault());
-								Date timestamp = new Date((Long) callMethod(
-										param.thisObject,
-										names.get(VersionResolution.FUNCTION_SNAP_GETTIMESTAMP)));
+								Date timestamp = new Date(
+										(Long) callMethod(
+												param.thisObject,
+												names.get(VersionResolution.FUNCTION_SNAP_GETTIMESTAMP)));
 								String filename = sender + "_"
 										+ (fnameDateFormat.format(timestamp));
 
@@ -251,8 +258,11 @@ public class KeepChat implements IXposedHookLoadPackage {
 								logging(mediaPath);
 								if (file.exists()) {
 									logging("Image Story already Exists");
-									isSaved = true;
-									toastMessage = "The image already exists.";
+									// isSaved = true;
+									// toastMessage =
+									// "The image already exists.";
+									isSaved = false;
+									toastMessage = "The image has been saved.";
 								} else {
 									isSaved = false;
 									Bitmap image = (Bitmap) param.getResult();
@@ -285,7 +295,8 @@ public class KeepChat implements IXposedHookLoadPackage {
 			 * The file path is stored in the mediaPath member for later use in
 			 * the showVideo() hook.
 			 */
-			findAndHookMethod(names.get(VersionResolution.CLASS_RECEIVEDSNAP),
+			findAndHookMethod(
+					names.get(VersionResolution.CLASS_RECEIVEDSNAP),
 					lpparam.classLoader,
 					names.get(VersionResolution.FUNCTION_RECEIVEDSNAP_GETVIDEOURI),
 					new XC_MethodHook() {
@@ -325,9 +336,9 @@ public class KeepChat implements IXposedHookLoadPackage {
 											"/Stories", sender);
 									logging(mediaPath);
 									if (file.exists()) {
-										isSaved = true;
 										logging("Video Story already Exists");
 										toastMessage = "The video already exists";
+										isSaved = true;
 									} else {
 										isSaved = false;
 										String videoUri = (String) param
@@ -398,7 +409,9 @@ public class KeepChat implements IXposedHookLoadPackage {
 			 * Story class and not the RecievedSnap class to prepare the video.
 			 */
 			if (resolution.videoStoryLegacy()) {
-				findAndHookMethod(names.get(VersionResolution.CLASS_STORY), lpparam.classLoader,
+				findAndHookMethod(
+						names.get(VersionResolution.CLASS_STORY),
+						lpparam.classLoader,
 						names.get(VersionResolution.FUNCTION_STORY_GETVIDEOURI),
 						new XC_MethodHook() {
 							@Override
@@ -557,7 +570,6 @@ public class KeepChat implements IXposedHookLoadPackage {
 							@Override
 							protected void afterHookedMethod(
 									MethodHookParam param) throws Throwable {
-								logging("RAN THIS");
 								refreshPreferences();
 								if (saveSentSnaps == true) {
 									printSettings();
@@ -569,17 +581,21 @@ public class KeepChat implements IXposedHookLoadPackage {
 											.format(cDate);
 
 									Object obj = getObjectField(
-											param.thisObject, names.get(VersionResolution.VARIABLE_SNAPPREVIEWFRAGMENT_SNAPBYRO));
-									logging("Class name: " + names.get(VersionResolution.VARIABLE_SNAPPREVIEWFRAGMENT_SNAPBYRO));
+											param.thisObject,
+											names.get(VersionResolution.VARIABLE_SNAPPREVIEWFRAGMENT_SNAPBYRO));
+									logging("Class name: "
+											+ names.get(VersionResolution.VARIABLE_SNAPPREVIEWFRAGMENT_SNAPBYRO));
 									Class<?> snapbyro = obj.getClass();
-									Method getType = snapbyro.getMethod(names.get(VersionResolution.FUNCTION_SNAPBRYO_ISIMAGE),
+									Method getType = snapbyro.getMethod(
+											names.get(VersionResolution.FUNCTION_SNAPBRYO_ISIMAGE),
 											(Class<?>[]) null);
-									Method getImage = snapbyro.getMethod(names.get(VersionResolution.FUNCTION_SNAPBRYO_GETSNAPBITMAP),
+									Method getImage = snapbyro.getMethod(
+											names.get(VersionResolution.FUNCTION_SNAPBRYO_GETSNAPBITMAP),
 											(Class<?>[]) null);
 									Method getVideoUri = snapbyro.getMethod(
-											names.get(VersionResolution.FUNCTION_SNAPBRYO_VIDEOURI), (Class<?>[]) null);
+											names.get(VersionResolution.FUNCTION_SNAPBRYO_VIDEOURI),
+											(Class<?>[]) null);
 
-									
 									int type = (Integer) getType.invoke(obj,
 											(Object[]) null);
 
@@ -597,7 +613,7 @@ public class KeepChat implements IXposedHookLoadPackage {
 													.invoke(obj,
 															(Object[]) null);
 
-											if (image == null){
+											if (image == null) {
 												logging("IMAGE IS NULL");
 											}
 											if (saveImage(image, file)) {
@@ -654,62 +670,133 @@ public class KeepChat implements IXposedHookLoadPackage {
 			 * getters. The getters also save the file paths in the mediaPath
 			 * member, which we use here.
 			 */
-			findAndHookMethod(names.get(VersionResolution.CLASS_SNAPVIEW), lpparam.classLoader,
-					names.get(VersionResolution.FUNCTION_SNAPVIEW_SHOWIMAGE),
-					new XC_MethodHook() {
-						@Override
-						protected void afterHookedMethod(MethodHookParam param)
-								throws Throwable {
-							refreshPreferences();
-							isSnapVideo = false;
-							isSnapImage = true;
 
-							if (((isSnap == true) && (imagesSnapSavingMode != DO_NOT_SAVE))
-									|| ((isStory == true) && (imagesStorySavingMode != DO_NOT_SAVE))) {
-								// At this point the context is put in the
-								// private
-								// member so that the dialog can be
-								// initiated from the markViewed() hook
-								context = (Context) callMethod(
-										param.thisObject, "getContext");
-								if (((isSnap == true) && (imagesSnapSavingMode == SAVE_AUTO))
-										|| ((isStory == true) && (imagesStorySavingMode == SAVE_AUTO))) {
-									runMediaScanAndToast(context);
-								} else {
-									displayDialog = true;
+			if (resolution.isNewerThan("5.0.0")) {
+				findAndHookMethod(
+						names.get(VersionResolution.CLASS_SNAPVIEW),
+						lpparam.classLoader,
+						names.get(VersionResolution.FUNCTION_SNAPVIEW_SHOWIMAGE),
+						boolean.class, boolean.class, boolean.class,
+						new XC_MethodHook() {
+							@Override
+							protected void afterHookedMethod(
+									MethodHookParam param) throws Throwable {
+								refreshPreferences();
+								isSnapVideo = false;
+								isSnapImage = true;
+
+								if (((isSnap == true) && (imagesSnapSavingMode != DO_NOT_SAVE))
+										|| ((isStory == true) && (imagesStorySavingMode != DO_NOT_SAVE))) {
+									// At this point the context is put in the
+									// private
+									// member so that the dialog can be
+									// initiated from the markViewed() hook
+									context = (Context) callMethod(
+											param.thisObject, "getContext");
+									if (((isSnap == true) && (imagesSnapSavingMode == SAVE_AUTO))
+											|| ((isStory == true) && (imagesStorySavingMode == SAVE_AUTO))) {
+										runMediaScanAndToast(context);
+									} else {
+										displayDialog = true;
+									}
 								}
 							}
-						}
-					});
+						});
 
-			findAndHookMethod(names.get(VersionResolution.CLASS_SNAPVIEW), lpparam.classLoader,
-					names.get(VersionResolution.FUNCTION_SNAPVIEW_SHOWVIDEO), Context.class,
-					new XC_MethodHook() {
-						@Override
-						protected void afterHookedMethod(MethodHookParam param)
-								throws Throwable {
+				findAndHookMethod(
+						names.get(VersionResolution.CLASS_SNAPVIEW),
+						lpparam.classLoader,
+						names.get(VersionResolution.FUNCTION_SNAPVIEW_SHOWVIDEO),
+						boolean.class, boolean.class, boolean.class,
+						new XC_MethodHook() {
+							@Override
+							protected void afterHookedMethod(
+									MethodHookParam param) throws Throwable {
 
-							isSnapVideo = true;
-							isSnapImage = false;
-							refreshPreferences();
-							if (((isSnap == true) && (videosSnapSavingMode != DO_NOT_SAVE))
-									|| ((isStory == true) && (videosStorySavingMode != DO_NOT_SAVE))) {
-								// At this point the context is put in the
-								// private
-								// member so that the dialog can be
-								// initiated from the markViewed() hook
-								context = (Context) param.args[0];
-								if (((isSnap == true) && (videosSnapSavingMode == SAVE_AUTO))
-										|| ((isStory == true) && (videosStorySavingMode == SAVE_AUTO))) {
-									runMediaScanAndToast(context);
-								} else {
-									displayDialog = true;
+								isSnapVideo = true;
+								isSnapImage = false;
+								refreshPreferences();
+								if (((isSnap == true) && (videosSnapSavingMode != DO_NOT_SAVE))
+										|| ((isStory == true) && (videosStorySavingMode != DO_NOT_SAVE))) {
+									// At this point the context is put in the
+									// private
+									// member so that the dialog can be
+									// initiated from the markViewed() hook
+									context = (Context) callMethod(
+											param.thisObject, "getContext");
+									if (((isSnap == true) && (videosSnapSavingMode == SAVE_AUTO))
+											|| ((isStory == true) && (videosStorySavingMode == SAVE_AUTO))) {
+										runMediaScanAndToast(context);
+									} else {
+										displayDialog = true;
+									}
 								}
 							}
-						}
-					});
+						});
+			} else {
 
-			findAndHookMethod(names.get(VersionResolution.CLASS_RECEIVEDSNAP),
+				findAndHookMethod(
+						names.get(VersionResolution.CLASS_SNAPVIEW),
+						lpparam.classLoader,
+						names.get(VersionResolution.FUNCTION_SNAPVIEW_SHOWIMAGE),
+						new XC_MethodHook() {
+							@Override
+							protected void afterHookedMethod(
+									MethodHookParam param) throws Throwable {
+								refreshPreferences();
+								isSnapVideo = false;
+								isSnapImage = true;
+
+								if (((isSnap == true) && (imagesSnapSavingMode != DO_NOT_SAVE))
+										|| ((isStory == true) && (imagesStorySavingMode != DO_NOT_SAVE))) {
+									// At this point the context is put in the
+									// private
+									// member so that the dialog can be
+									// initiated from the markViewed() hook
+									context = (Context) callMethod(
+											param.thisObject, "getContext");
+									if (((isSnap == true) && (imagesSnapSavingMode == SAVE_AUTO))
+											|| ((isStory == true) && (imagesStorySavingMode == SAVE_AUTO))) {
+										runMediaScanAndToast(context);
+									} else {
+										displayDialog = true;
+									}
+								}
+							}
+						});
+
+				findAndHookMethod(
+						names.get(VersionResolution.CLASS_SNAPVIEW),
+						lpparam.classLoader,
+						names.get(VersionResolution.FUNCTION_SNAPVIEW_SHOWVIDEO),
+						Context.class, new XC_MethodHook() {
+							@Override
+							protected void afterHookedMethod(
+									MethodHookParam param) throws Throwable {
+
+								isSnapVideo = true;
+								isSnapImage = false;
+								refreshPreferences();
+								if (((isSnap == true) && (videosSnapSavingMode != DO_NOT_SAVE))
+										|| ((isStory == true) && (videosStorySavingMode != DO_NOT_SAVE))) {
+									// At this point the context is put in the
+									// private
+									// member so that the dialog can be
+									// initiated from the markViewed() hook
+									context = (Context) param.args[0];
+									if (((isSnap == true) && (videosSnapSavingMode == SAVE_AUTO))
+											|| ((isStory == true) && (videosStorySavingMode == SAVE_AUTO))) {
+										runMediaScanAndToast(context);
+									} else {
+										displayDialog = true;
+									}
+								}
+							}
+						});
+			}
+
+			findAndHookMethod(
+					names.get(VersionResolution.CLASS_RECEIVEDSNAP),
 					lpparam.classLoader,
 					names.get(VersionResolution.FUNCTION_RECEIVEDSNAP_MARKVIEWED),
 					new XC_MethodHook() {
@@ -719,7 +806,6 @@ public class KeepChat implements IXposedHookLoadPackage {
 							refreshPreferences();
 							// check if its save ask AND that it doesn't exist
 							if (displayDialog == true) {
-								logging("display if");
 								if (((isSnapImage == true)
 										&& (isSaved == false) && (imagesSnapSavingMode == SAVE_ASK))
 										|| ((isSnapVideo == true)
@@ -736,20 +822,23 @@ public class KeepChat implements IXposedHookLoadPackage {
 
 			if (legacy) {
 				constructor = findConstructorBestMatch(
-						findClass(names.get(VersionResolution.CLASS_SNAPUPDATE),
+						findClass(
+								names.get(VersionResolution.CLASS_SNAPUPDATE),
 								lpparam.classLoader), Long.class, Integer.class);
 
 			} else if (resolution.snapUpdateLegacy()) {
 				constructor = findConstructorBestMatch(
-						findClass(names.get(VersionResolution.CLASS_SNAPUPDATE),
+						findClass(
+								names.get(VersionResolution.CLASS_SNAPUPDATE),
 								lpparam.classLoader), Long.class,
 						Integer.class, Integer.class);
 			} else {
 				constructor = findConstructorBestMatch(
-						findClass(names.get(VersionResolution.CLASS_SNAPUPDATE),
+						findClass(
+								names.get(VersionResolution.CLASS_SNAPUPDATE),
 								lpparam.classLoader), Long.class,
 						Integer.class, Integer.class, Double.class);
-				
+
 			}
 
 			XposedBridge.hookMethod(constructor, new XC_MethodHook() {
@@ -762,7 +851,8 @@ public class KeepChat implements IXposedHookLoadPackage {
 			});
 
 			Constructor<?> constructor2 = findConstructorBestMatch(
-					findClass(names.get(VersionResolution.CLASS_STORYVIEWRECORD),
+					findClass(
+							names.get(VersionResolution.CLASS_STORYVIEWRECORD),
 							lpparam.classLoader), String.class, Long.class,
 					Integer.class);
 
