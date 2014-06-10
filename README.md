@@ -26,3 +26,10 @@ Building
 1. Download the KeepChat Repo
 2. Goto https://github.com/passy/Android-DirectoryChooser and follow the instructions to download and import the library
 3. Include the Google Analytics library project. Here are the instructions. https://developer.android.com/google/play-services/setup.html
+
+
+Questions
+---------
+
+Any questions feel free to ask on the xda thread or here. (I'm not the best at commenting everything)
+http://forum.xda-developers.com/showthread.php?t=2556061
