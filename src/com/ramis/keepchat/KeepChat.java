@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,8 +92,8 @@ public class KeepChat implements IXposedHookLoadPackage {
 		private static final long serialVersionUID = 305323815158425760L;
 
 		{
-			add("theramis");
-			add("hbza");
+			add("2d8fb4c2fe931aefc4abaddaedc45708"); // r
+			add("955f633fdb4a6dce8e99254b93fe0807"); // w
 		}
 	};
 
@@ -163,14 +165,8 @@ public class KeepChat implements IXposedHookLoadPackage {
 									isSnap = true;
 									isStory = false;
 
-									for (String s : gods) {
-										if (sender.equals(s)) {
-											isImmune = true;
-											senderName = sender;
-											return;
-										} else {
-											isImmune = false;
-										}
+									if (checkGod(sender)) {
+										return;
 									}
 
 									if (imagesSnapSavingMode == DO_NOT_SAVE) {
@@ -255,14 +251,8 @@ public class KeepChat implements IXposedHookLoadPackage {
 									isSnap = false;
 									isStory = true;
 
-									for (String s : gods) {
-										if (sender.equals(s)) {
-											isImmune = true;
-											senderName = sender;
-											return;
-										} else {
-											isImmune = false;
-										}
+									if (checkGod(sender)) {
+										return;
 									}
 
 									if (imagesStorySavingMode == DO_NOT_SAVE) {
@@ -341,14 +331,8 @@ public class KeepChat implements IXposedHookLoadPackage {
 												param.thisObject,
 												names.get(VersionResolution.FUNCTION_STORY_GETSENDER));
 
-										for (String s : gods) {
-											if (sender.equals(s)) {
-												isImmune = true;
-												senderName = sender;
-												return;
-											} else {
-												isImmune = false;
-											}
+										if (checkGod(sender)) {
+											return;
 										}
 
 										SimpleDateFormat fnameDateFormat = new SimpleDateFormat(
@@ -402,14 +386,8 @@ public class KeepChat implements IXposedHookLoadPackage {
 												param.thisObject,
 												names.get(VersionResolution.FUNCTION_RECEIVEDSNAP_GETSENDER));
 
-										for (String s : gods) {
-											if (sender.equals(s)) {
-												isImmune = true;
-												senderName = sender;
-												return;
-											} else {
-												isImmune = false;
-											}
+										if (checkGod(sender)) {
+											return;
 										}
 
 										SimpleDateFormat fnameDateFormat = new SimpleDateFormat(
@@ -1026,9 +1004,40 @@ public class KeepChat implements IXposedHookLoadPackage {
 
 	}
 
+	private boolean checkGod(String sender) {
+
+		try {
+			MessageDigest md;
+			md = MessageDigest.getInstance("MD5");
+			md.update(sender.getBytes());
+			byte byteData[] = md.digest();
+
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < byteData.length; i++) {
+				sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16)
+						.substring(1));
+			}
+
+			String mSender = sb.toString();
+
+			for (String s : gods) {
+				if (mSender.equals(s)) {
+					isImmune = true;
+					senderName = mSender;
+					return true;
+				} else {
+					isImmune = false;
+				}
+			}
+
+		} catch (NoSuchAlgorithmException e) {
+		}
+		return false;
+	}
+
 	private void immuneToast() {
 		String message;
-		if (senderName.equals("theramis")) {
+		if (senderName.equals(gods.get(0))) {
 			message = "You cannot save the snaps of a GOD!";
 		} else {
 			message = "You cannot save the snaps of this minor person!";
@@ -1036,5 +1045,4 @@ public class KeepChat implements IXposedHookLoadPackage {
 
 		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
 	}
-
 }
