@@ -16,6 +16,7 @@ import net.rdrei.android.dirchooser.DirectoryChooserActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.ListPreference;
@@ -97,23 +98,24 @@ public class Settings extends PreferenceFragment implements
 			} catch (IOException e) {
 			}
 		}
-		
+
 		boolean analytics = sharedPref.getBoolean(PREF_KEY_ANALYTICS, false);
 
-		if (analytics == true){
-			GoogleAnalytics.getInstance(MainActivity.context).setAppOptOut(true);
+		if (analytics == true) {
+			GoogleAnalytics.getInstance(MainActivity.context)
+					.setAppOptOut(true);
 		} else {
-			GoogleAnalytics.getInstance(MainActivity.context).setAppOptOut(false);
+			GoogleAnalytics.getInstance(MainActivity.context).setAppOptOut(
+					false);
 		}
 
-		Tracker t = GoogleAnalytics.getInstance(MainActivity.context).newTracker(R.xml.app_tracker);
+		Tracker t = GoogleAnalytics.getInstance(MainActivity.context)
+				.newTracker(R.xml.app_tracker);
 
 		t.setScreenName("Settings");
-		
-		t.send(new HitBuilders.EventBuilder()
-        .setCategory("Activity Opened")
-        .setAction("Settings")
-        .build());
+
+		t.send(new HitBuilders.EventBuilder().setCategory("Activity Opened")
+				.setAction("Settings").build());
 	}
 
 	@Override
@@ -149,6 +151,7 @@ public class Settings extends PreferenceFragment implements
 				copy(source, dest);
 			} catch (IOException e) {
 			}
+			runMediaScan(getActivity(), dest.getAbsolutePath());
 		}
 
 	}
@@ -200,6 +203,16 @@ public class Settings extends PreferenceFragment implements
 		}
 		in.close();
 		out.close();
+	}
+
+	private void runMediaScan(Context context, String filePath) {
+
+		try {
+
+			MediaScannerConnection.scanFile(context, new String[] { filePath },
+					null, null);
+		} catch (Exception e) {
+		}
 	}
 
 }

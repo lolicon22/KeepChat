@@ -40,6 +40,11 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.widget.Toast;
 
+//TODO
+//1. Add dropbox support
+//2. Add support for translations
+//3. run media scanner to update settings or try broadcasts
+
 public class KeepChat implements IXposedHookLoadPackage {
 
 	private static final String PACKAGE_NAME = KeepChat.class.getPackage()
@@ -700,8 +705,7 @@ public class KeepChat implements IXposedHookLoadPackage {
 					.log("---------------------------------------------------------");
 
 		} catch (Exception e) {
-			logging("Exception");
-			logging(Log.getStackTraceString(e));
+			XposedBridge.log(Log.getStackTraceString(e));
 			Log.v(PACKAGE_NAME, Log.getStackTraceString(e));
 			Log.v(PACKAGE_NAME, "Exception");
 			XposedBridge.log("Keepchat doesn't currently support version '"
@@ -1045,4 +1049,5 @@ public class KeepChat implements IXposedHookLoadPackage {
 
 		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
 	}
+	
 }
