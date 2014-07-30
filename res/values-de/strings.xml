@@ -1,0 +1,60 @@
+<resources>
+
+    <string name="app_name">KeepChat</string>
+    <string name="pref_snaps_title">Snaps</string>
+    <string name="pref_stories_title">Stories</string>
+    <string name="pref_toasts_title">Toasts</string>
+    <string name="pref_extra_settings_title">Extra Einstellungen</string>
+    <string name="pref_snaps_default_value">0</string>
+    <string name="pref_images">Bilder</string>
+    <string name="pref_toasts_summary_off">Toasts deaktiviert</string>
+    <string name="pref_toasts_summary_on">Toasts aktiviert</string>
+    <string name="pref_toasts_title_checkbox">Toasts aktivieren</string>
+    <string name="pref_toasts_duration_title">Toast Länge</string>
+    <string name="pref_save_location_title">Speicherort wählen</string>
+    <string name="pref_save_sent_snaps_summary_off">Gesendete Snaps werden nicht gespeichert</string>
+    <string name="pref_save_sent_snaps_summary_on">Gesendete Snaps werden gespeichert</string>
+    <string name="pref_save_sent_snaps_title_checkbox">Gesendete Snaps speichern</string>
+    <string-array name="pref_snaps_entries">
+        <item >Automatisch speichern</item>
+        <item >Fragen zum Speichern</item>
+        <item >Nicht speichern</item>
+    </string-array>
+    <string-array name="pref_snaps_values">
+        <item >0</item>
+        <item >1</item>
+        <item >2</item>
+    </string-array>
+    
+    <string name="pref_videos">Videos</string>
+    <string-array name="pref_stories_entries">
+        <item >Automatisch speichern</item>
+        <item >Nicht speichern</item>
+    </string-array>
+    <string-array name="pref_stories_values">
+        <item >0</item>
+        <item >2</item>
+    </string-array>
+    <string-array name="pref_toasts_duration_entries">
+        <item >Kurz</item>
+        <item >Lang</item>
+    </string-array>
+    <string-array name="pref_toasts_duration_values">
+        <item >0</item>
+        <item >1</item>
+    </string-array>
+    <string name="pref_toasts_duration_default_value">1</string>
+    <string name="pref_debug_mode_summary_off">Debug Mode aus</string>
+    <string name="pref_debug_mode_summary_on">Debug Mode an</string>
+    <string name="pref_debug_mode_title_checkbox">Debug Mode</string>
+    <string name="pref_sort_files_mode_title_checkbox">Dateien in Ordner sortieren</string>
+    <string name="pref_sort_files_mode_summary_on">Dateien werden in Ordnern sortiert</string>
+    <string name="pref_sort_files_mode_summary_off">Dateien werden nicht in Ordner sortiert</string>
+    
+    <string name="pref_sort_files_username_title_checkbox">Dateien in Unterordner nach Nutzernamen sortieren</string>
+    <string name="pref_sort_files_username_summary_on">Dateien werden in Unterordner sortiert</string>
+    <string name="pref_sort_files_username_summary_off">Dateien werden nicht in Unterordner sortiert</string>
+    
+    <string name="pref_analytics_title_checkbox">Google Analytics deaktivieren</string>
+
+</resources>
