@@ -1,9 +1,12 @@
 package com.ramis.keepchat;
 
+import static de.robv.android.xposed.XposedHelpers.findClass;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import android.content.Context;
 import android.util.SparseArray;
 
@@ -12,6 +15,7 @@ public class VersionResolution {
 	private String version;
 
 	private static String basename = KeepChat.SNAPCHAT_PACKAGE_NAME + ".";
+	private LoadPackageParam lpparam;
 
 	//@formatter:off
 	final static int CLASS_RECEIVEDSNAP = 0;                     				// ReceivedSnap class name
@@ -49,49 +53,49 @@ public class VersionResolution {
     final static int FUNCTION_DECTECTIONSESSION = 91;							// ScreenshotDetector.runDectectionSession() function name
     //@formatter:on
 
-	private Map<String, SparseArray<String>> versionResolutionNames = new HashMap<String, SparseArray<String>>();
-	private Map<String, SparseArray<Object[]>> versionResolutionParams = new HashMap<String, SparseArray<Object[]>>();
+	private SparseArray<String> names = new SparseArray<String>();
+	private SparseArray<Object[]> params = new SparseArray< Object[]>();
 
-	private SparseArray<String> currentVersionNames = new SparseArray<String>();
-	private SparseArray<Object[]> currentParams = new SparseArray<Object[]>();
+	private Map<String, String> namesReso = new HashMap<String, String>();
+	private Map<String, String> paramsReso = new HashMap<String, String>();
 
-	private SparseArray<String> names_50230 = new SparseArray<String>();
-	private SparseArray<String> names_50271 = new SparseArray<String>();
+	private String namesVersion, paramsVersion;
 
-	private SparseArray<Object[]> params_50230 = new SparseArray<Object[]>();
-
-	public VersionResolution(String version) {
+	public VersionResolution(String version, LoadPackageParam lpparam) {
 		this.version = version;
+		this.lpparam = lpparam;
 
-		//@formatter:off
-		versionResolutionNames.put("5.0.23.0", names_50230);
-		versionResolutionParams.put("5.0.23.0", params_50230);
-		
-		versionResolutionNames.put("5.0.27.1", names_50271); 
-		versionResolutionParams.put("5.0.27.1", params_50230); 
-		//@formatter:on
+		namesReso.put("5.0.23.0", "5.0.23.0");
+		paramsReso.put("5.0.23.0", "5.0.23.0");
+
+		namesReso.put("5.0.27.1", "5.0.27.1");
+		paramsReso.put("5.0.27.1", "5.0.23.0");
+
+		namesReso.put("5.0.32.1", "5.0.32.1");
+		paramsReso.put("5.0.32.1", "5.0.32.1");
+
 		setNames();
 	}
 
 	public SparseArray<String> getNames() {
-		return currentVersionNames;
+		return names;
 	}
 
 	public SparseArray<Object[]> getParams() {
-		return currentParams;
+		return params;
 	}
 
 	private void setNames() {
+		setVersion();
 		createNames();
 		createParams();
-		setCurrentVersionNames();
 	}
 
-	private void setCurrentVersionNames() {
+	private void setVersion() {
 
 		String keyValue, finalVersionCode = "0";
 
-		for (String key : versionResolutionNames.keySet()) {
+		for (String key : namesReso.keySet()) {
 
 			keyValue = key;
 			if (versionCompare(keyValue, this.version) <= 0) {
@@ -100,68 +104,86 @@ public class VersionResolution {
 				}
 			}
 		}
-		currentVersionNames = versionResolutionNames.get(finalVersionCode);
-		currentParams = versionResolutionParams.get(finalVersionCode);
+		namesVersion = namesReso.get(finalVersionCode);
+		paramsVersion = paramsReso.get(finalVersionCode);
 	}
 
 	private void createNames() {
 		//@formatter:off
-		names_50230.put(CLASS_RECEIVEDSNAP, basename + "model.ReceivedSnap");
-		names_50230.put(FUNCTION_RECEIVEDSNAP_GETIMAGEBITMAP, "a");
-		names_50230.put(FUNCTION_RECEIVEDSNAP_GETVIDEOURI,"K");
-		names_50230.put(FUNCTION_RECEIVEDSNAP_MARKVIEWED,"p");
-		names_50230.put(FUNCTION_RECEIVEDSNAP_GETSENDER,"j");
+		names.put(CLASS_RECEIVEDSNAP, basename + "model.ReceivedSnap");
+		names.put(FUNCTION_RECEIVEDSNAP_GETIMAGEBITMAP, "a");
+		names.put(FUNCTION_RECEIVEDSNAP_GETVIDEOURI,"K");
+		names.put(FUNCTION_RECEIVEDSNAP_MARKVIEWED,"p");
+		names.put(FUNCTION_RECEIVEDSNAP_GETSENDER,"j");
 		
-		names_50230.put(CLASS_STORY, basename + "model.StorySnap");
-		names_50230.put(FUNCTION_STORY_GETIMAGEBITMAP, "a");
-		names_50230.put(FUNCTION_STORY_GETSENDER, "at");
+		names.put(CLASS_STORY, basename + "model.StorySnap");
+		names.put(FUNCTION_STORY_GETIMAGEBITMAP, "a");
+		names.put(FUNCTION_STORY_GETSENDER, "at");
 		
-		names_50230.put(CLASS_SNAPVIEW, basename + "ui.snapview.SnapView");
-		names_50230.put(FUNCTION_SNAPVIEW_SHOWIMAGE, "b");
-		names_50230.put(FUNCTION_SNAPVIEW_SHOWVIDEO, "a");
+		names.put(CLASS_SNAPVIEW, basename + "ui.snapview.SnapView");
+		names.put(FUNCTION_SNAPVIEW_SHOWIMAGE, "b");
+		names.put(FUNCTION_SNAPVIEW_SHOWVIDEO, "a");
 		
-		names_50230.put(FUNCTION_SNAP_GETTIMESTAMP, "W");
+		names.put(FUNCTION_SNAP_GETTIMESTAMP, "W");
 		
-		names_50230.put(CLASS_SNAP_PREVIEW_FRAGMENT,basename + "SnapPreviewFragment");
-		names_50230.put(FUNCTION_SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING, "v");
-		names_50230.put(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPBYRO, "u");
+		names.put(CLASS_SNAP_PREVIEW_FRAGMENT,basename + "SnapPreviewFragment");
+		names.put(FUNCTION_SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING, "v");
+		names.put(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPBYRO, "u");
 		
-		names_50230.put(CLASS_SNAPUPDATE, basename + "model.server.SnapUpdate");
+		names.put(CLASS_SNAPUPDATE, basename + "model.server.SnapUpdate");
 		
-		names_50230.put(CLASS_STORYVIEWRECORD, basename + "model.StoryViewRecord");
+		names.put(CLASS_STORYVIEWRECORD, basename + "model.StoryViewRecord");
 		
-		names_50230.put(FUNCTION_SNAPBRYO_GETSNAPBITMAP, "A");
-		names_50230.put(FUNCTION_SNAPBRYO_VIDEOURI, "C");
-		names_50230.put(FUNCTION_SNAPBRYO_ISIMAGE,"x");
+		names.put(FUNCTION_SNAPBRYO_GETSNAPBITMAP, "A");
+		names.put(FUNCTION_SNAPBRYO_VIDEOURI, "C");
+		names.put(FUNCTION_SNAPBRYO_ISIMAGE,"x");
 		
-		names_50230.put(CLASS_SNAPSTATEMESSAGE_BUILDER, basename + "model.server.chat.SnapStateMessage.Builder");
-		names_50230.put(FUNCTION_SETSCREENSHOTCOUNT, "setScreenshotCount");
+		names.put(CLASS_SNAPSTATEMESSAGE_BUILDER, basename + "model.server.chat.SnapStateMessage.Builder");
+		names.put(FUNCTION_SETSCREENSHOTCOUNT, "setScreenshotCount");
 		
-		names_50230.put(CLASS_SCREENSHOTDETECTOR, basename + "screenshotdetection.ScreenshotDetector");
-		names_50230.put(FUNCTION_DECTECTIONSESSION, "b");
+		names.put(CLASS_SCREENSHOTDETECTOR, basename + "screenshotdetection.ScreenshotDetector");
+		names.put(FUNCTION_DECTECTIONSESSION, "b");
 		
-			
-		cloneSpareArray(names_50271, names_50230);
-		names_50271.put(FUNCTION_STORY_GETSENDER, "ax");
-		
+		if (namesVersion.equals("5.0.27.1")){
+			names.put(FUNCTION_STORY_GETSENDER, "ax");
+		} else if (namesVersion.equals("5.0.32.1")){
+			names.put(FUNCTION_STORY_GETSENDER, "ay");
+			names.put(FUNCTION_SNAP_GETTIMESTAMP, "X");
+			names.put(FUNCTION_SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING, "A");
+			names.put(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPBYRO, "v");
+			names.put(FUNCTION_SNAPBRYO_GETSNAPBITMAP, "B");
+			names.put(FUNCTION_SNAPBRYO_VIDEOURI, "D");
+			names.put(FUNCTION_SNAPBRYO_ISIMAGE,"y");
+		}
 		//@formatter:on
 	}
 
 	private void createParams() {
 
 		//@formatter:off
-		params_50230.put(FUNCTION_RECEIVEDSNAP_GETIMAGEBITMAP, new Object[] { Context.class });
-		params_50230.put(FUNCTION_RECEIVEDSNAP_MARKVIEWED, new Object[] {});
-		params_50230.put(FUNCTION_RECEIVEDSNAP_GETVIDEOURI, new Object[] {});
-		params_50230.put(FUNCTION_STORY_GETIMAGEBITMAP, new Object[] { Context.class });
-		params_50230.put(FUNCTION_SNAPVIEW_SHOWIMAGE, new Object[] {boolean.class, boolean.class, boolean.class, boolean.class });
-		params_50230.put(FUNCTION_SNAPVIEW_SHOWVIDEO, new Object[] {boolean.class, boolean.class, boolean.class, boolean.class });
-		params_50230.put(FUNCTION_SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING, new Object[] {});
-		params_50230.put(CLASS_SNAPUPDATE, new Class<?>[] { Long.class, Integer.class, Integer.class, Double.class });
-		params_50230.put(CLASS_STORYVIEWRECORD, new Class<?>[] { String.class, Long.class, Integer.class });
-		params_50230.put(FUNCTION_SETSCREENSHOTCOUNT, new Object[] { long.class });
-		params_50230.put(FUNCTION_DECTECTIONSESSION, new Object[] { ArrayList.class });
+		params.put(FUNCTION_RECEIVEDSNAP_GETIMAGEBITMAP, new Object[] { Context.class });
+		params.put(FUNCTION_RECEIVEDSNAP_MARKVIEWED, new Object[] {});
+		params.put(FUNCTION_RECEIVEDSNAP_GETVIDEOURI, new Object[] {});
+		params.put(FUNCTION_STORY_GETIMAGEBITMAP, new Object[] { Context.class });
+		params.put(FUNCTION_SNAPVIEW_SHOWIMAGE, new Object[] {boolean.class, boolean.class, boolean.class, boolean.class });
+		params.put(FUNCTION_SNAPVIEW_SHOWVIDEO, new Object[] {boolean.class, boolean.class, boolean.class, boolean.class });
+		params.put(FUNCTION_SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING, new Object[] {});
+		params.put(CLASS_SNAPUPDATE, new Class<?>[] { Long.class, Integer.class, Integer.class, Double.class });
+		params.put(CLASS_STORYVIEWRECORD, new Class<?>[] { String.class, Long.class, Integer.class });
+		params.put(FUNCTION_SETSCREENSHOTCOUNT, new Object[] { long.class });
+		params.put(FUNCTION_DECTECTIONSESSION, new Object[] { ArrayList.class });
+		
+		if (paramsVersion.equals("5.0.32.1")){
+			params.put(CLASS_SNAPUPDATE, new Class<?>[] { findClass(basename + "model.ReceivedSnap",lpparam.classLoader) });
+		}
 		//@formatter:on
+	}
+	
+	public boolean newSnapUpdate(){
+		if (versionCompare(this.version, "5.0.32.1") == -1){
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -196,12 +218,4 @@ public class VersionResolution {
 			}
 		}
 	}
-	
-	private void cloneSpareArray(SparseArray<String> result,SparseArray<String> array){
-		
-		for (int i = 0; i < array.size(); i++) {
-			result.put(array.keyAt(i), array.get(array.keyAt(i)));
-		}
-	}
-
 }

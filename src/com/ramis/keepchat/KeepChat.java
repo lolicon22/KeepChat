@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,6 +31,7 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static de.robv.android.xposed.XposedHelpers.setIntField;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
@@ -110,7 +110,8 @@ public class KeepChat implements IXposedHookLoadPackage {
 
 		initialInfoLogAndGetVersion(lpparam);
 
-		VersionResolution resolution = new VersionResolution(versionName);
+		VersionResolution resolution = new VersionResolution(versionName,
+				lpparam);
 
 		final SparseArray<String> names = resolution.getNames();
 		final SparseArray<Object[]> params = resolution.getParams();
@@ -655,14 +656,24 @@ public class KeepChat implements IXposedHookLoadPackage {
 							lpparam.classLoader),
 					(Class<?>[]) params.get(VersionResolution.CLASS_SNAPUPDATE));
 
-			XposedBridge.hookMethod(constructor, new XC_MethodHook() {
-				protected void beforeHookedMethod(MethodHookParam param)
-						throws Throwable {
+			if (resolution.newSnapUpdate()) {
+				XposedBridge.hookMethod(constructor, new XC_MethodHook() {
+					protected void afterHookedMethod(MethodHookParam param)
+							throws Throwable {
+						setIntField(param.thisObject, "c", 0);
+					}
+				});
 
-					param.args[1] = 0;
+			} else {
+				XposedBridge.hookMethod(constructor, new XC_MethodHook() {
+					protected void beforeHookedMethod(MethodHookParam param)
+							throws Throwable {
 
-				}
-			});
+						param.args[1] = 0;
+
+					}
+				});
+			}
 
 			Constructor<?> constructor2 = findConstructorBestMatch(
 					findClass(
@@ -1029,10 +1040,9 @@ public class KeepChat implements IXposedHookLoadPackage {
 					isImmune = true;
 					senderName = mSender;
 					return true;
-				} else {
-					isImmune = false;
 				}
 			}
+			isImmune = false;
 
 		} catch (NoSuchAlgorithmException e) {
 		}
@@ -1049,5 +1059,5 @@ public class KeepChat implements IXposedHookLoadPackage {
 
 		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
 	}
-	
+
 }
