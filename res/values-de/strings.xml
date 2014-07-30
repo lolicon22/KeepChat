@@ -47,13 +47,13 @@
     <string name="pref_debug_mode_summary_off">Debug Mode aus</string>
     <string name="pref_debug_mode_summary_on">Debug Mode an</string>
     <string name="pref_debug_mode_title_checkbox">Debug Mode</string>
-    <string name="pref_sort_files_mode_title_checkbox">Dateien in Ordner sortieren</string>
-    <string name="pref_sort_files_mode_summary_on">Dateien werden in Ordnern sortiert</string>
-    <string name="pref_sort_files_mode_summary_off">Dateien werden nicht in Ordner sortiert</string>
+    <string name="pref_sort_files_mode_title_checkbox">Dateien in Ordner einsortieren</string>
+    <string name="pref_sort_files_mode_summary_on">Dateien werden in Ordner einsortiert</string>
+    <string name="pref_sort_files_mode_summary_off">Dateien werden nicht in Ordner einsortiert</string>
     
-    <string name="pref_sort_files_username_title_checkbox">Dateien in Unterordner nach Nutzernamen sortieren</string>
-    <string name="pref_sort_files_username_summary_on">Dateien werden in Unterordner sortiert</string>
-    <string name="pref_sort_files_username_summary_off">Dateien werden nicht in Unterordner sortiert</string>
+    <string name="pref_sort_files_username_title_checkbox">Dateien in Unterordner nach Nutzernamen einsortieren</string>
+    <string name="pref_sort_files_username_summary_on">Dateien werden in Unterordner einsortiert</string>
+    <string name="pref_sort_files_username_summary_off">Dateien werden nicht in Unterordner einsortiert</string>
     
     <string name="pref_analytics_title_checkbox">Google Analytics deaktivieren</string>
 
