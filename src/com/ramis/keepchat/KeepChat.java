@@ -31,7 +31,7 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
-import static de.robv.android.xposed.XposedHelpers.setIntField;
+import static de.robv.android.xposed.XposedHelpers.setObjectField;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
@@ -660,7 +660,7 @@ public class KeepChat implements IXposedHookLoadPackage {
 				XposedBridge.hookMethod(constructor, new XC_MethodHook() {
 					protected void afterHookedMethod(MethodHookParam param)
 							throws Throwable {
-						setIntField(param.thisObject, "c", 0);
+						setObjectField(param.thisObject, "c", 0);
 					}
 				});
 
