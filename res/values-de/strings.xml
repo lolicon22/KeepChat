@@ -57,4 +57,22 @@
     
     <string name="pref_analytics_title_checkbox">Google Analytics deaktivieren</string>
 
+    <string name="save_message_image">Möchten Sie das Bild speichern?</string>
+    <string name="save_message_video">Möchten Sie das Video speichern?</string>
+    <string name="save_dialog_title_image">Bild speichern?</string>
+    <string name="save_dialog_title_video">Video speichern?</string>
+    <string name="save_button">Speichern</string>
+    <string name="discard_button">Abbrechen</string>
+    
+    <string name="image_exists">Das Bild existiert bereits.</string>
+    <string name="video_exists">Das Video existiert bereits.</string>
+    <string name="image_saved">Das Bild wurde gespeichert.</string>
+    <string name="video_saved">Das Video wurde gespeichert.</string>
+    
+    <string name="image_not_saved">Das Bild konnte nicht gespeichert werden.</string>
+    <string name="video_not_saved">Das Video konnte nicht gespeichert werden.</string>
+    
+    <string name="error_1">Fehler 1.</string>
+    <string name="error_2">Fehler 2.</string>
+    <string name="error_3">Fehler 3.</string>
 </resources>
