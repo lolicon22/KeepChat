@@ -187,7 +187,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 									}
 
 									File file = createFile(filename + ".jpg",
-											"/RecievedSnaps", sender);
+											"/ReceivedSnaps", sender);
 
 									logging(mediaPath);
 
@@ -432,7 +432,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 														.format(timestamp));
 
 										File file = createFile(filename
-												+ ".mp4", "/RecievedSnaps",
+												+ ".mp4", "/ReceivedSnaps",
 												sender);
 										logging(mediaPath);
 										if (file.exists()) {

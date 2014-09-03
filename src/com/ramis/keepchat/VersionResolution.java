@@ -73,6 +73,9 @@ public class VersionResolution {
 
 		namesReso.put("5.0.32.1", "5.0.32.1");
 		paramsReso.put("5.0.32.1", "5.0.32.1");
+		
+		namesReso.put("5.0.34.4", "5.0.34.4");
+		paramsReso.put("5.0.34.4", "5.0.32.1");
 
 		setNames();
 	}
@@ -154,7 +157,17 @@ public class VersionResolution {
 			names.put(FUNCTION_SNAPBRYO_GETSNAPBITMAP, "B");
 			names.put(FUNCTION_SNAPBRYO_VIDEOURI, "D");
 			names.put(FUNCTION_SNAPBRYO_ISIMAGE,"y");
-		}
+		} else if (namesVersion.equals("5.0.34.4")){
+			names.put(FUNCTION_RECEIVEDSNAP_GETVIDEOURI,"J");
+			names.put(FUNCTION_STORY_GETSENDER, "az");
+			names.put(FUNCTION_SNAP_GETTIMESTAMP, "Y");
+			names.put(FUNCTION_SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING, "A");
+			names.put(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPBYRO, "v");
+			names.put(FUNCTION_SNAPBRYO_GETSNAPBITMAP, "B");
+			names.put(FUNCTION_SNAPBRYO_VIDEOURI, "D");
+			names.put(FUNCTION_SNAPBRYO_ISIMAGE,"y");
+			names.put(CLASS_SNAPVIEW, basename + "ui.SnapView");
+		} 
 		//@formatter:on
 	}
 
