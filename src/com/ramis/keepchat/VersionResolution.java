@@ -4,6 +4,7 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
@@ -76,6 +77,9 @@ public class VersionResolution {
 		
 		namesReso.put("5.0.34.4", "5.0.34.4");
 		paramsReso.put("5.0.34.4", "5.0.32.1");
+		
+		namesReso.put("5.0.38.1", "5.0.38.1");
+		paramsReso.put("5.0.38.1", "5.0.38.1");
 
 		setNames();
 	}
@@ -167,7 +171,19 @@ public class VersionResolution {
 			names.put(FUNCTION_SNAPBRYO_VIDEOURI, "D");
 			names.put(FUNCTION_SNAPBRYO_ISIMAGE,"y");
 			names.put(CLASS_SNAPVIEW, basename + "ui.SnapView");
-		} 
+		} else if (namesVersion.equals("5.0.38.1")) {
+			names.put(FUNCTION_RECEIVEDSNAP_GETIMAGEBITMAP, "b");
+			names.put(FUNCTION_RECEIVEDSNAP_GETVIDEOURI,"N");
+			names.put(FUNCTION_STORY_GETSENDER, "aD");
+			names.put(CLASS_SNAPVIEW, basename + "ui.SnapView");
+			names.put(FUNCTION_SNAP_GETTIMESTAMP, "ac");
+			names.put(FUNCTION_SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING, "E");
+			names.put(VARIABLE_SNAPPREVIEWFRAGMENT_SNAPBYRO, "s");
+			names.put(FUNCTION_SNAPBRYO_GETSNAPBITMAP, "B");
+			names.put(FUNCTION_SNAPBRYO_VIDEOURI, "D");
+			names.put(FUNCTION_SNAPBRYO_ISIMAGE,"y");
+			names.put(FUNCTION_DECTECTIONSESSION, "a");
+		}
 		//@formatter:on
 	}
 
@@ -188,6 +204,9 @@ public class VersionResolution {
 		
 		if (paramsVersion.equals("5.0.32.1")){
 			params.put(CLASS_SNAPUPDATE, new Class<?>[] { findClass(basename + "model.ReceivedSnap",lpparam.classLoader) });
+		} else if (paramsVersion.equals("5.0.38.1")){
+			params.put(CLASS_SNAPUPDATE, new Class<?>[] { findClass(basename + "model.ReceivedSnap",lpparam.classLoader) });
+			params.put(FUNCTION_DECTECTIONSESSION, new Object[] { List.class, long.class });
 		}
 		//@formatter:on
 	}
