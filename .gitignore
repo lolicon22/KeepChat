@@ -2,15 +2,9 @@
 *.iws
 *.ipr
 .idea/
+.gradle/
 local.properties
-bin
-libs
-gen/
-out/
+
+build/
 
 *.apk
-out/
-XposedBridgeApi-42.jar
-.settings/
-.bin/
-project.properties
