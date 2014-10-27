@@ -1,6 +1,7 @@
 package com.ramis.keepchat;
 
-import static de.robv.android.xposed.XposedHelpers.findClass;
+import android.content.Context;
+import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
-import android.content.Context;
-import android.util.SparseArray;
+
+import static de.robv.android.xposed.XposedHelpers.findClass;
 
 public class VersionResolution {
 

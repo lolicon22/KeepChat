@@ -1,6 +1,8 @@
 <resources>
-
     <string name="app_name">KeepChat</string>
+    <string name="keepchat_settings">Keepchat Settings</string>
+    <string name="xposed_description">Save any snap and story, both images and videos, you either sent or receive via Snapchat.</string>
+
     <string name="pref_snaps_title">Snaps</string>
     <string name="pref_stories_title">Stories</string>
     <string name="pref_toasts_title">Toasts</string>
@@ -76,7 +78,4 @@
     <string name="error_1">Error 1.</string>
     <string name="error_2">Error 2.</string>
     <string name="error_3">Error 3.</string>
-    
-    
-
 </resources>
