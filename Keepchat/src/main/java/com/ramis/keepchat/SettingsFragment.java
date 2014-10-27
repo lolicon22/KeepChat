@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -44,22 +43,17 @@ public class SettingsFragment extends PreferenceFragment {
 
         // set on click listener
         Preference locationChooser = findPreference(PREF_KEY_SAVE_LOCATION);
+        locationChooser.setSummary(sharedPreferences.getString(PREF_KEY_SAVE_LOCATION, ""));
         locationChooser.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 // opens new activity which asks the user to choose path
                 final Intent chooserIntent = new Intent(getActivity(), DirectoryChooserActivity.class);
+                chooserIntent.putExtra(DirectoryChooserActivity.EXTRA_NEW_DIR_NAME, "Keepchat");
                 startActivityForResult(chooserIntent, REQUEST_CHOOSE_DIR);
                 return true;
             }
         });
-
-		updateSummary(PREF_KEY_SNAP_IMAGES);
-		updateSummary(PREF_KEY_SNAP_VIDEOS);
-		updateSummary(PREF_KEY_STORIES_IMAGES);
-		updateSummary(PREF_KEY_STORIES_VIDEOS);
-		updateSummary(PREF_KEY_TOASTS_DURATION);
-		updateSummary(PREF_KEY_SAVE_LOCATION);
 	}
 
     // Receives the result of the DirectoryChooserActivity
@@ -69,25 +63,15 @@ public class SettingsFragment extends PreferenceFragment {
 
 		if (requestCode == REQUEST_CHOOSE_DIR) {
 			if (resultCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
-				SharedPreferences.Editor editor = sharedPreferences.edit();
+                String newLocation = data.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
 
-                String result = data.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
-				editor.putString(PREF_KEY_SAVE_LOCATION, result);
-				editor.apply();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(PREF_KEY_SAVE_LOCATION, newLocation);
+                editor.apply();
 
-				updateSummary(PREF_KEY_SAVE_LOCATION);
+                Preference pref = findPreference(PREF_KEY_SAVE_LOCATION);
+                pref.setSummary(newLocation);
 			}
-		}
-	}
-
-	private void updateSummary(String key) {
-        Preference pref = findPreference(key);
-
-        if(pref instanceof ListPreference) {
-            ListPreference lp = (ListPreference) pref;
-            lp.setSummary(lp.getEntry());
-        } else if (key.equals(PREF_KEY_SAVE_LOCATION)) {
-			pref.setSummary(sharedPreferences.getString(PREF_KEY_SAVE_LOCATION, ""));
 		}
 	}
 }
