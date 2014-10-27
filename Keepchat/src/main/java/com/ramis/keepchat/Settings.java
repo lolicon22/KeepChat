@@ -7,10 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
 import android.content.Intent;
 import net.rdrei.android.dirchooser.DirectoryChooserActivity;
 import android.content.Context;
@@ -35,7 +31,6 @@ public class Settings extends PreferenceFragment implements
 	public static final String PREF_KEY_STORIES_VIDEOS = "pref_key_stories_videos";
 	public static final String PREF_KEY_TOASTS_DURATION = "pref_key_toasts_duration";
 	public static final String PREF_KEY_SAVE_LOCATION = "pref_key_save_location";
-	public static final String PREF_KEY_ANALYTICS = "pref_key_analytics";
 
 	private File source;
 	private File dest;
@@ -98,24 +93,6 @@ public class Settings extends PreferenceFragment implements
 			} catch (IOException e) {
 			}
 		}
-
-		boolean analytics = sharedPref.getBoolean(PREF_KEY_ANALYTICS, false);
-
-		if (analytics == true) {
-			GoogleAnalytics.getInstance(MainActivity.context)
-					.setAppOptOut(true);
-		} else {
-			GoogleAnalytics.getInstance(MainActivity.context).setAppOptOut(
-					false);
-		}
-
-		Tracker t = GoogleAnalytics.getInstance(MainActivity.context)
-				.newTracker(R.xml.app_tracker);
-
-		t.setScreenName("Settings");
-
-		t.send(new HitBuilders.EventBuilder().setCategory("Activity Opened")
-				.setAction("Settings").build());
 	}
 
 	@Override

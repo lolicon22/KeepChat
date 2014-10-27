@@ -7,10 +7,6 @@ import android.preference.PreferenceManager;
 
 public class MainActivity extends Activity {
 	
-	public enum TrackerName {
-		APP_TRACKER
-	}
-	
 	public static Context context;
 	
 	protected void onCreate(Bundle savedInstanceState) {
