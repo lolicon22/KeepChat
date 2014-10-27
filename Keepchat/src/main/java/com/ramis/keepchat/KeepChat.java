@@ -86,6 +86,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 	private String versionName;
 
 	private static XModuleResources mResources;
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault());
 
 	// loading package
 	@Override
@@ -95,8 +96,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
 		initialInfoLogAndGetVersion(lpparam);
 
-		VersionResolution resolution = new VersionResolution(versionName,
-				lpparam);
+		VersionResolution resolution = new VersionResolution(versionName, lpparam);
 
 		final SparseArray<String> names = resolution.getNames();
 		final SparseArray<Object[]> params = resolution.getParams();
@@ -113,84 +113,69 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 			 * file path is stored in the mediaPath member for later use in the
 			 * showImage() hook.
 			 */
-			findAndHookMethod(
-					names.get(VersionResolution.CLASS_RECEIVEDSNAP),
-					lpparam.classLoader,
-					names.get(VersionResolution.FUNCTION_RECEIVEDSNAP_GETIMAGEBITMAP),
-					appendValue(
-							params.get(VersionResolution.FUNCTION_RECEIVEDSNAP_GETIMAGEBITMAP),
-							new XC_MethodHook() {
-								@Override
-								protected void afterHookedMethod(
-										MethodHookParam param) throws Throwable {
+            findAndHookMethod(
+                    names.get(VersionResolution.CLASS_RECEIVEDSNAP),
+                    lpparam.classLoader,
+                    names.get(VersionResolution.FUNCTION_RECEIVEDSNAP_GETIMAGEBITMAP),
+                    appendValue(
+                            params.get(VersionResolution.FUNCTION_RECEIVEDSNAP_GETIMAGEBITMAP),
+                            new XC_MethodHook() {
+                                @Override
+                                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
-									String sender = (String) callMethod(
-											param.thisObject,
-											names.get(VersionResolution.FUNCTION_RECEIVEDSNAP_GETSENDER));
+                                    String sender = (String) callMethod(
+                                            param.thisObject,
+                                            names.get(VersionResolution.FUNCTION_RECEIVEDSNAP_GETSENDER));
 
-									SimpleDateFormat fnameDateFormat = new SimpleDateFormat(
-											"yyyy-MM-dd_HH-mm-ss", Locale
-													.getDefault());
+                                    Date timestamp = new Date(
+                                            (Long) callMethod(
+                                                    param.thisObject,
+                                                    names.get(VersionResolution.FUNCTION_SNAP_GETTIMESTAMP)));
 
-									Date timestamp = new Date(
-											(Long) callMethod(
-													param.thisObject,
-													names.get(VersionResolution.FUNCTION_SNAP_GETTIMESTAMP)));
+                                    String filename = sender + "_" + dateFormat.format(timestamp);
 
-									String filename = sender
-											+ "_"
-											+ (fnameDateFormat
-													.format(timestamp));
+                                    if (prevFileName.equals(filename)) {
+                                        prevFileName = "";
+                                        return;
+                                    }
 
-									if (prevFileName.equals(filename)) {
-										prevFileName = "";
-										return;
-									}
+                                    prevFileName = filename;
 
-									prevFileName = filename;
+                                    refreshPreferences();
+                                    printSettings();
+                                    logging("\n----------------------- KEEPCHAT ------------------------");
+                                    logging("Image Snap opened");
+                                    isSnap = true;
+                                    isStory = false;
 
-									refreshPreferences();
-									printSettings();
-									logging("\n----------------------- KEEPCHAT ------------------------");
-									logging("Image Snap opened");
-									isSnap = true;
-									isStory = false;
+                                    if (imagesSnapSavingMode == DO_NOT_SAVE) {
+                                        logging("Not Saving Image");
+                                        logging("---------------------------------------------------------");
+                                        return;
+                                    }
 
-									if (imagesSnapSavingMode == DO_NOT_SAVE) {
-										logging("Not Saving Image");
-										logging("---------------------------------------------------------");
-										return;
-									}
+                                    File file = createFile(filename + ".jpg", "/ReceivedSnaps", sender);
 
-									File file = createFile(filename + ".jpg",
-											"/ReceivedSnaps", sender);
+                                    logging(mediaPath);
 
-									logging(mediaPath);
-
-									if (file.exists()) {
-										logging("Image Snap already Exists");
-										toastMessage = mResources
-												.getString(R.string.image_exists);
-										isSaved = true;
-									} else {
-										isSaved = false;
-										Bitmap image = (Bitmap) param
-												.getResult();
-										if (saveImage(image, file)) {
-											logging("Image Snap has been Saved");
-											toastMessage = mResources
-													.getString(R.string.image_saved);
-										} else {
-											logging("Error Saving Image Snap. Error 1.");
-											toastMessage = mResources
-													.getString(R.string.image_not_saved)
-													+ " "
-													+ mResources
-															.getString(R.string.error_1);
-										}
-									}
-								}
-							}));
+                                    if (file.exists()) {
+                                        logging("Image Snap already Exists");
+                                        toastMessage = mResources.getString(R.string.image_exists);
+                                        isSaved = true;
+                                    } else {
+                                        isSaved = false;
+                                        Bitmap image = (Bitmap) param.getResult();
+                                        if (saveImage(image, file)) {
+                                            logging("Image Snap has been Saved");
+                                            toastMessage = mResources.getString(R.string.image_saved);
+                                        } else {
+                                            logging("Error Saving Image Snap. Error 1.");
+                                            toastMessage = mResources.getString(R.string.image_not_saved)
+                                                    + " " + mResources .getString(R.string.error_1);
+                                        }
+                                    }
+                                }
+                            }));
 
 			/*
 			 * getImageBitmap() hook The Story class has a method to load a
@@ -208,26 +193,18 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 							params.get(VersionResolution.FUNCTION_STORY_GETIMAGEBITMAP),
 							new XC_MethodHook() {
 								@Override
-								protected void afterHookedMethod(
-										MethodHookParam param) throws Throwable {
+								protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
 									String sender = (String) callMethod(
 											param.thisObject,
 											names.get(VersionResolution.FUNCTION_STORY_GETSENDER));
-
-									SimpleDateFormat fnameDateFormat = new SimpleDateFormat(
-											"yyyy-MM-dd_HH-mm-ss", Locale
-													.getDefault());
 
 									Date timestamp = new Date(
 											(Long) callMethod(
 													param.thisObject,
 													names.get(VersionResolution.FUNCTION_SNAP_GETTIMESTAMP)));
 
-									String filename = sender
-											+ "_"
-											+ (fnameDateFormat
-													.format(timestamp));
+									String filename = sender + "_" + dateFormat.format(timestamp);
 
 									if (prevFileName.equals(filename)) {
 										prevFileName = "";
@@ -250,31 +227,24 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 										return;
 									}
 
-									File file = createFile(filename + ".jpg",
-											"/Stories", sender);
+									File file = createFile(filename + ".jpg", "/Stories", sender);
 
 									logging(mediaPath);
 
 									if (file.exists()) {
 										logging("Image Story already Exists");
 										isSaved = true;
-										toastMessage = mResources
-												.getString(R.string.image_exists);
+										toastMessage = mResources.getString(R.string.image_exists);
 									} else {
 										isSaved = false;
-										Bitmap image = (Bitmap) param
-												.getResult();
+										Bitmap image = (Bitmap) param.getResult();
 										if (saveImage(image, file)) {
 											logging("Image Story has been Saved");
-											toastMessage = mResources
-													.getString(R.string.image_saved);
+											toastMessage = mResources.getString(R.string.image_saved);
 										} else {
 											logging("Error Saving Image Snap. Error 1.");
-											toastMessage = mResources
-													.getString(R.string.image_not_saved)
-													+ " "
-													+ mResources
-															.getString(R.string.error_1);
+											toastMessage = mResources .getString(R.string.image_not_saved)
+													+ " " + mResources.getString(R.string.error_1);
 										}
 									}
 								}
@@ -305,13 +275,11 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 							params.get(VersionResolution.FUNCTION_RECEIVEDSNAP_GETVIDEOURI),
 							new XC_MethodHook() {
 								@Override
-								protected void afterHookedMethod(
-										MethodHookParam param) throws Throwable {
+								protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
 									refreshPreferences();
 									printSettings();
-									if (param.thisObject.toString().contains(
-											"StorySnap")) {
+									if (param.thisObject.toString().contains("StorySnap")) {
 										logging("\n----------------------- KEEPCHAT ------------------------");
 										logging("Video Story opened");
 										isSnap = false;
@@ -326,44 +294,30 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 												param.thisObject,
 												names.get(VersionResolution.FUNCTION_STORY_GETSENDER));
 
-										SimpleDateFormat fnameDateFormat = new SimpleDateFormat(
-												"yyyy-MM-dd_HH-mm-ss", Locale
-														.getDefault());
-
 										Date timestamp = new Date(
 												(Long) callMethod(
 														param.thisObject,
 														names.get(VersionResolution.FUNCTION_SNAP_GETTIMESTAMP)));
 
-										String filename = sender
-												+ "_"
-												+ (fnameDateFormat
-														.format(timestamp));
+										String filename = sender + "_" + dateFormat.format(timestamp);
 
-										File file = createFile(filename
-												+ ".mp4", "/Stories", sender);
+										File file = createFile(filename + ".mp4", "/Stories", sender);
 
 										logging(mediaPath);
 										if (file.exists()) {
 											logging("Video Story already Exists");
-											toastMessage = mResources
-													.getString(R.string.video_exists);
+											toastMessage = mResources.getString(R.string.video_exists);
 											isSaved = true;
 										} else {
 											isSaved = false;
-											String videoUri = (String) param
-													.getResult();
+											String videoUri = (String) param.getResult();
 											if (saveVideo(videoUri, file)) {
 												logging("Video Story has been Saved");
-												toastMessage = mResources
-														.getString(R.string.video_saved);
+												toastMessage = mResources.getString(R.string.video_saved);
 											} else {
 												logging("Error Saving Video Story. Error 2.");
-												toastMessage = mResources
-														.getString(R.string.video_not_saved)
-														+ " "
-														+ mResources
-																.getString(R.string.error_2);
+												toastMessage = mResources.getString(R.string.video_not_saved)
+														+ " " + mResources .getString(R.string.error_2);
 											}
 										}
 									} else {
@@ -383,42 +337,29 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 												param.thisObject,
 												names.get(VersionResolution.FUNCTION_RECEIVEDSNAP_GETSENDER));
 
-										SimpleDateFormat fnameDateFormat = new SimpleDateFormat(
-												"yyyy-MM-dd_HH-mm-ss", Locale
-														.getDefault());
 										Date timestamp = new Date(
 												(Long) callMethod(
 														param.thisObject,
 														names.get(VersionResolution.FUNCTION_SNAP_GETTIMESTAMP)));
-										String filename = sender
-												+ "_"
-												+ (fnameDateFormat
-														.format(timestamp));
+										String filename = sender + "_" + dateFormat.format(timestamp);
 
-										File file = createFile(filename
-												+ ".mp4", "/ReceivedSnaps",
-												sender);
+										File file = createFile(filename + ".mp4", "/ReceivedSnaps", sender);
 										logging(mediaPath);
 										if (file.exists()) {
 											isSaved = true;
 											logging("Video Snap already Exists");
-											toastMessage = mResources
-													.getString(R.string.video_exists);
+											toastMessage = mResources.getString(R.string.video_exists);
 										} else {
 											isSaved = false;
 											String videoUri = (String) param
 													.getResult();
 											if (saveVideo(videoUri, file)) {
 												logging("Video Snap has been Saved");
-												toastMessage = mResources
-														.getString(R.string.video_saved);
+												toastMessage = mResources.getString(R.string.video_saved);
 											} else {
 												logging("Error Saving Video Snap. Error 2.");
-												toastMessage = mResources
-														.getString(R.string.video_not_saved)
-														+ " "
-														+ mResources
-																.getString(R.string.error_2);
+												toastMessage = mResources.getString(R.string.video_not_saved)
+														+ " " + mResources.getString(R.string.error_2);
 											}
 										}
 									}
@@ -436,8 +377,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 							new XC_MethodHook() {
 
 								@Override
-								protected void afterHookedMethod(
-										MethodHookParam param) throws Throwable {
+								protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
 									refreshPreferences();
 
@@ -445,10 +385,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 										printSettings();
 										logging("\n----------------------- KEEPCHAT ------------------------");
 										Date cDate = new Date();
-										String filename = new SimpleDateFormat(
-												"yyyy-MM-dd_HH-mm-ss", Locale
-														.getDefault())
-												.format(cDate);
+										String filename = dateFormat.format(cDate);
 										Object obj = getObjectField(
 												param.thisObject,
 												names.get(VersionResolution.VARIABLE_SNAPPREVIEWFRAGMENT_SNAPBYRO));
@@ -464,74 +401,55 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 												names.get(VersionResolution.FUNCTION_SNAPBRYO_VIDEOURI),
 												(Class<?>[]) null);
 
-										int type = (Integer) getType.invoke(
-												obj, (Object[]) null);
+										int type = (Integer) getType.invoke(obj, (Object[]) null);
 
 										if (type == 0) {
 											logging("Image Sent Snap");
-											File file = createFile(filename
-													+ ".jpg", "/SentSnaps", "");
+											File file = createFile(filename + ".jpg", "/SentSnaps", "");
 											logging(mediaPath);
 											if (file.exists()) {
 												logging("Image Sent Snap already exists");
-												toastMessage = mResources
-														.getString(R.string.image_exists);
+												toastMessage = mResources.getString(R.string.image_exists);
 											} else {
 
-												Bitmap image = (Bitmap) getImage
-														.invoke(obj,
-																(Object[]) null);
+												Bitmap image = (Bitmap) getImage.invoke(obj, (Object[]) null);
 
 												if (image == null) {
 													logging("IMAGE IS NULL");
 												}
 												if (saveImage(image, file)) {
 													logging("Image Sent Snap has been Saved");
-													toastMessage = mResources
-															.getString(R.string.image_saved);
+													toastMessage = mResources.getString(R.string.image_saved);
 												} else {
 													logging("Error Saving Image Sent Snap. Error 3.");
-													toastMessage = mResources
-															.getString(R.string.image_not_saved)
-															+ " "
-															+ mResources
-																	.getString(R.string.error_3);
+													toastMessage = mResources.getString(R.string.image_not_saved)
+															+ " " + mResources.getString(R.string.error_3);
 												}
 											}
 										} else {
 											logging("Video Sent Snap");
-											File file = createFile(filename
-													+ ".mp4", "/SentSnaps", "");
+											File file = createFile(filename + ".mp4", "/SentSnaps", "");
 											logging(mediaPath);
 
 											if (file.exists()) {
 												logging("Video Sent Snap already Exists");
-												toastMessage = mResources
-														.getString(R.string.video_exists);
+												toastMessage = mResources.getString(R.string.video_exists);
 											} else {
 
-												Uri uri = (Uri) getVideoUri
-														.invoke(obj,
-																(Object[]) null);
+												Uri uri = (Uri) getVideoUri.invoke(obj, (Object[]) null);
 
-												if (saveVideo(uri.getPath(),
-														file)) {
+												if (saveVideo(uri.getPath(), file)) {
 													logging("Video Sent Snap has been Saved");
-													toastMessage = mResources
-															.getString(R.string.video_saved);
+													toastMessage = mResources.getString(R.string.video_saved);
 												} else {
 													logging("Error Saving Video Sent Snap. Error 3.");
-													toastMessage = mResources
-															.getString(R.string.video_not_saved)
-															+ " "
-															+ mResources
-																	.getString(R.string.error_3);
+													toastMessage = mResources.getString(R.string.video_not_saved)
+															+ " " + mResources.getString(R.string.error_3);
 												}
 											}
 										}
 
-										runMediaScanAndToast((Context) callMethod(
-												param.thisObject, "getActivity"));
+										runMediaScanAndToast((Context) callMethod(param.thisObject, "getActivity"));
 									}
 								}
 
@@ -560,8 +478,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 							params.get(VersionResolution.FUNCTION_SNAPVIEW_SHOWIMAGE),
 							new XC_MethodHook() {
 								@Override
-								protected void afterHookedMethod(
-										MethodHookParam param) throws Throwable {
+								protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 									refreshPreferences();
 									isSnapVideo = false;
 									isSnapImage = true;
@@ -573,8 +490,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 										// private member so that the dialog can
 										// be
 										// initiated from the markViewed() hook
-										context = (Context) callMethod(
-												param.thisObject, "getContext");
+										context = (Context) callMethod(param.thisObject, "getContext");
 
 										if ((isSnap && (imagesSnapSavingMode == SAVE_AUTO))
 												|| (isStory && (imagesStorySavingMode == SAVE_AUTO))) {
@@ -594,8 +510,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 							params.get(VersionResolution.FUNCTION_SNAPVIEW_SHOWVIDEO),
 							new XC_MethodHook() {
 								@Override
-								protected void afterHookedMethod(
-										MethodHookParam param) throws Throwable {
+								protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
 									isSnapVideo = true;
 									isSnapImage = false;
@@ -607,8 +522,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 										// private member so that the dialog can
 										// be
 										// initiated from the markViewed() hook
-										context = (Context) callMethod(
-												param.thisObject, "getContext");
+										context = (Context) callMethod(param.thisObject, "getContext");
 
 										if ((isSnap && (videosSnapSavingMode == SAVE_AUTO))
 												|| (isStory && (videosStorySavingMode == SAVE_AUTO))) {
@@ -628,13 +542,12 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 							params.get(VersionResolution.FUNCTION_RECEIVEDSNAP_MARKVIEWED),
 							new XC_MethodHook() {
 								@Override
-								protected void beforeHookedMethod(
-										MethodHookParam param) throws Throwable {
+								protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 									refreshPreferences();
 									// check if its save ask AND that it doesn't
 									// exist
 									if (displayDialog) {
-										if (((isSnapImage) && !isSaved && (imagesSnapSavingMode == SAVE_ASK))
+										if ((isSnapImage && !isSaved && (imagesSnapSavingMode == SAVE_ASK))
 												|| (isSnapVideo && !isSaved && (videosSnapSavingMode == SAVE_ASK))) {
 											showDialog(context);
 											displayDialog = false;
@@ -645,39 +558,30 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
 			Constructor<?> constructor;
 			constructor = findConstructorBestMatch(
-					findClass(names.get(VersionResolution.CLASS_SNAPUPDATE),
-							lpparam.classLoader),
+					findClass(names.get(VersionResolution.CLASS_SNAPUPDATE), lpparam.classLoader),
 					(Class<?>[]) params.get(VersionResolution.CLASS_SNAPUPDATE));
 
 			if (resolution.newSnapUpdate()) {
 				XposedBridge.hookMethod(constructor, new XC_MethodHook() {
-					protected void afterHookedMethod(MethodHookParam param)
-							throws Throwable {
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 						setObjectField(param.thisObject, "c", 0);
 					}
 				});
 
 			} else {
 				XposedBridge.hookMethod(constructor, new XC_MethodHook() {
-					protected void beforeHookedMethod(MethodHookParam param)
-							throws Throwable {
-
+					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 						param.args[1] = 0;
-
 					}
 				});
 			}
 
 			Constructor<?> constructor2 = findConstructorBestMatch(
-					findClass(
-							names.get(VersionResolution.CLASS_STORYVIEWRECORD),
-							lpparam.classLoader),
-					(Class<?>[]) params
-							.get(VersionResolution.CLASS_STORYVIEWRECORD));
+					findClass(names.get(VersionResolution.CLASS_STORYVIEWRECORD), lpparam.classLoader),
+					(Class<?>[]) params.get(VersionResolution.CLASS_STORYVIEWRECORD));
 
 			XposedBridge.hookMethod(constructor2, new XC_MethodHook() {
-				protected void beforeHookedMethod(MethodHookParam param)
-						throws Throwable {
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					param.args[2] = 0;
 				}
 			});
@@ -690,23 +594,18 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 							params.get(VersionResolution.FUNCTION_SETSCREENSHOTCOUNT),
 							new XC_MethodHook() {
 								@Override
-								protected void beforeHookedMethod(
-										MethodHookParam param) throws Throwable {
+								protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 									param.args[0] = 0L;
 
 								}
 							}));
 
-			findAndHookMethod(
-					names.get(VersionResolution.CLASS_SCREENSHOTDETECTOR),
-					lpparam.classLoader,
-					names.get(VersionResolution.FUNCTION_DECTECTIONSESSION),
-					appendValue(params
-							.get(VersionResolution.FUNCTION_DECTECTIONSESSION),
+			findAndHookMethod(names.get(VersionResolution.CLASS_SCREENSHOTDETECTOR),
+					lpparam.classLoader, names.get(VersionResolution.FUNCTION_DECTECTIONSESSION),
+					appendValue(params.get(VersionResolution.FUNCTION_DECTECTIONSESSION),
 							XC_MethodReplacement.returnConstant(null)));
 
-			XposedBridge
-					.log("---------------------------------------------------------");
+			XposedBridge.log("---------------------------------------------------------");
 
 		} catch (Exception e) {
 			XposedBridge.log(Log.getStackTraceString(e));
@@ -714,22 +613,16 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 			Log.v(BuildConfig.PACKAGE_NAME, "Exception");
 			XposedBridge.log("Keepchat doesn't currently support version '"
 					+ versionName + "', wait for an update");
-			XposedBridge
-					.log("If you can, pull the apk off your device and submit it to the xda thread");
+			XposedBridge.log("If you can, pull the apk off your device and submit it to the xda thread");
 			findAndHookMethod("com.snapchat.android.LandingPageActivity",
 					lpparam.classLoader, "onCreate", Bundle.class,
 					new XC_MethodHook() {
-						protected void afterHookedMethod(MethodHookParam param)
-								throws Throwable {
-							Toast.makeText(
-									(Context) callMethod(param.thisObject,
-											"getApplicationContext"),
-									"This version of snapchat is currently not supported.",
-									Toast.LENGTH_LONG).show();
+						protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+							Toast.makeText((Context) callMethod(param.thisObject, "getApplicationContext"),
+									"This version of snapchat is currently not supported.", Toast.LENGTH_LONG).show();
 						}
 					});
-			XposedBridge
-					.log("---------------------------------------------------------");
+			XposedBridge.log("---------------------------------------------------------");
 		}
 
 	}
@@ -919,8 +812,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 					new MediaScannerConnection.OnScanCompletedListener() {
 						public void onScanCompleted(String path, Uri uri) {
 							if (uri != null) {
-								logging("MediaScanner ran successfully: "
-										+ uri.toString());
+								logging("MediaScanner ran successfully: " + uri.toString());
 							} else {
 								logging("Unknown error occurred while trying to run MediaScanner");
 							}
@@ -936,8 +828,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 		if (toastMode) {
 			logging("Toast Displayed");
 			if (toastLength == 0) {
-				Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
 			} else {
 				Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
 			}
