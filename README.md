@@ -1,35 +1,30 @@
-Keepchat
+KeepChat
 ========
 
-A mod for Snapchat for Android, built using the Xposed Framework
+This Xposed module lets you save any Snapchat. It works for snaps and stories, both images and videos, you either sent or receive via Snapchat. It has the possibility to save snaps in a different folder for each user.
+
+This project was created by Sturmen and later maintained by stammler and than Ramis, huge credits to them! Ramis transferred the project to me and made me the new maintainer. I'm dedicated to improve Keepchat and give something back to the community.
 
 Features
 --------
-- Hooks into the Snapchat application; just install and go
-- Saves both images and videos
-- Toast popups to notify you of success
+- Saves boths sent and received snaps and stories.
+- Works for both images and videos.
+- Does not report as screenshotted.
+- Option to sort snaps, stories and sent in different folders.
+- Option to save Snapchats by username in sub-folders.
+- Possibility to show a toast message once a Snapchat is saved.
 - Open Source
 - Free!
 
-Installation
+Download
 ------------
-1. Install Xposed Framework
-2. Install Keepchat
-3. Enable Keepchat in Xposed
-4. Reboot Phone
-5. Use Snapchat as normal
-6. Find your saved Snaps in /sdcard/keepchat/
+Download from the [Xposed Module Repository](http://repo.xposed.info/module/com.ramis.keepchat).
+You need Xposed Framework installed. After installing the module enable it and reboot your phone.
 
+Source
+------------
+Source code can be found on this GitHub repository and is published under the GNU GPL v3 license.
 
-Building
---------
-1. Download the KeepChat Repo
-2. Goto https://github.com/passy/Android-DirectoryChooser and follow the instructions to download and import the library
-3. Include the Google Analytics library project. Here are the instructions. https://developer.android.com/google/play-services/setup.html
-
-
-Questions
----------
-
-Any questions feel free to ask on the xda thread or here. (I'm not the best at commenting everything)
-http://forum.xda-developers.com/showthread.php?t=2556061
+Support
+-----------
+For questions, feature requests, bug reports or everything else related to this module, post at KeepChat's [XDA-thread](http://forum.xda-developers.com/xposed/modules/mod-keepchat-save-snapchats-t2917209). I usually respond pretty quick.
