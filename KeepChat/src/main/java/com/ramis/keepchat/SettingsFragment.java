@@ -11,6 +11,8 @@ import android.preference.PreferenceManager;
 
 import net.rdrei.android.dirchooser.DirectoryChooserActivity;
 
+import java.io.File;
+
 public class SettingsFragment extends PreferenceFragment {
 
     private static final int REQUEST_CHOOSE_DIR = 1;
@@ -74,4 +76,16 @@ public class SettingsFragment extends PreferenceFragment {
 			}
 		}
 	}
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // Set preferences file permissions to be world readable
+        File sharedPrefsDir = new File(getActivity().getApplicationInfo().dataDir, "shared_prefs");
+        File sharedPrefsFile = new File(sharedPrefsDir, getPreferenceManager().getSharedPreferencesName() + ".xml");
+        if (sharedPrefsFile.exists()) {
+            sharedPrefsFile.setReadable(true, false);
+        }
+    }
 }
