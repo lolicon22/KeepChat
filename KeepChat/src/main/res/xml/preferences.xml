@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/pref_snaps_title">
-        <com.ramis.keepchat.SummaryListPreference
+        <com.ramis.keepchat.BetterListPreference
             android:defaultValue="@string/pref_snaps_default_value"
             android:dialogTitle="@string/pref_images"
             android:entries="@array/pref_snaps_entries"
@@ -10,7 +10,7 @@
             android:key="pref_key_snaps_images"
             android:title="@string/pref_images" />
         
-        <com.ramis.keepchat.SummaryListPreference
+        <com.ramis.keepchat.BetterListPreference
             android:defaultValue="@string/pref_snaps_default_value"
             android:dialogTitle="@string/pref_videos"
             android:entries="@array/pref_snaps_entries"
@@ -20,7 +20,7 @@
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/pref_stories_title">
-        <com.ramis.keepchat.SummaryListPreference
+        <com.ramis.keepchat.BetterListPreference
             android:defaultValue="@string/pref_snaps_default_value"
             android:dialogTitle="@string/pref_images"
             android:entries="@array/pref_stories_entries"
@@ -28,7 +28,7 @@
             android:key="pref_key_stories_images"
             android:title="@string/pref_images" />
         
-        <com.ramis.keepchat.SummaryListPreference
+        <com.ramis.keepchat.BetterListPreference
             android:defaultValue="@string/pref_snaps_default_value"
             android:dialogTitle="@string/pref_videos"
             android:entries="@array/pref_stories_entries"
@@ -45,7 +45,7 @@
             android:summaryOn="@string/pref_toasts_summary_on"
             android:title="@string/pref_toasts_title_checkbox" />
 
-        <com.ramis.keepchat.SummaryListPreference
+        <com.ramis.keepchat.BetterListPreference
             android:defaultValue="@string/pref_toasts_duration_default_value"
             android:dependency="pref_key_toasts_checkbox"
             android:entries="@array/pref_toasts_duration_entries"
