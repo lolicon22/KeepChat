@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.util.SparseArray;
 import android.widget.Toast;
 
@@ -46,6 +45,7 @@ import static de.robv.android.xposed.XposedHelpers.setObjectField;
 public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
 	public static final String SNAPCHAT_PACKAGE_NAME = "com.snapchat.android";
+    public static final String LOG_TAG = "KeepChat";
     private Context context;
     private String versionName;
 
@@ -128,33 +128,33 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                                     prevFileName = filename;
 
                                     refreshPreferences();
-                                    logging("\n----------------------- KEEPCHAT ------------------------");
-                                    logging("Image Snap opened");
+                                    Utils.log("\n----------------------- KEEPCHAT ------------------------");
+                                    Utils.log("Image Snap opened");
                                     isSnap = true;
                                     isStory = false;
 
                                     if (MODE_SNAP_IMAGE == DO_NOT_SAVE) {
-                                        logging("Not Saving Image");
-                                        logging("---------------------------------------------------------");
+                                        Utils.log("Not Saving Image");
+                                        Utils.log("---------------------------------------------------------");
                                         return;
                                     }
 
                                     File file = createFile(filename + ".jpg", "/ReceivedSnaps", sender);
 
-                                    logging(mediaPath);
+                                    Utils.log(mediaPath);
 
                                     if (file.exists()) {
-                                        logging("Image Snap already Exists");
+                                        Utils.log("Image Snap already Exists");
                                         toastMessage = mResources.getString(R.string.image_exists);
                                         isSaved = true;
                                     } else {
                                         isSaved = false;
                                         Bitmap image = (Bitmap) param.getResult();
                                         if (saveImage(image, file)) {
-                                            logging("Image Snap has been Saved");
+                                            Utils.log("Image Snap has been Saved");
                                             toastMessage = mResources.getString(R.string.image_saved);
                                         } else {
-                                            logging("Error Saving Image Snap. Error 1.");
+                                            Utils.log("Error Saving Image Snap. Error 1.");
                                             toastMessage = mResources.getString(R.string.image_not_saved)
                                                     + " " + mResources .getString(R.string.error_1);
                                         }
@@ -194,33 +194,33 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
 									refreshPreferences();
 
-									logging("\n----------------------- KEEPCHAT ------------------------");
-									logging("Image Story opened");
+									Utils.log("\n----------------------- KEEPCHAT ------------------------");
+									Utils.log("Image Story opened");
 									isSnap = false;
 									isStory = true;
 
 									if (MODE_STORY_IMAGE == DO_NOT_SAVE) {
-										logging("Not Saving Image");
-										logging("---------------------------------------------------------");
+										Utils.log("Not Saving Image");
+										Utils.log("---------------------------------------------------------");
 										return;
 									}
 
 									File file = createFile(filename + ".jpg", "/Stories", sender);
 
-									logging(mediaPath);
+									Utils.log(mediaPath);
 
 									if (file.exists()) {
-										logging("Image Story already Exists");
+										Utils.log("Image Story already Exists");
 										isSaved = true;
 										toastMessage = mResources.getString(R.string.image_exists);
 									} else {
 										isSaved = false;
 										Bitmap image = (Bitmap) param.getResult();
 										if (saveImage(image, file)) {
-											logging("Image Story has been Saved");
+											Utils.log("Image Story has been Saved");
 											toastMessage = mResources.getString(R.string.image_saved);
 										} else {
-											logging("Error Saving Image Snap. Error 1.");
+											Utils.log("Error Saving Image Snap. Error 1.");
 											toastMessage = mResources .getString(R.string.image_not_saved)
 													+ " " + mResources.getString(R.string.error_1);
 										}
@@ -254,13 +254,13 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
 									refreshPreferences();
 									if (param.thisObject.toString().contains("StorySnap")) {
-										logging("\n----------------------- KEEPCHAT ------------------------");
-										logging("Video Story opened");
+										Utils.log("\n----------------------- KEEPCHAT ------------------------");
+										Utils.log("Video Story opened");
 										isSnap = false;
 										isStory = true;
 										if (MODE_STORY_VIDEO == DO_NOT_SAVE) {
-											logging("Not Saving Video");
-											logging("---------------------------------------------------------");
+											Utils.log("Not Saving Video");
+											Utils.log("---------------------------------------------------------");
 											return;
 										}
 
@@ -274,33 +274,33 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
 										File file = createFile(filename + ".mp4", "/Stories", sender);
 
-										logging(mediaPath);
+										Utils.log(mediaPath);
 										if (file.exists()) {
-											logging("Video Story already Exists");
+											Utils.log("Video Story already Exists");
 											toastMessage = mResources.getString(R.string.video_exists);
 											isSaved = true;
 										} else {
 											isSaved = false;
 											String videoUri = (String) param.getResult();
 											if (saveVideo(videoUri, file)) {
-												logging("Video Story has been Saved");
+												Utils.log("Video Story has been Saved");
 												toastMessage = mResources.getString(R.string.video_saved);
 											} else {
-												logging("Error Saving Video Story. Error 2.");
+												Utils.log("Error Saving Video Story. Error 2.");
 												toastMessage = mResources.getString(R.string.video_not_saved)
                                                         + " " + mResources .getString(R.string.error_2);
 											}
 										}
 									} else {
 
-										logging("\n----------------------- KEEPCHAT ------------------------");
-										logging("Video Snap opened");
+										Utils.log("\n----------------------- KEEPCHAT ------------------------");
+										Utils.log("Video Snap opened");
 										isSnap = true;
 										isStory = false;
 
 										if (MODE_SNAP_VIDEO == DO_NOT_SAVE) {
-											logging("Not Saving Video");
-											logging("---------------------------------------------------------");
+											Utils.log("Not Saving Video");
+											Utils.log("---------------------------------------------------------");
 											return;
 										}
 
@@ -312,19 +312,19 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 										String filename = sender + "_" + dateFormat.format(timestamp);
 
 										File file = createFile(filename + ".mp4", "/ReceivedSnaps", sender);
-										logging(mediaPath);
+										Utils.log(mediaPath);
 										if (file.exists()) {
 											isSaved = true;
-											logging("Video Snap already Exists");
+											Utils.log("Video Snap already Exists");
 											toastMessage = mResources.getString(R.string.video_exists);
 										} else {
 											isSaved = false;
 											String videoUri = (String) param.getResult();
 											if (saveVideo(videoUri, file)) {
-												logging("Video Snap has been Saved");
+												Utils.log("Video Snap has been Saved");
 												toastMessage = mResources.getString(R.string.video_saved);
 											} else {
-												logging("Error Saving Video Snap. Error 2.");
+												Utils.log("Error Saving Video Snap. Error 2.");
 												toastMessage = mResources.getString(R.string.video_not_saved)
 														+ " " + mResources.getString(R.string.error_2);
 											}
@@ -343,7 +343,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 									refreshPreferences();
 
 									if (SAVE_SENT_SNAPS) {
-										logging("\n----------------------- KEEPCHAT ------------------------");
+										Utils.log("\n----------------------- KEEPCHAT ------------------------");
 										Date cDate = new Date();
 										String filename = dateFormat.format(cDate);
 										Object obj = getObjectField(param.thisObject,
@@ -363,43 +363,43 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 										int type = (Integer) getType.invoke(obj, (Object[]) null);
 
 										if (type == 0) {
-											logging("Image Sent Snap");
+											Utils.log("Image Sent Snap");
 											File file = createFile(filename + ".jpg", "/SentSnaps", "");
-											logging(mediaPath);
+											Utils.log(mediaPath);
 											if (file.exists()) {
-												logging("Image Sent Snap already exists");
+												Utils.log("Image Sent Snap already exists");
 												toastMessage = mResources.getString(R.string.image_exists);
 											} else {
 												Bitmap image = (Bitmap) getImage.invoke(obj, (Object[]) null);
 
 												if (image == null) {
-													logging("IMAGE IS NULL");
+													Utils.log("IMAGE IS NULL");
 												}
 												if (saveImage(image, file)) {
-													logging("Image Sent Snap has been Saved");
+													Utils.log("Image Sent Snap has been Saved");
 													toastMessage = mResources.getString(R.string.image_saved);
 												} else {
-													logging("Error Saving Image Sent Snap. Error 3.");
+													Utils.log("Error Saving Image Sent Snap. Error 3.");
 													toastMessage = mResources.getString(R.string.image_not_saved)
 															+ " " + mResources.getString(R.string.error_3);
 												}
 											}
 										} else {
-											logging("Video Sent Snap");
+											Utils.log("Video Sent Snap");
 											File file = createFile(filename + ".mp4", "/SentSnaps", "");
-											logging(mediaPath);
+											Utils.log(mediaPath);
 
 											if (file.exists()) {
-												logging("Video Sent Snap already Exists");
+												Utils.log("Video Sent Snap already Exists");
 												toastMessage = mResources.getString(R.string.video_exists);
 											} else {
 												Uri uri = (Uri) getVideoUri.invoke(obj, (Object[]) null);
 
 												if (saveVideo(uri.getPath(), file)) {
-													logging("Video Sent Snap has been Saved");
+													Utils.log("Video Sent Snap has been Saved");
 													toastMessage = mResources.getString(R.string.video_saved);
 												} else {
-													logging("Error Saving Video Sent Snap. Error 3.");
+													Utils.log("Error Saving Video Sent Snap. Error 3.");
 													toastMessage = mResources.getString(R.string.video_not_saved)
 															+ " " + mResources.getString(R.string.error_3);
 												}
@@ -546,31 +546,19 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 					appendValue(params.get(VersionResolution.FUNCTION_DECTECTIONSESSION),
 							XC_MethodReplacement.returnConstant(null)));
 
-			XposedBridge.log("---------------------------------------------------------");
-
 		} catch (Exception e) {
-			XposedBridge.log(Log.getStackTraceString(e));
-			Log.v(BuildConfig.APPLICATION_ID, Log.getStackTraceString(e));
-			Log.v(BuildConfig.APPLICATION_ID, "Exception");
-			XposedBridge.log("Keepchat doesn't currently support version '"
-					+ versionName + "', wait for an update");
-			XposedBridge.log("If you can, pull the apk off your device and submit it to the xda thread");
-			findAndHookMethod("com.snapchat.android.LandingPageActivity",
-					lpparam.classLoader, "onCreate", Bundle.class,
-					new XC_MethodHook() {
-						protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-							Toast.makeText((Context) callMethod(param.thisObject, "getApplicationContext"),
-									"This version of snapchat is currently not supported.", Toast.LENGTH_LONG).show();
-						}
-					});
-			XposedBridge.log("---------------------------------------------------------");
-		}
+            Utils.log("Error occured: Keepchat doesn't currently support version " + versionName + ", wait for an update", e);
 
+			findAndHookMethod("com.snapchat.android.LandingPageActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    Toast.makeText((Context) param.thisObject, "This version of snapchat is currently not supported by Keepchat.", Toast.LENGTH_LONG).show();
+                }
+            });
+		}
 	}
 
 	private String initialInfoLogAndGetVersion(LoadPackageParam lpparam) {
-		XposedBridge.log("\n------------------- KEEPCHAT STARTED --------------------");
-		XposedBridge.log("Snapchat Loaded");
+		Utils.log("\n------------------- KEEPCHAT STARTED --------------------", false, true);
 
 		try {
 			Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
@@ -578,20 +566,17 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 			PackageInfo piSnapChat = context.getPackageManager().getPackageInfo(lpparam.packageName, 0);
 			versionName = piSnapChat.versionName;
 
-			XposedBridge.log("SnapChat Version Name: " + piSnapChat.versionName);
-			XposedBridge.log("SnapChat Version Code: " + piSnapChat.versionCode);
+			Utils.log("SnapChat Version Name: " + piSnapChat.versionName, false, true);
+            Utils.log("SnapChat Version Code: " + piSnapChat.versionCode, false, true);
 
-
-			XposedBridge.log("KeepChat Version Name: " + BuildConfig.VERSION_NAME);
-			XposedBridge.log("KeepChat Version Code: " + BuildConfig.VERSION_CODE);
-			XposedBridge.log("Android Release: " + Build.VERSION.RELEASE);
-
+            Utils.log("KeepChat Version Name: " + BuildConfig.VERSION_NAME, false, true);
+            Utils.log("KeepChat Version Code: " + BuildConfig.VERSION_CODE, false, true);
+            Utils.log("Android Release: " + Build.VERSION.RELEASE, false, true);
+            return versionName;
 		} catch (Exception e) {
-			XposedBridge.log("Exception while trying to get version info. (" + e.getMessage() + ")");
+            Utils.log("Exception while trying to get version info", e);
 			return null;
 		}
-
-		return versionName;
 	}
 
 	private void refreshPreferences() {
@@ -610,35 +595,24 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
         SORT_BY_USERNAME = prefs.getBoolean("pref_key_sort_files_username", SORT_BY_USERNAME);
 		DEBUGGING = prefs.getBoolean("pref_key_debug_mode", DEBUGGING);
 
-        printSettings();
+        if (DEBUGGING) {
+            Utils.log("\n------------------- KEEPCHAT SETTINGS -------------------");
+            String[] saveModes = {"SAVE_AUTO", "SAVE_ASK", "DO_NOT_SAVE"};
+            Utils.log("MODE_SNAP_IMAGE: " + saveModes[MODE_SNAP_IMAGE]);
+            Utils.log("MODE_SNAP_VIDEO: " + saveModes[MODE_SNAP_VIDEO]);
+            Utils.log("MODE_STORY_IMAGE: " + saveModes[MODE_STORY_IMAGE]);
+            Utils.log("MODE_STORY_VIDEO: " + saveModes[MODE_STORY_VIDEO]);
+            Utils.log("TOAST_ENABLED: " + TOAST_ENABLED);
+            Utils.log("TOAST_LENGTH: " + TOAST_LENGTH);
+            Utils.log("SAVE_PATH: " + SAVE_PATH);
+            Utils.log("SAVE_SENT_SNAPS: " + SAVE_SENT_SNAPS);
+            Utils.log("SORT_BY_CATEGORY: " + SORT_BY_CATEGORY);
+            Utils.log("SORT_BY_USERNAME: " + SORT_BY_USERNAME);
+            Utils.log("---------------------------------------------------------");
+        }
 	}
 
-	private void printSettings() {
-		logging("\n------------------- KEEPCHAT SETTINGS -------------------");
-		String[] saveModes = {"SAVE_AUTO", "SAVE_ASK", "DO_NOT_SAVE"};
-		logging("MODE_SNAP_IMAGE: " + saveModes[MODE_SNAP_IMAGE]);
-		logging("MODE_SNAP_VIDEO: " + saveModes[MODE_SNAP_VIDEO]);
-        logging("MODE_STORY_IMAGE: " + saveModes[MODE_STORY_IMAGE]);
-		logging("MODE_STORY_VIDEO: " + saveModes[MODE_STORY_VIDEO]);
-		logging("TOAST_ENABLED: " + TOAST_ENABLED);
-        logging("TOAST_LENGTH: " + TOAST_LENGTH);
-        logging("SAVE_PATH: " + SAVE_PATH);
-		logging("SAVE_SENT_SNAPS: " + SAVE_SENT_SNAPS);
-		logging("SORT_BY_CATEGORY: " + SORT_BY_CATEGORY);
-		logging("SORT_BY_USERNAME: " + SORT_BY_USERNAME);
-		logging("---------------------------------------------------------");
-	}
-
-	private void logging(String message) {
-		// Log.v(PACKAGE_NAME, message);
-		if (DEBUGGING) {
-			XposedBridge.log(message);
-		}
-	}
-
-	private File createFile(String fileName, String savePathSuffix,
-			String sender) {
-
+	private File createFile(String fileName, String savePathSuffix, String sender) {
 		File myDir;
 		if (SORT_BY_CATEGORY) {
 			if (SORT_BY_USERNAME) {
@@ -646,7 +620,6 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 			} else {
 				myDir = new File(SAVE_PATH + savePathSuffix);
 			}
-
 		} else {
 			myDir = new File(SAVE_PATH);
 		}
@@ -658,7 +631,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 		try {
 			mediaPath = toReturn.getCanonicalPath();
 		} catch (IOException e) {
-			XposedBridge.log(Log.getStackTraceString(e));
+            Utils.log(e);
 		}
 
 		return toReturn;
@@ -666,14 +639,13 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
 	// function to saveimage
 	private boolean saveImage(Bitmap myImage, File fileToSave) {
-
 		try {
 			FileOutputStream out = new FileOutputStream(fileToSave);
 			myImage.compress(Bitmap.CompressFormat.JPEG, 90, out);
 			out.flush();
 			out.close();
 		} catch (Exception e) {
-			XposedBridge.log(Log.getStackTraceString(e));
+            Utils.log(e);
 			return false;
 		}
 		return true;
@@ -681,7 +653,6 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
 	// function to save video
 	private boolean saveVideo(String videoUri, File fileToSave) {
-
 		try {
 			FileInputStream in = new FileInputStream(new File(videoUri));
 			FileOutputStream out = new FileOutputStream(fileToSave);
@@ -697,7 +668,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 			out.flush();
 			out.close();
 		} catch (Exception e) {
-			XposedBridge.log(Log.getStackTraceString(e));
+            Utils.log(e);
 			return false;
 		}
 		return true;
@@ -713,29 +684,26 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 	 * @param filePath File to be scanned by the media scanner
 	 */
 	private void runMediaScanAndToast(Context context) {
-
 		try {
-			logging("MediaScanner running ");
+			Utils.log("MediaScanner running ");
 			// Run MediaScanner on file, so it shows up in Gallery instantly
 			MediaScannerConnection.scanFile(context, new String[] { mediaPath }, null,
 					new MediaScannerConnection.OnScanCompletedListener() {
 						public void onScanCompleted(String path, Uri uri) {
 							if (uri != null) {
-								logging("MediaScanner ran successfully: " + uri.toString());
+								Utils.log("MediaScanner ran successfully: " + uri.toString());
 							} else {
-								logging("Unknown error occurred while trying to run MediaScanner");
+								Utils.log("Unknown error occurred while trying to run MediaScanner");
 							}
-							logging("---------------------------------------------------------");
+							Utils.log("---------------------------------------------------------");
 						}
 					});
 		} catch (Exception e) {
-			logging("Error occurred while trying to run MediaScanner");
-			e.printStackTrace();
-			logging("---------------------------------------------------------");
+            Utils.log("Error occurred while trying to run MediaScanner", e);
 		}
 		// construct the toast notification
 		if (TOAST_ENABLED) {
-			logging("Toast Displayed");
+			Utils.log("Toast Displayed");
 			if (TOAST_LENGTH == 0) {
 				Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
 			} else {
@@ -783,16 +751,16 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 			@Override
 			public void onCancel(DialogInterface dialog) {
 				if ((new File(mediaPath)).delete())
-					logging("File deleted successfully");
+					Utils.log("File deleted successfully");
 				else
-					logging("Could not delete file.");
+					Utils.log("Could not delete file.");
 
-				logging("---------------------------------------------------------");
+				Utils.log("---------------------------------------------------------");
 			}
 		});
 		// 3. Get the AlertDialog from create()
 		AlertDialog dialog = builder.create();
-		logging("dialog show");
+		Utils.log("dialog show");
 		dialog.show();
 	}
 
@@ -806,5 +774,4 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 	public void initZygote(StartupParam startupParam) throws Throwable {
 		mResources = XModuleResources.createInstance(startupParam.modulePath, null);
 	}
-
 }
