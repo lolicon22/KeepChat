@@ -75,10 +75,6 @@
     <string name="image_saved">The image has been saved.</string>
     <string name="video_saved">The video has been saved.</string>
     
-    <string name="image_not_saved">The image could not be saved.</string>
-    <string name="video_not_saved">The video could not be saved.</string>
-    
-    <string name="error_1">Error 1.</string>
-    <string name="error_2">Error 2.</string>
-    <string name="error_3">Error 3.</string>
+    <string name="image_not_saved">An error occurred while saving the image.</string>
+    <string name="video_not_saved">An error occurred while saving the video.</string>
 </resources>
