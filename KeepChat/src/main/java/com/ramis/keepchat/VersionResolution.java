@@ -221,21 +221,16 @@ public class VersionResolution {
 
 	/**
 	 * Used to compare if a version is older or not by using the version name
-	 * 
-	 * @param str1
-	 *            - version name 1
-	 * @param str2
-	 *            - version name 2
+	 * @param str1 version name 1
+	 * @param str2 version name 2
 	 * @return Returns 1 if version1 > version2 <br>
 	 *         Returns -1 if version1 < version2 <br>
 	 *         Returns 0 if version1 = version2
 	 */
 	private Integer versionCompare(String str1, String str2) {
 
-		int version1 = Integer.parseInt(str1.replaceAll("\\.", "").replaceAll(
-				"[^0-9.]", ""));
-		int version2 = Integer.parseInt(str2.replaceAll("\\.", "").replaceAll(
-				"[^0-9.]", ""));
+		int version1 = Integer.parseInt(str1.replaceAll("\\.", "").replaceAll("[^0-9.]", ""));
+		int version2 = Integer.parseInt(str2.replaceAll("\\.", "").replaceAll("[^0-9.]", ""));
 
 		if (version1 > version2) {
 			return 1;
