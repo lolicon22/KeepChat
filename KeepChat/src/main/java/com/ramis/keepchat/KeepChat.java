@@ -401,14 +401,12 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                     isSnapVideo = false;
                     isSnapImage = true;
 
-                    if ((isSnap && (mModeSnapImage != DO_NOT_SAVE))
-                            || (isStory && (mModeStoryImage != DO_NOT_SAVE))) {
+                    if ((isSnap && (mModeSnapImage != DO_NOT_SAVE)) || (isStory && (mModeStoryImage != DO_NOT_SAVE))) {
                         // At this point the context is put in the private member so
                         // that the dialog can be initiated from the markViewed() hook
                         context = (Context) callMethod(param.thisObject, "getContext");
 
-                        if ((isSnap && (mModeSnapImage == SAVE_AUTO))
-                                || (isStory && (mModeStoryImage == SAVE_AUTO))) {
+                        if ((isSnap && (mModeSnapImage == SAVE_AUTO)) || (isStory && (mModeStoryImage == SAVE_AUTO))) {
                             runMediaScanAndToast(context);
                         } else {
                             displayDialog = true;
@@ -424,17 +422,12 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                     isSnapVideo = true;
                     isSnapImage = false;
                     refreshPreferences();
-                    if ((isSnap && (mModeSnapVideo != DO_NOT_SAVE))
-                            || (isStory && (mModeStoryVideo != DO_NOT_SAVE))) {
-                        // At this point the context is put in
-                        // the
-                        // private member so that the dialog can
-                        // be
-                        // initiated from the markViewed() hook
+                    if ((isSnap && (mModeSnapVideo != DO_NOT_SAVE)) || (isStory && (mModeStoryVideo != DO_NOT_SAVE))) {
+                        // At this point the context is put in the private member so
+                        // that the dialog can be initiated from the markViewed() hook
                         context = (Context) callMethod(param.thisObject, "getContext");
 
-                        if ((isSnap && (mModeSnapVideo == SAVE_AUTO))
-                                || (isStory && (mModeStoryVideo == SAVE_AUTO))) {
+                        if ((isSnap && (mModeSnapVideo == SAVE_AUTO)) || (isStory && (mModeStoryVideo == SAVE_AUTO))) {
                             runMediaScanAndToast(context);
                         } else {
                             displayDialog = true;
@@ -447,11 +440,9 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     refreshPreferences();
-                    // check if its save ask AND that it doesn't
-                    // exist
+                    // check if its save ask AND that it doesn't exist
                     if (displayDialog) {
-                        if ((isSnapImage && !isSaved && (mModeSnapImage == SAVE_ASK))
-                                || (isSnapVideo && !isSaved && (mModeSnapVideo == SAVE_ASK))) {
+                        if ((isSnapImage && !isSaved && (mModeSnapImage == SAVE_ASK)) || (isSnapVideo && !isSaved && (mModeSnapVideo == SAVE_ASK))) {
                             showDialog(context);
                             displayDialog = false;
                         }
@@ -460,7 +451,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             });
 
             Class<?> receivedSnapClass = findClass(Obfuscator.RECEIVEDSNAP_CLASS, lpparam.classLoader);
-			Constructor<?> constructor = findConstructorBestMatch(findClass(Obfuscator.SNAPUPDATE_CLASS, lpparam.classLoader), receivedSnapClass);
+            Constructor<?> constructor = findConstructorBestMatch(findClass(Obfuscator.SNAPUPDATE_CLASS, lpparam.classLoader), receivedSnapClass);
 
             XposedBridge.hookMethod(constructor, new XC_MethodHook() {
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -468,14 +459,14 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                 }
             });
 
-			Constructor<?> constructor2 = findConstructorBestMatch(findClass(Obfuscator.STORYVIEWRECORD_CLASS, lpparam.classLoader),
+            Constructor<?> constructor2 = findConstructorBestMatch(findClass(Obfuscator.STORYVIEWRECORD_CLASS, lpparam.classLoader),
                     String.class, Long.class, Integer.class);
 
-			XposedBridge.hookMethod(constructor2, new XC_MethodHook() {
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					param.args[2] = 0;
-				}
-			});
+            XposedBridge.hookMethod(constructor2, new XC_MethodHook() {
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    param.args[2] = 0;
+                }
+            });
 
             findAndHookMethod(Obfuscator.SNAPSTATEMESSAGE_BUILDER_CLASS, lpparam.classLoader, Obfuscator.SETSCREENSHOTCOUNT, long.class, new XC_MethodHook() {
                 @Override
@@ -593,9 +584,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 	 * Tells the media scanner to scan the newly added image or video so that it
 	 * shows up in the gallery without a reboot. And shows a Toast message where
 	 * the media was saved.
-	 * 
 	 * @param context Current context
-	 * 
 	 * @param filePath File to be scanned by the media scanner
 	 */
 	private void runMediaScanAndToast(Context context) {
@@ -625,14 +614,12 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 				Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
 			}
 		}
-
 	}
 
 	private void showDialog(final Context dContext) {
 		// 1. Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(dContext);
-		// 2. Chain together various setter methods to set the dialog
-		// characteristics
+		// 2. Chain together various setter methods to set the dialog characteristics
 		// final String mediaTypeStr = isSnapImage ? "image" : "video";
 
 		String message, title, pButton, nButton;
@@ -665,11 +652,11 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 		builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
 			@Override
 			public void onCancel(DialogInterface dialog) {
-				if ((new File(mediaPath)).delete())
-					Utils.log("File deleted successfully");
-				else
-					Utils.log("Could not delete file.");
-
+                if ((new File(mediaPath)).delete()) {
+                    Utils.log("File deleted successfully");
+                } else {
+                    Utils.log("Could not delete file.");
+                }
 				Utils.log("---------------------------------------------------------");
 			}
 		});
