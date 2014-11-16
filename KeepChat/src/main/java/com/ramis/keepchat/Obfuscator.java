@@ -1,6 +1,18 @@
 package com.ramis.keepchat;
 
 public class Obfuscator {
+    /**
+     * Check if Keepchat is compatible with this Snapchat version.
+     * @param versionCode The version code of the current Snapchat version
+     * @return Whether it's supported
+     */
+    public static boolean isSupported(int versionCode) {
+        return versionCode >= SUPPORTED_VERSION_CODE;
+    }
+
+    // Keepchat supports v5.0.38.1 and up
+    private static int SUPPORTED_VERSION_CODE = 427;
+
     // ReceivedSnap class
     public static final String RECEIVEDSNAP_CLASS = "com.snapchat.android.model.ReceivedSnap";
     // ReceivedSnap.getImageBitmap()

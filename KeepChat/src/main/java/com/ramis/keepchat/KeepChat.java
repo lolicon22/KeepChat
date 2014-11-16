@@ -93,11 +93,26 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 		if (!lpparam.packageName.equals(SNAPCHAT_PACKAGE_NAME))
 			return;
 
-		versionName = initialInfoLogAndGetVersion(lpparam);
+        Utils.log("\n------------------- KEEPCHAT STARTED --------------------", false);
+        refreshPreferences();
+
+        try {
+            Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
+            Context context = (Context) callMethod(activityThread, "getSystemContext");
+
+            PackageInfo piSnapChat = context.getPackageManager().getPackageInfo(lpparam.packageName, 0);
+            Utils.log("SnapChat Version: " + piSnapChat.versionName + " (" + piSnapChat.versionCode + ")", false);
+            Utils.log("Keepchat Version: " + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")", false);
+
+            if (!Obfuscator.isSupported(piSnapChat.versionCode)) {
+                Utils.log("This snapchat version is unsupported, now quiting", true, true);
+            }
+        } catch (Exception e) {
+            Utils.log("Exception while trying to get version info", e);
+            return;
+        }
 
 		try {
-			refreshPreferences();
-
 			/*
 			 * getImageBitmap() hook The ReceivedSnap class has a method to load
 			 * a Bitmap in preparation for viewing. This method returns said
@@ -485,28 +500,6 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 		}
 	}
 
-	private String initialInfoLogAndGetVersion(LoadPackageParam lpparam) {
-		Utils.log("\n------------------- KEEPCHAT STARTED --------------------", false, true);
-
-		try {
-			Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
-			Context context = (Context) callMethod(activityThread, "getSystemContext");
-			PackageInfo piSnapChat = context.getPackageManager().getPackageInfo(lpparam.packageName, 0);
-
-			Utils.log("SnapChat Version Name: " + piSnapChat.versionName, false, true);
-            Utils.log("SnapChat Version Code: " + piSnapChat.versionCode, false, true);
-
-            Utils.log("KeepChat Version Name: " + BuildConfig.VERSION_NAME, false, true);
-            Utils.log("KeepChat Version Code: " + BuildConfig.VERSION_CODE, false, true);
-            Utils.log("Android Release: " + Build.VERSION.RELEASE, false, true);
-
-            return versionName;
-		} catch (Exception e) {
-            Utils.log("Exception while trying to get version info", e);
-			return null;
-		}
-	}
-
 	private void refreshPreferences() {
         XSharedPreferences prefs = new XSharedPreferences(BuildConfig.APPLICATION_ID);
         prefs.reload();
@@ -524,7 +517,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 		DEBUGGING = prefs.getBoolean("pref_key_debug_mode", DEBUGGING);
 
         if (DEBUGGING) {
-            Utils.log("\n------------------- KEEPCHAT SETTINGS -------------------");
+            Utils.log("------------------- KEEPCHAT SETTINGS -------------------", false);
             String[] saveModes = {"SAVE_AUTO", "SAVE_ASK", "DO_NOT_SAVE"};
             Utils.log("MODE_SNAP_IMAGE: " + saveModes[MODE_SNAP_IMAGE]);
             Utils.log("MODE_SNAP_VIDEO: " + saveModes[MODE_SNAP_VIDEO]);
@@ -536,7 +529,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             Utils.log("SAVE_SENT_SNAPS: " + SAVE_SENT_SNAPS);
             Utils.log("SORT_BY_CATEGORY: " + SORT_BY_CATEGORY);
             Utils.log("SORT_BY_USERNAME: " + SORT_BY_USERNAME);
-            Utils.log("---------------------------------------------------------");
+            Utils.log("---------------------------------------------------------", false);
         }
 	}
 
