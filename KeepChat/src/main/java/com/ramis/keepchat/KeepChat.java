@@ -635,10 +635,10 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 		String message, title, pButton, nButton;
 
 		if (isSnapImage) {
-			message = mResources.getString(R.string.save_message_image);
+			message = mResources.getString(R.string.save_dialog_message_image);
 			title = mResources.getString(R.string.save_dialog_title_image);
 		} else {
-			message = mResources.getString(R.string.save_message_video);
+			message = mResources.getString(R.string.save_dialog_message_video);
 			title = mResources.getString(R.string.save_dialog_title_video);
 		}
 

@@ -6,20 +6,13 @@
     <string name="keepchat_settings">Keepchat Settings</string>
     <string name="xposed_description">Save any snap and story, both images and videos, you either sent or receive via Snapchat.</string>
 
-    <string name="pref_snaps_title">Snaps</string>
-    <string name="pref_stories_title">Stories</string>
-    <string name="pref_toasts_title">Toasts</string>
-    <string name="pref_extra_settings_title">Extra Settings</string>
+    <!-- Snaps and stories -->
+    <string name="pref_category_snaps">Snaps</string>
+    <string name="pref_category_stories">Stories</string>
     <string name="pref_snaps_default_value">0</string>
+
     <string name="pref_images">Images</string>
-    <string name="pref_toasts_summary_off">Toasts Disabled</string>
-    <string name="pref_toasts_summary_on">Toasts Enabled</string>
-    <string name="pref_toasts_title_checkbox">Enable Toasts</string>
-    <string name="pref_toasts_duration_title">Toast Length</string>
-    <string name="pref_save_location_title">Choose Save Location</string>
-    <string name="pref_save_sent_snaps_summary_off">Sent snaps will not be saved</string>
-    <string name="pref_save_sent_snaps_summary_on">Sent snaps will be saved</string>
-    <string name="pref_save_sent_snaps_title_checkbox">Save Sent Snaps</string>
+    <string name="pref_videos">Videos</string>
 
     <string-array name="pref_snaps_entries">
         <item>Save Automatically</item>
@@ -32,8 +25,6 @@
         <item>2</item>
     </string-array>
 
-    <string name="pref_videos">Videos</string>
-
     <string-array name="pref_stories_entries">
         <item>Save Automatically</item>
         <item>Do Not Save</item>
@@ -42,6 +33,18 @@
         <item>0</item>
         <item>2</item>
     </string-array>
+
+    <!-- Toasts -->
+    <string name="pref_category_toasts">Toasts</string>
+
+    <string name="pref_toasts_title">Enable Toasts</string>
+    <string name="pref_toasts_summary_on">Toasts Enabled</string>
+    <string name="pref_toasts_summary_off">Toasts Disabled</string>
+
+
+    <string name="pref_toasts_duration_title">Toast Length</string>
+    <string name="pref_toasts_duration_default_value">1</string>
+
     <string-array name="pref_toasts_duration_entries">
         <item>Short</item>
         <item>Long</item>
@@ -51,27 +54,41 @@
         <item>1</item>
     </string-array>
 
-    <string name="pref_toasts_duration_default_value">1</string>
-    <string name="pref_debug_mode_summary_off">Debug Mode Off</string>
-    <string name="pref_debug_mode_summary_on">Debug Mode On</string>
-    <string name="pref_debug_mode_title_checkbox">Debug Mode</string>
-    <string name="pref_sort_files_mode_title_checkbox">Sort files by category</string>
+    <!-- Extra settings -->
+    <string name="pref_category_extra_settings">Extra Settings</string>
+
+    <string name="pref_save_location_title">Choose Save Location</string>
+
+    <string name="pref_save_sent_snaps_title">Save Sent Snaps</string>
+    <string name="pref_save_sent_snaps_summary_on">Sent snaps will be saved</string>
+    <string name="pref_save_sent_snaps_summary_off">Sent snaps will not be saved</string>
+
+    <string name="pref_sort_files_mode_title">Sort files by category</string>
     <string name="pref_sort_files_mode_summary_on">Snaps and stories will be saved into different folders</string>
     <string name="pref_sort_files_mode_summary_off">Snaps and stories will be sorted into the same folder</string>
-    <string name="pref_sort_files_username_title_checkbox">Sort files by username</string>
+
+    <string name="pref_sort_files_username_title">Sort files by username</string>
     <string name="pref_sort_files_username_summary_on">Files will be sorted into a subfolder foreach username</string>
     <string name="pref_sort_files_username_summary_off">Files will be sorted into the same folder foreach username</string>
-    <string name="pref_analytics_title_checkbox">Disable Google Analytics</string>
-    
-    <string name="save_message_image">Would you like to save the image?</string>
-    <string name="save_message_video">Would you like to save the video?</string>
+
+    <string name="pref_debug_mode_title">Debug Mode</string>
+    <string name="pref_debug_mode_summary_on">Debug Mode On</string>
+    <string name="pref_debug_mode_summary_off">Debug Mode Off</string>
+
+    <!-- Ask to Save dialog -->
     <string name="save_dialog_title_image">Save Image?</string>
     <string name="save_dialog_title_video">Save Video?</string>
+
+    <string name="save_dialog_message_image">Would you like to save the image?</string>
+    <string name="save_dialog_message_video">Would you like to save the video?</string>
+
     <string name="save_button">Save</string>
     <string name="discard_button">Discard</string>
-    
+
+    <!-- Toast messages -->
     <string name="image_exists">The image already exists.</string>
     <string name="video_exists">This video already exists.</string>
+
     <string name="image_saved">The image has been saved.</string>
     <string name="video_saved">The video has been saved.</string>
     
