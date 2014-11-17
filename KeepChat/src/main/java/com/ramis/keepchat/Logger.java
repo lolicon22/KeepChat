@@ -2,30 +2,41 @@ package com.ramis.keepchat;
 
 import de.robv.android.xposed.XposedBridge;
 
-public class Utils {
+public class Logger {
+
+    public static final String LOG_TAG = "KeepChat: ";
+    private static boolean debugging;
 
     /**
      * Restrict instantiation of this class, it only contains static methods.
      */
-    private Utils() { }
+    private Logger() { }
 
     /**
-     * Write debug information to the Xposed Log if enabled in the settings or forced by the parameter
+     * Enable or disable writing debug information to the Xposed Log.
+     * @param debug Whether to enable or disable it
+     */
+    public static void setDebuggingEnabled(boolean debug) {
+        debugging = debug;
+    }
+
+    /**
+     * Write debug information to the Xposed Log if enabled or forced by the parameter.
      * @param message The message you want to log
      * @param prefix Whether it should be prefixed by the log-tag
      * @param forced Whether to force log and thus overrides the debug setting
      */
     public static void log(String message, boolean prefix, boolean forced) {
-        if (KeepChat.DEBUGGING || forced) {
+        if (debugging || forced) {
             if (prefix) {
-                message = KeepChat.LOG_TAG + message;
+                message = LOG_TAG + message;
             }
             XposedBridge.log(message);
         }
     }
 
     /**
-     * Write debug information to the Xposed Log if enabled in the settings
+     * Write debug information to the Xposed Log if enabled.
      * @param message The message you want to log
      * @param prefix Whether it should be prefixed by the log-tag
      */
@@ -34,7 +45,7 @@ public class Utils {
     }
 
     /**
-     * Write debug information to the Xposed Log if enabled in the settings
+     * Write debug information to the Xposed Log if enabled.
      * This method always prefixes the message by the log-tag
      * @param message The message you want to log
      */
