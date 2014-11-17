@@ -28,23 +28,22 @@ public class SettingsFragment extends PreferenceFragment {
 		// Load the preferences from an XML resource
 		addPreferencesFromResource(R.xml.preferences);
 
-		// check if preference exists in SharedPreferences
+		// If the Save Location doesn't exist in SharedPreferences add it
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		if (!sharedPreferences.contains(PREF_KEY_SAVE_LOCATION)) {
-			// set default value
-			String root = Environment.getExternalStorageDirectory().toString();
-			SharedPreferences.Editor editor = sharedPreferences.edit();
-			editor.putString(PREF_KEY_SAVE_LOCATION, root + "/keepchat");
+            String defaultLocation = Environment.getExternalStorageDirectory().toString() + "/keepchat";
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(PREF_KEY_SAVE_LOCATION, defaultLocation);
 			editor.apply();
 		}
 
-        // set on click listener
+        // Set onClickListener for choosing the Save Location
         Preference locationChooser = findPreference(PREF_KEY_SAVE_LOCATION);
         locationChooser.setSummary(sharedPreferences.getString(PREF_KEY_SAVE_LOCATION, ""));
         locationChooser.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                // opens new activity which asks the user to choose path
+                // Open a new activity asking the user to select a folder
                 final Intent chooserIntent = new Intent(getActivity(), DirectoryChooserActivity.class);
                 chooserIntent.putExtra(DirectoryChooserActivity.EXTRA_NEW_DIR_NAME, "Keepchat");
                 startActivityForResult(chooserIntent, REQUEST_CHOOSE_DIR);

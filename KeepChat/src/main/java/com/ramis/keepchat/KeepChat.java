@@ -336,7 +336,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
                         if (type == 0) {
                             Logger.log("Image Sent Snap");
-                            File file = createFile(filename + ".jpg", DIR_SENT, "");
+                            File file = createFile(filename + ".jpg", DIR_SENT, null);
                             Logger.log(mediaPath);
                             if (file.exists()) {
                                 Logger.log("Image Sent Snap already exists");
@@ -356,7 +356,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                             }
                         } else {
                             Logger.log("Video Sent Snap");
-                            File file = createFile(filename + ".mp4", DIR_SENT, "");
+                            File file = createFile(filename + ".mp4", DIR_SENT, null);
                             Logger.log(mediaPath);
 
                             if (file.exists()) {
@@ -533,23 +533,22 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
         }
 	}
 
-	private File createFile(String fileName, String savePathSuffix, String sender) {
-		File directory;
-		if (mSortByCategory) {
-			if (mSortByUsername) {
-				directory = new File(mSavePath + savePathSuffix + "/" + sender);
-			} else {
-				directory = new File(mSavePath + savePathSuffix);
-			}
-		} else {
-			directory = new File(mSavePath);
+	private File createFile(String filename, String category, String sender) {
+        File directory = new File(mSavePath);
+
+		if (mSortByCategory || (mSortByUsername && sender == null)) {
+            directory = new File(directory, category);
 		}
+
+        if (mSortByUsername && sender != null) {
+            directory = new File(directory, sender);
+        }
 
         if (!directory.exists()) {
             directory.mkdirs();
         }
 
-		File result = new File(directory, fileName);
+		File result = new File(directory, filename);
         mediaPath = result.getAbsolutePath();
 		return result;
 	}

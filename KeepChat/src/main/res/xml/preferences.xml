@@ -80,8 +80,7 @@
             android:key="pref_key_sort_files_username"
             android:summaryOff="@string/pref_sort_files_username_summary_off"
             android:summaryOn="@string/pref_sort_files_username_summary_on"
-            android:title="@string/pref_sort_files_username_title_checkbox" 
-            android:dependency="pref_key_sort_files_mode" />
+            android:title="@string/pref_sort_files_username_title_checkbox" />
         
         <CheckBoxPreference
             android:defaultValue="false"
