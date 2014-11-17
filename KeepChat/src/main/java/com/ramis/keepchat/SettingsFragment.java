@@ -15,13 +15,8 @@ import java.io.File;
 
 public class SettingsFragment extends PreferenceFragment {
 
-    private static final int REQUEST_CHOOSE_DIR = 1;
-	public static final String PREF_KEY_SNAP_IMAGES = "pref_key_snaps_images";
-	public static final String PREF_KEY_SNAP_VIDEOS = "pref_key_snaps_videos";
-	public static final String PREF_KEY_STORIES_IMAGES = "pref_key_stories_images";
-	public static final String PREF_KEY_STORIES_VIDEOS = "pref_key_stories_videos";
-	public static final String PREF_KEY_TOASTS_DURATION = "pref_key_toasts_duration";
-	public static final String PREF_KEY_SAVE_LOCATION = "pref_key_save_location";
+    private static final int REQUEST_CHOOSE_DIR = 0x0B00B135;
+    public static final String PREF_KEY_SAVE_LOCATION = "pref_key_save_location";
 
     private SharedPreferences sharedPreferences;
 

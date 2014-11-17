@@ -44,12 +44,13 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
 	public static final String SNAPCHAT_PACKAGE_NAME = "com.snapchat.android";
     public static final String LOG_TAG = "KeepChat: ";
+    XSharedPreferences sharedPreferences;
     private Context context;
 
     // Modes for saving Snapchats
-	final static int SAVE_AUTO = 0;
-	final static int SAVE_ASK = 1;
-	final static int DO_NOT_SAVE = 2;
+    public static final int SAVE_AUTO = 0;
+    public static final int SAVE_ASK = 1;
+    public static final int DO_NOT_SAVE = 2;
     // Directories for sorting by category
     public static final String DIR_SNAPS = "/ReceivedSnaps";
     public static final String DIR_STORIES = "/Stories";
@@ -59,16 +60,16 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
     public static final int TOAST_LENGTH_LONG = 1;
 
     // Preferences and their default values
-    public static int mModeSnapImage = SAVE_AUTO;
-    public static int mModeSnapVideo = SAVE_AUTO;
-    public static int mModeStoryImage = SAVE_AUTO;
-    public static int mModeStoryVideo = SAVE_AUTO;
-    public static boolean mToastEnabled = true;
-    public static int mToastLength = Toast.LENGTH_LONG;
-    public static String mSavePath = Environment.getExternalStorageDirectory().toString() + "/keepchat";
-    public static boolean mSaveSentSnaps = false;
-    public static boolean mSortByCategory = true;
-    public static boolean mSortByUsername = true;
+    public int mModeSnapImage = SAVE_AUTO;
+    public int mModeSnapVideo = SAVE_AUTO;
+    public int mModeStoryImage = SAVE_AUTO;
+    public int mModeStoryVideo = SAVE_AUTO;
+    public boolean mToastEnabled = true;
+    public int mToastLength = TOAST_LENGTH_LONG;
+    public String mSavePath = Environment.getExternalStorageDirectory().toString() + "/keepchat";
+    public boolean mSaveSentSnaps = false;
+    public boolean mSortByCategory = true;
+    public boolean mSortByUsername = true;
     public static boolean DEBUGGING = true;
 
 	private boolean isStory = false;
@@ -490,35 +491,45 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 	}
 
 	private void refreshPreferences() {
-        XSharedPreferences prefs = new XSharedPreferences(BuildConfig.APPLICATION_ID);
-        prefs.reload();
+        boolean prefsChanged = false;
+        if (sharedPreferences == null) {
+            sharedPreferences = new XSharedPreferences(BuildConfig.APPLICATION_ID);
+            prefsChanged = true;
+        } else if (sharedPreferences.hasFileChanged()) {
+            sharedPreferences.reload();
+            prefsChanged = true;
+        }
 
-		mModeSnapImage = prefs.getInt("pref_key_snaps_images", mModeSnapImage);
-		mModeSnapVideo = prefs.getInt("pref_key_snaps_videos", mModeSnapVideo);
-		mModeStoryImage = prefs.getInt("pref_key_stories_images", mModeStoryImage);
-		mModeStoryVideo = prefs.getInt("pref_key_stories_videos", mModeStoryVideo);
-		mToastEnabled = prefs.getBoolean("pref_key_toasts_checkbox", mToastEnabled);
-        mToastLength = prefs.getInt("pref_key_toasts_duration", mToastLength);
-        mSavePath = prefs.getString("pref_key_save_location", mSavePath);
-		mSaveSentSnaps = prefs.getBoolean("pref_key_save_sent_snaps", mSaveSentSnaps);
-        mSortByCategory = prefs.getBoolean("pref_key_sort_files_mode", mSortByCategory);
-        mSortByUsername = prefs.getBoolean("pref_key_sort_files_username", mSortByUsername);
-		DEBUGGING = prefs.getBoolean("pref_key_debug_mode", DEBUGGING);
+        if (prefsChanged) {
+            mModeSnapImage = sharedPreferences.getInt("pref_key_snaps_images", mModeSnapImage);
+            mModeSnapVideo = sharedPreferences.getInt("pref_key_snaps_videos", mModeSnapVideo);
+            mModeStoryImage = sharedPreferences.getInt("pref_key_stories_images", mModeStoryImage);
+            mModeStoryVideo = sharedPreferences.getInt("pref_key_stories_videos", mModeStoryVideo);
+            mToastEnabled = sharedPreferences.getBoolean("pref_key_toasts_checkbox", mToastEnabled);
+            mToastLength = sharedPreferences.getInt("pref_key_toasts_duration", mToastLength);
+            mSavePath = sharedPreferences.getString("pref_key_save_location", mSavePath);
+            mSaveSentSnaps = sharedPreferences.getBoolean("pref_key_save_sent_snaps", mSaveSentSnaps);
+            mSortByCategory = sharedPreferences.getBoolean("pref_key_sort_files_mode", mSortByCategory);
+            mSortByUsername = sharedPreferences.getBoolean("pref_key_sort_files_username", mSortByUsername);
+            DEBUGGING = sharedPreferences.getBoolean("pref_key_debug_mode", DEBUGGING);
 
-        if (DEBUGGING) {
-            Utils.log("------------------- KEEPCHAT SETTINGS -------------------", false);
-            String[] saveModes = {"SAVE_AUTO", "SAVE_ASK", "DO_NOT_SAVE"};
-            Utils.log("mModeSnapImage: " + saveModes[mModeSnapImage]);
-            Utils.log("mModeSnapVideo: " + saveModes[mModeSnapVideo]);
-            Utils.log("mModeStoryImage: " + saveModes[mModeStoryImage]);
-            Utils.log("mModeStoryVideo: " + saveModes[mModeStoryVideo]);
-            Utils.log("mToastEnabled: " + mToastEnabled);
-            Utils.log("mToastLength: " + mToastLength);
-            Utils.log("mSavePath: " + mSavePath);
-            Utils.log("mSaveSentSnaps: " + mSaveSentSnaps);
-            Utils.log("mSortByCategory: " + mSortByCategory);
-            Utils.log("mSortByUsername: " + mSortByUsername);
-            Utils.log("---------------------------------------------------------", false);
+            if (DEBUGGING) {
+                Utils.log("------------------- KEEPCHAT SETTINGS -------------------", false);
+                String[] saveModes = {"SAVE_AUTO", "SAVE_ASK", "DO_NOT_SAVE"};
+                Utils.log("mModeSnapImage: " + saveModes[mModeSnapImage]);
+                Utils.log("mModeSnapVideo: " + saveModes[mModeSnapVideo]);
+                Utils.log("mModeStoryImage: " + saveModes[mModeStoryImage]);
+                Utils.log("mModeStoryVideo: " + saveModes[mModeStoryVideo]);
+                Utils.log("mToastEnabled: " + mToastEnabled);
+                Utils.log("mToastLength: " + mToastLength);
+                Utils.log("mSavePath: " + mSavePath);
+                Utils.log("mSaveSentSnaps: " + mSaveSentSnaps);
+                Utils.log("mSortByCategory: " + mSortByCategory);
+                Utils.log("mSortByUsername: " + mSortByUsername);
+                Utils.log("---------------------------------------------------------", false);
+            }
+        } else {
+            Utils.log("Preferences haven't changed");
         }
 	}
 
@@ -591,17 +602,17 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 		try {
 			Utils.log("MediaScanner running ");
 			// Run MediaScanner on file, so it shows up in Gallery instantly
-			MediaScannerConnection.scanFile(context, new String[] { mediaPath }, null,
-					new MediaScannerConnection.OnScanCompletedListener() {
-						public void onScanCompleted(String path, Uri uri) {
-							if (uri != null) {
-								Utils.log("MediaScanner ran successfully: " + uri.toString());
-							} else {
-								Utils.log("Unknown error occurred while trying to run MediaScanner");
-							}
-							Utils.log("---------------------------------------------------------");
-						}
-					});
+            MediaScannerConnection.scanFile(context, new String[] { mediaPath }, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+                            if (uri != null) {
+                                Utils.log("MediaScanner ran successfully: " + uri.toString());
+                            } else {
+                                Utils.log("Unknown error occurred while trying to run MediaScanner");
+                            }
+                            Utils.log("---------------------------------------------------------");
+                        }
+                    });
 		} catch (Exception e) {
             Utils.log("Error occurred while trying to run MediaScanner", e);
 		}
