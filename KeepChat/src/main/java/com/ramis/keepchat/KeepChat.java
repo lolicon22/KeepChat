@@ -560,10 +560,10 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 	}
 
 	// function to saveimage
-	private boolean saveImage(Bitmap myImage, File fileToSave) {
+	private static boolean saveImage(Bitmap image, File fileToSave) {
 		try {
 			FileOutputStream out = new FileOutputStream(fileToSave);
-			myImage.compress(Bitmap.CompressFormat.JPEG, 90, out);
+			image.compress(Bitmap.CompressFormat.JPEG, 90, out);
 			out.flush();
 			out.close();
 		} catch (Exception e) {
@@ -574,7 +574,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 	}
 
 	// function to save video
-	private boolean saveVideo(String videoUri, File fileToSave) {
+	private static boolean saveVideo(String videoUri, File fileToSave) {
 		try {
 			FileInputStream in = new FileInputStream(new File(videoUri));
 			FileOutputStream out = new FileOutputStream(fileToSave);
@@ -633,33 +633,23 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 	}
 
 	private void showDialog(final Context dContext) {
-		// 1. Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(dContext);
-		// 2. Chain together various setter methods to set the dialog characteristics
-		// final String mediaTypeStr = isSnapImage ? "image" : "video";
-
-		String message, title, pButton, nButton;
 
 		if (isSnapImage) {
-			message = mResources.getString(R.string.save_dialog_message_image);
-			title = mResources.getString(R.string.save_dialog_title_image);
+            builder.setMessage(mResources.getString(R.string.save_dialog_message_image));
+            builder.setTitle(mResources.getString(R.string.save_dialog_title_image));
 		} else {
-			message = mResources.getString(R.string.save_dialog_message_video);
-			title = mResources.getString(R.string.save_dialog_title_video);
+            builder.setMessage(mResources.getString(R.string.save_dialog_message_video));
+            builder.setMessage(mResources.getString(R.string.save_dialog_title_video));
 		}
 
-		pButton = mResources.getString(R.string.save_button);
-		nButton = mResources.getString(R.string.discard_button);
-
-		builder.setMessage(message + "\n").setTitle(title);
-
-		builder.setPositiveButton(pButton, new DialogInterface.OnClickListener() {
+		builder.setPositiveButton(mResources.getString(R.string.save_button), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 runMediaScanAndToast(dContext);
             }
         });
 
-		builder.setNegativeButton(nButton, new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(mResources.getString(R.string.discard_button), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
             }
@@ -676,16 +666,9 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 				Logger.log("---------------------------------------------------------");
 			}
 		});
-		// 3. Get the AlertDialog from create()
-		AlertDialog dialog = builder.create();
-		Logger.log("dialog show");
-		dialog.show();
-	}
 
-	private Object[] appendValue(Object[] obj, Object newObj) {
-		ArrayList<Object> temp = new ArrayList<Object>(Arrays.asList(obj));
-		temp.add(newObj);
-		return temp.toArray();
+        builder.show();
+		Logger.log("Shown dialog");
 	}
 
 	@Override

@@ -96,8 +96,8 @@
     <string name="pref_support_summary">Navigate to the XDA-thread, please read the OP first if you\'re facing problems.</string>
 
     <!-- Ask to Save dialog -->
-    <string name="save_dialog_title_image">Save image?</string>
-    <string name="save_dialog_title_video">Save video?</string>
+    <string name="save_dialog_title_image">Save image</string>
+    <string name="save_dialog_title_video">Save video</string>
 
     <string name="save_dialog_message_image">Would you like to save this image?</string>
     <string name="save_dialog_message_video">Would you like to save this video?</string>
