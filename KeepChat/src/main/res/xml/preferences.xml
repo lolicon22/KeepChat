@@ -119,7 +119,7 @@
             android:summary="@string/pref_support_summary">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="forum.xda-developers.com/xposed/modules/mod-keepchat-save-snapchats-t2917209"/>
+                android:data="http://forum.xda-developers.com/xposed/modules/mod-keepchat-save-snapchats-t2917209"/>
         </Preference>
     </PreferenceCategory>
 
