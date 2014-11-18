@@ -15,7 +15,7 @@ public class Obfuscator {
 
     // ReceivedSnap class
     public static final String RECEIVEDSNAP_CLASS = "com.snapchat.android.model.ReceivedSnap";
-    // ReceivedSnap.getImageBitmap()
+    // ReceivedSnap.getImageBitmap(Context)
     public static final String RECEIVEDSNAP_GETIMAGEBITMAP = "b";
     // ReceivedSnap.getVideoUri()
     public static final String RECEIVEDSNAP_GETVIDEOURI = "N";
@@ -26,18 +26,19 @@ public class Obfuscator {
 
     // StorySnap class
     public static final String STORYSNAP_CLASS = "com.snapchat.android.model.StorySnap";
-    // StorySnap.getImageBitmap()
+    // StorySnap.getImageBitmap(Context)
     public static final String STORYSNAP_GETIMAGEBITMAP = "a";
     // StorySnap.getSender()
     public static final String STORYSNAP_GETSENDER = "aD";
 
     // SnapView class
     public static final String SNAPVIEW_CLASS = "com.snapchat.android.ui.SnapView";
-    // SnapView.showImage()
+    // SnapView.showImage(Boolean, Boolean, Boolean, Boolean)
     public static final String SNAPVIEW_SHOWIMAGE = "b";
-    // SnapView.showVideo()
+    // SnapView.showVideo(Boolean, Boolean, Boolean, Boolean)
     public static final String SNAPVIEW_SHOWVIDEO = "a";
 
+    // com.snapchat.model.Snap
     // Snap.getTimestamp()
     public static final String SNAP_GETTIMESTAMP = "ac";
 
@@ -45,14 +46,15 @@ public class Obfuscator {
     public static final String SNAPPREVIEWFRAGMENT_CLASS = "com.snapchat.android.SnapPreviewFragment";
     // SnapPreviewFragment.prepareSnapForSending()
     public static final String SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING = "E";
-    // SnapBryo instance variable name in SnapPreviewFragment
+    // Snapbryo instance variable name in SnapPreviewFragment
     public static final String SNAPPREVIEWFRAGMENT_VAR_SNAPBYRO = "s";
 
-    // SnapBryo.getImageBitmap()
+    // com.snapchat.android.model.Snapbryo
+    // Snapbryo.getImageBitmap()
     public static final String SNAPBRYO_GETSNAPBITMAP = "B";
-    // SnapBryo.getVideoUri()
+    // Snapbryo.getVideoUri()
     public static final String SNAPBRYO_VIDEOURI = "D";
-    // SnapBryo.isImage()
+    // Snapbryo.isImage()
     public static final String SNAPBRYO_ISIMAGE = "y";
 
     // SnapUpdate class
@@ -63,7 +65,7 @@ public class Obfuscator {
 
     // SnapStateMessage class
     public static final String SNAPSTATEMESSAGE_BUILDER_CLASS = "com.snapchat.android.model.server.chat.SnapStateMessage.Builder";
-    // SnapStateMessage.Builder.setScreenshotCount()
+    // SnapStateMessage.Builder.setScreenshotCount(Long)
     public static final String SETSCREENSHOTCOUNT = "setScreenshotCount";
 
     // ScreenshotDetector class
