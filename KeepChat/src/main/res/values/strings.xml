@@ -99,19 +99,19 @@
     <string name="save_dialog_title_image">Save image?</string>
     <string name="save_dialog_title_video">Save video?</string>
 
-    <string name="save_dialog_message_image">Would you like to save the image?</string>
-    <string name="save_dialog_message_video">Would you like to save the video?</string>
+    <string name="save_dialog_message_image">Would you like to save this image?</string>
+    <string name="save_dialog_message_video">Would you like to save this video?</string>
 
     <string name="save_button">Save</string>
     <string name="discard_button">Discard</string>
 
     <!-- Toast messages -->
-    <string name="image_exists">The image already exists.</string>
+    <string name="image_exists">This image already exists.</string>
     <string name="video_exists">This video already exists.</string>
 
-    <string name="image_saved">The image has been saved.</string>
-    <string name="video_saved">The video has been saved.</string>
+    <string name="image_saved">This image has been saved.</string>
+    <string name="video_saved">This video has been saved.</string>
     
-    <string name="image_not_saved">An error occurred while saving the image.</string>
-    <string name="video_not_saved">An error occurred while saving the video.</string>
+    <string name="image_not_saved">An error occurred while saving this image.</string>
+    <string name="video_not_saved">An error occurred while saving this video.</string>
 </resources>
