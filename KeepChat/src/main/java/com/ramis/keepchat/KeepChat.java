@@ -15,8 +15,6 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,14 +27,13 @@ import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
+import static de.robv.android.xposed.XposedHelpers.findAndHookConstructor;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
-import static de.robv.android.xposed.XposedHelpers.findConstructorBestMatch;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import static de.robv.android.xposed.XposedHelpers.setObjectField;
 
@@ -325,14 +322,10 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                         Logger.log("\n----------------------- KEEPCHAT ------------------------");
                         Date cDate = new Date();
                         String filename = dateFormat.format(cDate);
-                        Object obj = getObjectField(param.thisObject,Obfuscator.SNAPPREVIEWFRAGMENT_VAR_SNAPBYRO);
+                        Object snapbryo = getObjectField(param.thisObject, Obfuscator.SNAPPREVIEWFRAGMENT_VAR_SNAPBYRO);
 
-                        Class<?> snapbyro = obj.getClass();
-                        Method getType = snapbyro.getMethod(Obfuscator.SNAPBRYO_ISIMAGE);
-                        Method getImage = snapbyro.getMethod(Obfuscator.SNAPBRYO_GETSNAPBITMAP);
-                        Method getVideoUri = snapbyro.getMethod(Obfuscator.SNAPBRYO_VIDEOURI);
 
-                        int type = (Integer) getType.invoke(obj);
+                        int type = (Integer) callMethod(snapbryo, Obfuscator.SNAPBRYO_ISIMAGE);
 
                         if (type == 0) {
                             Logger.log("Image Sent Snap");
@@ -342,7 +335,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                                 Logger.log("Image Sent Snap already exists");
                                 toastMessage = mResources.getString(R.string.image_exists);
                             } else {
-                                Bitmap image = (Bitmap) getImage.invoke(obj);
+                                Bitmap image = (Bitmap) callMethod(snapbryo, Obfuscator.SNAPBRYO_GETSNAPBITMAP);
 
                                 if (image == null) {
                                     Logger.log("IMAGE IS NULL");
@@ -363,7 +356,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                                 Logger.log("Video Sent Snap already Exists");
                                 toastMessage = mResources.getString(R.string.video_exists);
                             } else {
-                                Uri uri = (Uri) getVideoUri.invoke(obj);
+                                Uri uri = (Uri) callMethod(snapbryo, Obfuscator.SNAPBRYO_VIDEOURI);
 
                                 if (saveVideo(uri.getPath(), file)) {
                                     Logger.log("Video Sent Snap has been Saved");
@@ -451,18 +444,13 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             });
 
             Class<?> receivedSnapClass = findClass(Obfuscator.RECEIVEDSNAP_CLASS, lpparam.classLoader);
-            Constructor<?> constructor = findConstructorBestMatch(findClass(Obfuscator.SNAPUPDATE_CLASS, lpparam.classLoader), receivedSnapClass);
-
-            XposedBridge.hookMethod(constructor, new XC_MethodHook() {
+            findAndHookConstructor(Obfuscator.SNAPUPDATE_CLASS, lpparam.classLoader, receivedSnapClass, new XC_MethodHook() {
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     setObjectField(param.thisObject, "c", 0);
                 }
             });
 
-            Constructor<?> constructor2 = findConstructorBestMatch(findClass(Obfuscator.STORYVIEWRECORD_CLASS, lpparam.classLoader),
-                    String.class, Long.class, Integer.class);
-
-            XposedBridge.hookMethod(constructor2, new XC_MethodHook() {
+            findAndHookConstructor(Obfuscator.STORYVIEWRECORD_CLASS, lpparam.classLoader, String.class, long.class, int.class, new XC_MethodHook() {
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     param.args[2] = 0;
                 }
