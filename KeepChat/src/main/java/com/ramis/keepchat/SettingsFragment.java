@@ -1,8 +1,11 @@
 package com.ramis.keepchat;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.Preference;
@@ -23,13 +26,20 @@ public class SettingsFragment extends PreferenceFragment {
 	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
-		// Load the preferences from an XML resource
 		addPreferencesFromResource(R.xml.preferences);
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        // Add listener to the Launcher preference
+        Preference launcherPref = findPreference("pref_launcher");
+        launcherPref.setOnPreferenceChangeListener(launcherChangeListener);
+
+        // Add version to the About preference
+        Preference aboutPreference = findPreference("pref_about");
+        aboutPreference.setTitle(getString(R.string.pref_about_title, BuildConfig.VERSION_NAME));
+
 		// If the Save Location doesn't exist in SharedPreferences add it
-		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		if (!sharedPreferences.contains(PREF_KEY_SAVE_LOCATION)) {
             String defaultLocation = Environment.getExternalStorageDirectory().toString() + "/keepchat";
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -82,4 +92,17 @@ public class SettingsFragment extends PreferenceFragment {
             sharedPrefsFile.setReadable(true, false);
         }
     }
+
+    private final Preference.OnPreferenceChangeListener launcherChangeListener = new Preference.OnPreferenceChangeListener() {
+
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            int state = ((Boolean) newValue ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED);
+
+            Activity activity = getActivity();
+            ComponentName alias = new ComponentName(activity, "com.ramis.keepchat.SettingsActivity-Alias");
+            PackageManager p = activity.getPackageManager();
+            p.setComponentEnabledSetting(alias, state, PackageManager.DONT_KILL_APP);
+            return true;
+        }
+    };
 }
