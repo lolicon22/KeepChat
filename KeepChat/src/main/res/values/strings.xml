@@ -2,7 +2,7 @@
     tools:locale="en"
     tools:ignore="MissingTranslation">
 
-    <string name="app_name">KeepChat</string>
+    <string name="app_name" translatable="false">Keepchat</string>
     <string name="keepchat_settings">Keepchat Settings</string>
     <string name="xposed_description">Save any snap and story, both images and videos, you either sent or receive via Snapchat.</string>
 
