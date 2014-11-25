@@ -34,11 +34,11 @@
   <string name="pref_sort_files_mode_title">Salva file per categoria</string>
   <string name="pref_sort_files_mode_summary_on">Gli snap e le storie saranno salvati in cartelle differenti</string>
   <string name="pref_sort_files_mode_summary_off">Gli snap e le storie saranno salvate nella stessa cartella</string>
-  <string name="pref_sort_files_username_title">Ordina i file per username</string>
-  <string name="pref_sort_files_username_summary_on">I file saranno salvati in una sottocartella per ogni username</string>
-  <string name="pref_sort_files_username_summary_off">I file saranno salvati tutti nella stessa cartella</string>
+  <string name="pref_sort_files_username_title">Salva i file per mittente</string>
+  <string name="pref_sort_files_username_summary_on">I file saranno salvati in una sottocartella per ogni mittente</string>
+  <string name="pref_sort_files_username_summary_off">I file saranno salvati nella stessa cartella per tutti i mittenti</string>
   <string name="pref_other">Altro</string>
-  <string name="pref_launcher_title">Mostra l\'icona di lancio</string>
+  <string name="pref_launcher_title">Mostra l\'app nel launcher</string>
   <string name="pref_launcher_on">Accedi alle impostazioni dal launcher di Keepchat</string>
   <string name="pref_launcher_off">Accedi alle impostazioni da Xposed</string>
   <string name="pref_debug_mode_title">Debugging</string>

@@ -34,11 +34,7 @@
   <string name="pref_sort_files_mode_title">Sortera filer efter kategori</string>
   <string name="pref_sort_files_mode_summary_on">Snaps och historier kommer sparas i olika mapp</string>
   <string name="pref_sort_files_mode_summary_off">Snaps och historier kommer sparas i samma mapp</string>
-  <string name="pref_sort_files_username_title">Sortera filer efter användarnamn</string>
-  <string name="pref_sort_files_username_summary_on">Filer kommer att sorteras i undermappar för varje användarnamn</string>
-  <string name="pref_sort_files_username_summary_off">Filer kommer att sorteras till samma mapp oavsett användarnamn</string>
   <string name="pref_other">Övrigt</string>
-  <string name="pref_launcher_title">Visa ikon på hemskärm</string>
   <string name="pref_launcher_on">Kom åt inställningar via hemskärmen</string>
   <string name="pref_launcher_off">Kom åt inställningar via Xposed Installer</string>
   <string name="pref_debug_mode_title">Felsökning</string>

@@ -34,11 +34,11 @@
   <string name="pref_sort_files_mode_title">Mostrar archivos por categoria</string>
   <string name="pref_sort_files_mode_summary_on">Snaps e historias serán guardadas en diferentes carpetas</string>
   <string name="pref_sort_files_mode_summary_off">Snaps e historias serán guardadas en la misma carpeta</string>
-  <string name="pref_sort_files_username_title">Ordenar archivos por nombre de usuario</string>
-  <string name="pref_sort_files_username_summary_on">Los archivos serán ordenados en subcarpetas para cada usuario</string>
-  <string name="pref_sort_files_username_summary_off">Los archivos serán ordenados en la misma carpeta para cada usuario</string>
+  <string name="pref_sort_files_username_title">Ordenar archivos por remitente</string>
+  <string name="pref_sort_files_username_summary_on">Los archivos serán ordenados en subcarpetas para cada remitente</string>
+  <string name="pref_sort_files_username_summary_off">Los archivos serán ordenados en la misma carpeta para cada remitente</string>
   <string name="pref_other">Otros</string>
-  <string name="pref_launcher_title">Mostrar icono en el launcher</string>
+  <string name="pref_launcher_title">Mostrar aplicación en el launcher</string>
   <string name="pref_launcher_on">Acceder a los ajustes a través de mi launcher</string>
   <string name="pref_launcher_off">Acceder a los ajustes a través del Xposed Installer</string>
   <string name="pref_debug_mode_title">Depuración</string>
@@ -57,9 +57,9 @@
   <string name="save_button">Guardar</string>
   <string name="discard_button">Cancelar</string>
   <string name="image_exists">Esta imagen ya existe.</string>
-  <string name="video_exists">Este video ya existe.</string>
+  <string name="video_exists">Este vídeo ya existe.</string>
   <string name="image_saved">Esta imagen ya ha sido guardada.</string>
   <string name="video_saved">Este video ya ha sido guardado.</string>
   <string name="image_not_saved">Se ha producido un error al guardar la imagen.</string>
-  <string name="video_not_saved">Se ha producido un error al guardar el video.</string>
+  <string name="video_not_saved">Se ha producido un error al guardar el vídeo.</string>
 </resources>

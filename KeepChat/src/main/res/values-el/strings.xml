@@ -34,11 +34,7 @@
   <string name="pref_sort_files_mode_title">Ταξινόμηση αρχείων ανά κατηγορία</string>
   <string name="pref_sort_files_mode_summary_on">Snaps και stories θα αποθηκεύονται σε διαφορετικούς φακέλους</string>
   <string name="pref_sort_files_mode_summary_off">Snaps και stories θα αποθηκεύονται στον ίδιο φάκελο</string>
-  <string name="pref_sort_files_username_title">Ταξινόμηση αρχείων κατά  όνομα χρήστη</string>
-  <string name="pref_sort_files_username_summary_on">Αρχεία θα ταξινομουνται σε διαφορετικούς υποφακελους για καθε όνομα χρήστη</string>
-  <string name="pref_sort_files_username_summary_off">Αρχεία θα ταξινομουνται στον ίδιο υποφακελο για καθε ονομα χρηστη</string>
   <string name="pref_other">Άλλα</string>
-  <string name="pref_launcher_title">Να εμφανίζεται εικονίδιο</string>
   <string name="pref_debug_mode_title">αποσφαλμάτωση</string>
   <string name="pref_donate_title">Δωριστε</string>
   <string name="pref_donate_summary">Βοηθήστε με, αγοράστε μου μια μπύρα μέσο PayPal.  

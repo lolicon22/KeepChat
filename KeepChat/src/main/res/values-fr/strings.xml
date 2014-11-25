@@ -35,10 +35,10 @@
   <string name="pref_sort_files_mode_summary_on">Les snaps et les stories seront sauvegardés dans des dossiers différents</string>
   <string name="pref_sort_files_mode_summary_off">Les snaps et les stories seront sauvegardés dans le même dossier</string>
   <string name="pref_sort_files_username_title">Trier les fichiers par nom d\'utilisateur</string>
-  <string name="pref_sort_files_username_summary_on">Les fichiers seront triés dans des sous-dossiers pour chaque nom d\'utilisateur</string>
-  <string name="pref_sort_files_username_summary_off">Les fichiers seront triés dans le même dossier pour chaque nom d\'utilisateur</string>
+  <string name="pref_sort_files_username_summary_on">Les fichiers seront placés dans un sous-dossier différent pour chaque nom d\'utilisateur</string>
+  <string name="pref_sort_files_username_summary_off">Les fichiers seront placés dans le même dossier pour tous les noms d\'utilisateur</string>
   <string name="pref_other">Autres</string>
-  <string name="pref_launcher_title">Afficher l\'icône dans le lanceur d\'applications</string>
+  <string name="pref_launcher_title">Afficher l\'application dans le lanceur</string>
   <string name="pref_launcher_on">Accéder aux paramètres depuis le lanceur</string>
   <string name="pref_launcher_off">Accéder au paramètres depuis l\'installateur Xposed</string>
   <string name="pref_debug_mode_title">Débogage</string>
@@ -47,9 +47,9 @@
   <string name="pref_about">À propos</string>
   <string name="pref_about_summary">Keepchat est publié sous licence GPLv3.</string>
   <string name="pref_donate_title">Faire un don</string>
-  <string name="pref_donate_summary">Soutenez-moi, offrez-moi un bière en utilisant PayPal. Les dons sont très appréciés.</string>
+  <string name="pref_donate_summary">Soutenez-moi, offrez-moi un bière avec PayPal. Les dons sont très appréciés.</string>
   <string name="pref_support_title">Aide</string>
-  <string name="pref_support_summary">Se rendre sur le topic XDA, s\'il vous plaît prenez le temps de lire le premier post si vous êtes confrontés à des problèmes.</string>
+  <string name="pref_support_summary">Se rendre sur le topic XDA, merci de prendre le temps de lire le premier post si vous êtes confrontés à des problèmes.</string>
   <string name="save_dialog_title_image">Sauvegarder l\'image</string>
   <string name="save_dialog_title_video">Sauvegarder la vidéo</string>
   <string name="save_dialog_message_image">Voulez-vous sauvegarder cette image?</string>

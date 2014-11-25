@@ -34,11 +34,11 @@
   <string name="pref_sort_files_mode_title">Seřadit soubory podle kategorie</string>
   <string name="pref_sort_files_mode_summary_on">Snapy a příběhy budou uloženy do různych adresářů</string>
   <string name="pref_sort_files_mode_summary_off">Snapy a příběhy budou uloženy do stejneho adresáře</string>
-  <string name="pref_sort_files_username_title">Seřadit soubory podle jména uživatelů</string>
+  <string name="pref_sort_files_username_title">Setřídit soubory podle odesílatele</string>
   <string name="pref_sort_files_username_summary_on">Soubory budou seřazeny v podadresáři každého uživatele</string>
   <string name="pref_sort_files_username_summary_off">Soubory budou seřazeny ve stejném adresáři pro každého uživatele</string>
   <string name="pref_other">Jiné</string>
-  <string name="pref_launcher_title">Zobrazit ikonu launcheru</string>
+  <string name="pref_launcher_title">Ukázat aplikaci v launcheru</string>
   <string name="pref_launcher_on">Nastavení přístupu přes můj launcher</string>
   <string name="pref_launcher_off">Nastavení přístupu přes Xposed Installer</string>
   <string name="pref_debug_mode_title">Debugging (Ladění a hledání chyb)</string>

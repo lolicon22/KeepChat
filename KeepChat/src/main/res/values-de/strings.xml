@@ -34,11 +34,11 @@
   <string name="pref_sort_files_mode_title">Sortiere Dateien nach Kategorie</string>
   <string name="pref_sort_files_mode_summary_on">Snaps und Stories werden in verschiedenen Ordnern gespeichert</string>
   <string name="pref_sort_files_mode_summary_off">Snaps und Stories werden im gleichen Ordner gespeichert</string>
-  <string name="pref_sort_files_username_title">Sortiere nach Nutzername</string>
-  <string name="pref_sort_files_username_summary_on">Dateien werden für jeden Nutzer in Unterordner einsortiert</string>
-  <string name="pref_sort_files_username_summary_off">Dateien werden für alle Nutzer im gleichen Ordner gespeichert</string>
+  <string name="pref_sort_files_username_title">Sortiere Dateien nach Sender</string>
+  <string name="pref_sort_files_username_summary_on">Dateien werden für jeden Sender in einem Unterordner gespeichert</string>
+  <string name="pref_sort_files_username_summary_off">Dateien werden für alle Sender im gleichen Ordner gespeichert</string>
   <string name="pref_other">Sonstige</string>
-  <string name="pref_launcher_title">Zeige Icon in App-Übersicht</string>
+  <string name="pref_launcher_title">Zeige die App in der Übersicht</string>
   <string name="pref_launcher_on">Einstellungen über den Launcher</string>
   <string name="pref_launcher_off">Einstellungen über den Xposed-Installer</string>
   <string name="pref_debug_mode_title">Debugging</string>

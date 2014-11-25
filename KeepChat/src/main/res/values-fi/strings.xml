@@ -34,11 +34,11 @@
   <string name="pref_sort_files_mode_title">Lajittele tiedostot kategorioihin</string>
   <string name="pref_sort_files_mode_summary_on">Snäpit ja stoorit tallennetaan eri kansioihin</string>
   <string name="pref_sort_files_mode_summary_off">Snäpit ja stoorit tallennetaan samaan kansioon</string>
-  <string name="pref_sort_files_username_title">Lajittele käyttäjänimen mukaan</string>
-  <string name="pref_sort_files_username_summary_on">Tiedostot lajitellaan alakansioihin kunkin käyttäjänimen mukaan</string>
+  <string name="pref_sort_files_username_title">Lajittele tiedostot lähettäjän mukaan</string>
+  <string name="pref_sort_files_username_summary_on">Tiedostot lajitellaan alakansioihin kutakin lähettäjää kohden</string>
   <string name="pref_sort_files_username_summary_off">Tiedostot lajitellaan samaan kansioon kunkin käyttäjänimen mukaan</string>
   <string name="pref_other">Muut</string>
-  <string name="pref_launcher_title">Näytä käynnistys kuvake</string>
+  <string name="pref_launcher_title">Näytä sovellus käynnistys valikossa</string>
   <string name="pref_launcher_on">Pääsy asetuksiin sovelluksen kautta</string>
   <string name="pref_launcher_off">Pääsy asetuksiin Xposedin kautta</string>
   <string name="pref_debug_mode_title">Virheenkorjaus</string>

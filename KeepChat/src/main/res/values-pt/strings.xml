@@ -3,7 +3,7 @@
 <resources>
   <string name="keepchat_settings">Definições do Keepchat</string>
   <string name="xposed_description">Guardar qualquer snap e história, imagens e vídeos, enviados e recebidos pelo Snapchat.</string>
-  <string name="pref_category_snapchats">Guardando</string>
+  <string name="pref_category_snapchats">A guardar</string>
   <string name="pref_save_snaps_images">Snaps em imagem</string>
   <string name="pref_save_snaps_videos">Snaps em vídeo</string>
   <string name="pref_save_stories_images">Imagem da história</string>
@@ -34,11 +34,11 @@
   <string name="pref_sort_files_mode_title">Ordenar por categoria</string>
   <string name="pref_sort_files_mode_summary_on">Snaps e histórias serão gravados em pastas diferentes</string>
   <string name="pref_sort_files_mode_summary_off">Snaps e histórias serão guardados na mesma pasta</string>
-  <string name="pref_sort_files_username_title">Ordenar por username</string>
-  <string name="pref_sort_files_username_summary_on">Ficheiros serão guardados em subpastas pelo username</string>
-  <string name="pref_sort_files_username_summary_off">Ficheiros serão guardados na mesma pasta pelo username</string>
+  <string name="pref_sort_files_username_title">Ordenar ficheiros por remetente</string>
+  <string name="pref_sort_files_username_summary_on">Ficheiros serão guardados em subpastas por remetente</string>
+  <string name="pref_sort_files_username_summary_off">Ficheiros serão guardados na mesma pasta por remetente</string>
   <string name="pref_other">Outros</string>
-  <string name="pref_launcher_title">Mostrar ícone no launcher</string>
+  <string name="pref_launcher_title">Mostrar no launcher</string>
   <string name="pref_launcher_on">Entar nas definições pelo launcher</string>
   <string name="pref_launcher_off">Entrar nas definições pelo Xposed Installer</string>
   <string name="pref_debug_mode_title">Depuração</string>

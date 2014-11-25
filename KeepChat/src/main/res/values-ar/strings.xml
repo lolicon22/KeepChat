@@ -29,5 +29,4 @@
   <string name="pref_sort_files_mode_title">رتب حسب النوع</string>
   <string name="pref_sort_files_mode_summary_on">الsnaps و الstories سيتم حفظها في مجلدات مختلفة</string>
   <string name="pref_sort_files_mode_summary_off">الsnaps و الstories سيتم حفظها في نفس المجلد</string>
-  <string name="pref_sort_files_username_title">رتب حسب الاسم</string>
 </resources>

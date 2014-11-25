@@ -36,9 +36,9 @@
   <string name="pref_sort_files_mode_summary_off">Snaps og stories vil blive gemt i samme mappe</string>
   <string name="pref_sort_files_username_title">Sortér filer efter brugernavn</string>
   <string name="pref_sort_files_username_summary_on">Filer vil blive sorteret i undermapper efter brugernavn</string>
-  <string name="pref_sort_files_username_summary_off">Filer vil blive sorteret i samme mappe efter brugernavn</string>
+  <string name="pref_sort_files_username_summary_off">Filer vil blive sorteret i den samme mappe efter brugernavn</string>
   <string name="pref_other">Andet</string>
-  <string name="pref_launcher_title">Vis app ikon</string>
+  <string name="pref_launcher_title">Vis app i oversigten</string>
   <string name="pref_launcher_on">Tilgå indstillinger via min app</string>
   <string name="pref_launcher_off">Tilgå indstillinger via Xposed appen</string>
   <string name="pref_debug_mode_title">Fejlsøgning</string>

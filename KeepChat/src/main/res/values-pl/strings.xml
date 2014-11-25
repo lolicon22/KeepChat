@@ -34,11 +34,11 @@
   <string name="pref_sort_files_mode_title">Sortuj pliki według kategorii</string>
   <string name="pref_sort_files_mode_summary_on">Snapy i historie będą zapisywane w różnych folderach</string>
   <string name="pref_sort_files_mode_summary_off">Snapy i historie będą posortowane w tym samym folderze</string>
-  <string name="pref_sort_files_username_title">Sortuj pliki według nazwy użytkownika</string>
-  <string name="pref_sort_files_username_summary_on">Pliki zostaną posortowane w podfolderach według nazwy użytkownika</string>
-  <string name="pref_sort_files_username_summary_off">Pliki będą posortowane w tym samym folderze według nazwy użytkownika</string>
+  <string name="pref_sort_files_username_title">Sortuj pliki według wysyłającego</string>
+  <string name="pref_sort_files_username_summary_on">Pliki będą posortowane w odpowiednich podfolderach dla każdego wysyłającego</string>
+  <string name="pref_sort_files_username_summary_off">Pliki będą posortowane w jednym folderze według wysyłającego</string>
   <string name="pref_other">Inne</string>
-  <string name="pref_launcher_title">Pokazuj ikonę launcher\'a</string>
+  <string name="pref_launcher_title">Pokazuj aplikację w launcherze</string>
   <string name="pref_launcher_on">Dostęp do ustawień przez szufladę aplikacji</string>
   <string name="pref_launcher_off">Dostęp do ustawień przez Instalator Xposed</string>
   <string name="pref_debug_mode_title">Debugowanie</string>

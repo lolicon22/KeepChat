@@ -34,11 +34,11 @@
   <string name="pref_sort_files_mode_title">Sorter filer etter kategori</string>
   <string name="pref_sort_files_mode_summary_on">Snapper og stories vil bli lagret i forskjellige mapper</string>
   <string name="pref_sort_files_mode_summary_off">Snapper og stories vil bli sortert i samme mappe</string>
-  <string name="pref_sort_files_username_title">Sorter etter brukernavn</string>
-  <string name="pref_sort_files_username_summary_on">Filene vil bli sortert i undermapper med brukernavn</string>
-  <string name="pref_sort_files_username_summary_off">Filene vil bli sortert i samme mappe med hvert brukernavn</string>
+  <string name="pref_sort_files_username_title">Sorter filer etter avsender</string>
+  <string name="pref_sort_files_username_summary_on">Filer vil bli sortert i undermapper for hver sender</string>
+  <string name="pref_sort_files_username_summary_off">Filer vil bli sortert i samme mappe for hver sender</string>
   <string name="pref_other">Annet</string>
-  <string name="pref_launcher_title">Vis oppstartsikon</string>
+  <string name="pref_launcher_title">Vis ikon i Programmeny</string>
   <string name="pref_launcher_on">Få tilgang til innstillingene gjennom oppstartsikonet</string>
   <string name="pref_launcher_off">Få tilgang gjennom Xposed-program</string>
   <string name="pref_debug_mode_title">Feilsøking</string>
