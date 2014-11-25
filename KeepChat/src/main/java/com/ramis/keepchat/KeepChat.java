@@ -106,7 +106,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 		if (!lpparam.packageName.equals(SNAPCHAT_PACKAGE_NAME))
 			return;
 
-        Logger.log("\n------------------- KEEPCHAT STARTED --------------------", false);
+        Logger.log("------------------- KEEPCHAT STARTED --------------------", false);
         refreshPreferences();
 
         try {
@@ -114,8 +114,8 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             Context context = (Context) callMethod(activityThread, "getSystemContext");
 
             PackageInfo piSnapChat = context.getPackageManager().getPackageInfo(lpparam.packageName, 0);
-            Logger.log("SnapChat Version: " + piSnapChat.versionName + " (" + piSnapChat.versionCode + ")", false);
-            Logger.log("Keepchat Version: " + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")", false);
+            Logger.log("Snapchat Version: " + piSnapChat.versionName + " (" + piSnapChat.versionCode + ")");
+            Logger.log("Module Version: " + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")");
 
             if (!Obfuscator.isSupported(piSnapChat.versionCode)) {
                 Logger.log("This snapchat version is unsupported, now quiting", true, true);
@@ -150,7 +150,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                     prevFileName = filename;
 
                     refreshPreferences();
-                    Logger.log("\n----------------------- KEEPCHAT ------------------------");
+                    Logger.log("----------------------- KEEPCHAT ------------------------");
                     Logger.log("Image Snap opened");
                     isSnap = true;
                     isStory = false;
@@ -206,7 +206,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
                     refreshPreferences();
 
-                    Logger.log("\n----------------------- KEEPCHAT ------------------------");
+                    Logger.log("----------------------- KEEPCHAT ------------------------", false);
                     Logger.log("Image Story opened");
                     isSnap = false;
                     isStory = true;
@@ -261,7 +261,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                     refreshPreferences();
 
                     if (param.thisObject.toString().contains("StorySnap")) {
-                        Logger.log("\n----------------------- KEEPCHAT ------------------------");
+                        Logger.log("----------------------- KEEPCHAT ------------------------", false);
                         Logger.log("Video Story opened");
                         isSnap = false;
                         isStory = true;
@@ -294,7 +294,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                             }
                         }
                     } else {
-                        Logger.log("\n----------------------- KEEPCHAT ------------------------");
+                        Logger.log("----------------------- KEEPCHAT ------------------------", false);
                         Logger.log("Video Snap opened");
                         isSnap = true;
                         isStory = false;
@@ -337,7 +337,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                     refreshPreferences();
 
                     if (mSaveSentSnaps) {
-                        Logger.log("\n----------------------- KEEPCHAT ------------------------");
+                        Logger.log("----------------------- KEEPCHAT ------------------------", false);
                         Date cDate = new Date();
                         String filename = dateFormat.format(cDate);
                         Object snapbryo = getObjectField(param.thisObject, Obfuscator.SNAPPREVIEWFRAGMENT_VAR_SNAPBYRO);
