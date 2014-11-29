@@ -3,7 +3,7 @@
 <resources>
   <string name="keepchat_settings">KeepChat innstillinger</string>
   <string name="xposed_description">Lagre alle snapper og story, både bilder og videoer, som du sender eller mottar via Snapchat.</string>
-  <string name="pref_category_snapchats">Lagrer</string>
+  <string name="pref_category_snapchats">Lagring</string>
   <string name="pref_save_snaps_images">Bilde-snapper</string>
   <string name="pref_save_snaps_videos">Video-snapper</string>
   <string name="pref_save_stories_images">Bilde-stories</string>
@@ -35,18 +35,18 @@
   <string name="pref_sort_files_mode_summary_on">Snapper og stories vil bli lagret i forskjellige mapper</string>
   <string name="pref_sort_files_mode_summary_off">Snapper og stories vil bli sortert i samme mappe</string>
   <string name="pref_sort_files_username_title">Sorter filer etter avsender</string>
-  <string name="pref_sort_files_username_summary_on">Filer vil bli sortert i undermapper for hver sender</string>
-  <string name="pref_sort_files_username_summary_off">Filer vil bli sortert i samme mappe for hver sender</string>
+  <string name="pref_sort_files_username_summary_on">Filer vil bli sortert i undermapper for hver avsender</string>
+  <string name="pref_sort_files_username_summary_off">Filer vil bli sortert i samme mappe for hver avsender</string>
   <string name="pref_other">Annet</string>
   <string name="pref_launcher_title">Vis ikon i Programmeny</string>
   <string name="pref_launcher_on">Få tilgang til innstillingene gjennom oppstartsikonet</string>
-  <string name="pref_launcher_off">Få tilgang gjennom Xposed-program</string>
+  <string name="pref_launcher_off">Få tilgang til innstillinger gjennom Xposed Installer</string>
   <string name="pref_debug_mode_title">Feilsøking</string>
-  <string name="pref_debug_mode_summary_on">Feilsøkings-informasjon vises i loggen til Xposed</string>
-  <string name="pref_debug_mode_summary_off">Feilsøkings-informasjon vises ikke i loggen til Xposed</string>
+  <string name="pref_debug_mode_summary_on">Feilsøkingsinformasjon vises i loggen til Xposed</string>
+  <string name="pref_debug_mode_summary_off">Feilsøkingsinformasjon vises ikke i loggen til Xposed</string>
   <string name="pref_about">Om</string>
   <string name="pref_about_summary">Keepchat er publisert under GPLv3-lisensen.</string>
-  <string name="pref_donate_title">Doner</string>
+  <string name="pref_donate_title">Donér</string>
   <string name="pref_donate_summary">Støtt meg, kjøp øl til meg via PayPal. Donasjoner er høyt verdsatt.</string>
   <string name="pref_support_title">Støtte</string>
   <string name="pref_support_summary">Gå til XDA-siden, vennligst les OP (Original Post) først hvis du har problemer.</string>

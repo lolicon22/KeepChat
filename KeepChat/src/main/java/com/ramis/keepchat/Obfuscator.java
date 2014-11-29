@@ -29,7 +29,7 @@ public class Obfuscator {
     }
 
     // Keepchat supports v5.0.38.1 and up
-    private static int SUPPORTED_VERSION_CODE = 427;
+    private static final int SUPPORTED_VERSION_CODE = 427;
 
     // ReceivedSnap class
     public static final String RECEIVEDSNAP_CLASS = "com.snapchat.android.model.ReceivedSnap";
