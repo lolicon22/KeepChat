@@ -3,11 +3,36 @@
 <resources>
   <string name="keepchat_settings">Настройки Keepchat</string>
   <string name="pref_category_snapchats">Сохранение</string>
+  <string name="pref_save_stories_images">Фото истории</string>
+  <string name="pref_save_stories_videos">Видео истории</string>
+  <string-array name="pref_snaps_entries">
+    <item>Сохраняется автоматически</item>
+    <item>Ask to save</item>
+    <item>Не сохранять</item>
+  </string-array>
+  <string-array name="pref_stories_entries">
+    <item>Сохраняется автоматически</item>
+    <item>Не сохранять</item>
+  </string-array>
+  <string-array name="pref_toasts_duration_entries">
+    <item>Короткая</item>
+    <item>Длинная</item>
+  </string-array>
   <string name="pref_category_folder">Папка</string>
+  <string name="pref_save_location_title">Место сохранения</string>
   <string name="pref_sort_files_mode_title">Сортировать файлы по категории</string>
   <string name="pref_sort_files_username_title">Сортировать файлы по отправителю</string>
+  <string name="pref_other">Другие</string>
   <string name="pref_debug_mode_title">Отладка</string>
+  <string name="pref_about">Подробнее</string>
+  <string name="pref_donate_title">Помочь проекту</string>
+  <string name="pref_support_title">Техподдержка</string>
+  <string name="save_dialog_title_image">Сохранить фото</string>
   <string name="save_dialog_title_video">Сохранить видео</string>
   <string name="save_button">Сохранить</string>
   <string name="discard_button">Отмена</string>
+  <string name="image_exists">Это фото уже есть.</string>
+  <string name="video_exists">Это видео уже есть.</string>
+  <string name="image_saved">Это фото сохранено.</string>
+  <string name="video_saved">Это видео сохранено.</string>
 </resources>
