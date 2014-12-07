@@ -38,7 +38,7 @@
   <string name="pref_sort_files_username_summary_on">Bestanden worden in een submap per afzender gesorteerd</string>
   <string name="pref_sort_files_username_summary_off">Bestanden worden in dezelfde map gesorteerd</string>
   <string name="pref_other">Overige</string>
-  <string name="pref_launcher_title">Weergeef app in launcher</string>
+  <string name="pref_launcher_title">App in launcher weergeven</string>
   <string name="pref_launcher_on">Bereik de instellingen via de launcher</string>
   <string name="pref_launcher_off">Bereik de instellingen via Xposed Installer</string>
   <string name="pref_debug_mode_title">Debugmodus</string>
@@ -47,7 +47,7 @@
   <string name="pref_about">Over Keepchat</string>
   <string name="pref_about_summary">Keepchat is vrijgegeven onder de GPLv3-licentie.</string>
   <string name="pref_donate_title">Doneren</string>
-  <string name="pref_donate_summary">Steun me door mij een biertje te kopen via PayPal. Donaties worden zeer gewaardeerd.</string>
+  <string name="pref_donate_summary">Steun me door een biertje te kopen via PayPal. Donaties worden zeer gewaardeerd.</string>
   <string name="pref_support_title">Ondersteuning</string>
   <string name="pref_support_summary">Ga naar de XDA-thread, lees de eerste post eerst als je problemen ondervindt.</string>
   <string name="save_dialog_title_image">Foto opslaan</string>
