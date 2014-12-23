@@ -31,7 +31,7 @@
   </string-array>
   <string name="pref_category_folder">Carpeta</string>
   <string name="pref_save_location_title">Destino de guardado</string>
-  <string name="pref_sort_files_mode_title">Mostrar archivos por categoria</string>
+  <string name="pref_sort_files_mode_title">Guardar archivos por categoria</string>
   <string name="pref_sort_files_mode_summary_on">Snaps e historias serán guardadas en diferentes carpetas</string>
   <string name="pref_sort_files_mode_summary_off">Snaps e historias serán guardadas en la misma carpeta</string>
   <string name="pref_sort_files_username_title">Ordenar archivos por remitente</string>
@@ -58,8 +58,8 @@
   <string name="discard_button">Cancelar</string>
   <string name="image_exists">Esta imagen ya existe.</string>
   <string name="video_exists">Este vídeo ya existe.</string>
-  <string name="image_saved">Esta imagen ya ha sido guardada.</string>
-  <string name="video_saved">Este video ya ha sido guardado.</string>
+  <string name="image_saved">Imagen guardada.</string>
+  <string name="video_saved">Video guardado.</string>
   <string name="image_not_saved">Se ha producido un error al guardar la imagen.</string>
   <string name="video_not_saved">Se ha producido un error al guardar el vídeo.</string>
 </resources>

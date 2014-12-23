@@ -35,7 +35,10 @@
   <string name="pref_sort_files_mode_summary_on">Snap\'ler ve hikayeler farklı klasörlere kaydedilecek</string>
   <string name="pref_sort_files_mode_summary_off">Snap\'ler ve hikayeler aynı klasörde gösterilecek</string>
   <string name="pref_sort_files_username_title">Yollayan kisiye gore sirala</string>
+  <string name="pref_sort_files_username_summary_on">Her gönderici için ayrı klasör oluşturulup sıralanacak</string>
+  <string name="pref_sort_files_username_summary_off">Dosyalar aynı klasörde kullanıcı adıları ile sıralanacak</string>
   <string name="pref_other">Diğer</string>
+  <string name="pref_launcher_title">Uygulamayı launcherde göster</string>
   <string name="pref_launcher_on">Ayarlara launcher\'ımdan ulaşayım</string>
   <string name="pref_launcher_off">Ayarlara Xposed Yükleyici\'den ulaşayım</string>
   <string name="pref_debug_mode_title">Debugging</string>

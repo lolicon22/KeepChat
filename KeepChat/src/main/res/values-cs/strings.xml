@@ -3,7 +3,7 @@
 <resources>
   <string name="keepchat_settings">Keepchat nastavení</string>
   <string name="xposed_description">Uložit jakýkoliv snap a příběh, fotky a videa, buď poslané nebo přijaté přes Snapchat.</string>
-  <string name="pref_category_snapchats">Ukládám</string>
+  <string name="pref_category_snapchats">Ukládání</string>
   <string name="pref_save_snaps_images">Obrázkové snapy</string>
   <string name="pref_save_snaps_videos">Video snapy</string>
   <string name="pref_save_stories_images">Obrázkové příběhy</string>
