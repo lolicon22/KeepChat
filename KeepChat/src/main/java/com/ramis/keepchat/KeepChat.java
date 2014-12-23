@@ -33,9 +33,8 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -49,26 +48,23 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
-import static de.robv.android.xposed.XposedHelpers.findAndHookConstructor;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
-import static de.robv.android.xposed.XposedHelpers.setObjectField;
+import static de.robv.android.xposed.XposedHelpers.removeAdditionalInstanceField;
+import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 
 public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
 	public static final String SNAPCHAT_PACKAGE_NAME = "com.snapchat.android";
-    XSharedPreferences sharedPreferences;
-    private Context context;
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault());
+    private static XModuleResources mResources;
+    private XSharedPreferences sharedPreferences;
 
     // Modes for saving Snapchats
     public static final int SAVE_AUTO = 0;
     public static final int SAVE_ASK = 1;
     public static final int DO_NOT_SAVE = 2;
-    // Directories for sorting by category
-    public static final String DIR_SNAPS = "/ReceivedSnaps";
-    public static final String DIR_STORIES = "/Stories";
-    public static final String DIR_SENT = "/SentSnaps";
     // Length of toasts
     public static final int TOAST_LENGTH_SHORT = 0;
     public static final int TOAST_LENGTH_LONG = 1;
@@ -86,30 +82,16 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
     public boolean mSortByUsername = true;
     public boolean mDebugging = true;
 
-	private boolean isStory = false;
-	private boolean isSnap = false;
-	private boolean isSnapImage = false;
-	private boolean isSnapVideo = false;
-	private boolean displayDialog = false;
-	private boolean isSaved = false;
-	private String toastMessage = "";
-	private String mediaPath = "";
-	private String prevFileName = "";
 
-
-	private static XModuleResources mResources;
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault());
-
-	// loading package
 	@Override
 	public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
 		if (!lpparam.packageName.equals(SNAPCHAT_PACKAGE_NAME))
 			return;
 
-        Logger.log("------------------- KEEPCHAT STARTED --------------------", false);
         refreshPreferences();
 
         try {
+            Logger.log("----------------------- KEEPCHAT LOADING ------------------------", false);
             Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
             Context context = (Context) callMethod(activityThread, "getSystemContext");
 
@@ -126,363 +108,184 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
         }
 
 		try {
-			/*
-			 * getImageBitmap() hook The ReceivedSnap class has a method to load
-			 * a Bitmap in preparation for viewing. This method returns said
-			 * bitmap back so the application can display it. We hook this
-			 * method to intercept the result and write it to the SD card. The
-			 * file path is stored in the mediaPath member for later use in the
-			 * showImage() hook.
-			 */
-            findAndHookMethod(Obfuscator.RECEIVEDSNAP_CLASS, lpparam.classLoader, Obfuscator.RECEIVEDSNAP_GETIMAGEBITMAP, Context.class, new XC_MethodHook() {
+            final Class<?> storySnapClass = findClass(Obfuscator.STORYSNAP_CLASS, lpparam.classLoader);
 
+            /**
+             * Method used to get the bitmap of a snap. We retrieve this return value and store it in a field for future saving.
+             */
+            findAndHookMethod(Obfuscator.RECEIVEDSNAP_CLASS, lpparam.classLoader, Obfuscator.RECEIVEDSNAP_GETIMAGEBITMAP, Context.class, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    String sender = (String) callMethod(param.thisObject, Obfuscator.RECEIVEDSNAP_GETSENDER);
-                    Date timestamp = new Date((Long) callMethod(param.thisObject, Obfuscator.SNAP_GETTIMESTAMP));
-                    String filename = sender + "_" + dateFormat.format(timestamp);
-
-                    if (prevFileName.equals(filename)) {
-                        prevFileName = "";
-                        return;
-                    }
-
-                    prevFileName = filename;
+                    // Return if this snap is a video, we only use this for saving images
+                    boolean isVideo = (Boolean) callMethod(param.thisObject, Obfuscator.SNAP_ISVIDEO);
+                    if (isVideo) return;
 
                     refreshPreferences();
-                    Logger.log("----------------------- KEEPCHAT ------------------------");
-                    Logger.log("Image Snap opened");
-                    isSnap = true;
-                    isStory = false;
+                    Logger.log("----------------------- KEEPCHAT ------------------------", false);
 
                     if (mModeSnapImage == DO_NOT_SAVE) {
-                        Logger.log("Not Saving Image");
-                        Logger.log("---------------------------------------------------------");
-                        return;
-                    }
-
-                    File file = createFile(filename + ".jpg", DIR_SNAPS, sender);
-                    Logger.log(mediaPath);
-
-                    if (file.exists()) {
-                        Logger.log("Image Snap already Exists");
-                        toastMessage = mResources.getString(R.string.image_exists);
-                        isSaved = true;
+                        Logger.log("Not saving image snap");
                     } else {
-                        isSaved = false;
-                        Bitmap image = (Bitmap) param.getResult();
-                        if (saveImage(image, file)) {
-                            Logger.log("Image Snap has been Saved");
-                            toastMessage = mResources.getString(R.string.image_saved);
-                        } else {
-                            toastMessage = mResources.getString(R.string.image_not_saved);
-                        }
+                        Logger.log("Image snap opened");
+                        setAdditionalInstanceField(param.thisObject, "image_bitmap", param.getResult());
+                        setAdditionalInstanceField(param.thisObject, "image_type", SnapType.SNAP);
                     }
                 }
             });
 
-			/*
-			 * getImageBitmap() hook The Story class has a method to load a
-			 * Bitmap in preparation for viewing a Image in Story. This method
-			 * returns said bitmap back so the application can display it. We
-			 * hook this method to intercept the result and write it to the SD
-			 * card. The file path is stored in the mediaPath member for later
-			 * use in the showImage() hook.
-			 */
+            /**
+             * Method used to get the bitmap of a story. We retrieve this return value and store it in a field for future saving.
+             */
             findAndHookMethod(Obfuscator.STORYSNAP_CLASS, lpparam.classLoader, Obfuscator.STORYSNAP_GETIMAGEBITMAP, Context.class, new XC_MethodHook() {
-
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    String sender = (String) callMethod(param.thisObject, Obfuscator.STORYSNAP_GETSENDER);
-                    Date timestamp = new Date((Long) callMethod(param.thisObject, Obfuscator.SNAP_GETTIMESTAMP));
-                    String filename = sender + "_" + dateFormat.format(timestamp);
-
-                    if (prevFileName.equals(filename)) {
-                        prevFileName = "";
-                        return;
-                    }
-
-                    prevFileName = filename;
+                    // Return if this snap is a video, we only use this for saving images
+                    boolean isVideo = (Boolean) callMethod(param.thisObject, Obfuscator.SNAP_ISVIDEO);
+                    if (isVideo) return;
 
                     refreshPreferences();
-
                     Logger.log("----------------------- KEEPCHAT ------------------------", false);
-                    Logger.log("Image Story opened");
-                    isSnap = false;
-                    isStory = true;
 
                     if (mModeStoryImage == DO_NOT_SAVE) {
-                        Logger.log("Not Saving Image");
-                        Logger.log("---------------------------------------------------------");
+                        Logger.log("Not saving image story");
+                    } else {
+                        Logger.log("Image story opened");
+                        setAdditionalInstanceField(param.thisObject, "image_bitmap", param.getResult());
+                        setAdditionalInstanceField(param.thisObject, "image_type", SnapType.STORY);
+                    }
+                }
+            });
+
+            /**
+             * Method used to load resources for a video. We get this object from the parameters, get relevant info and store it in fields for future saving.
+             */
+            final Class<?> videoSnapResourcesClass = findClass(Obfuscator.VIDEOSNAPRESOURCES_CLASS, lpparam.classLoader);
+            findAndHookMethod(Obfuscator.VIDEOSNAPRENDERER_CLASS, lpparam.classLoader, Obfuscator.VIDEOSNAPRENDERER_LOADRES, videoSnapResourcesClass, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    refreshPreferences();
+                    Logger.log("----------------------- KEEPCHAT ------------------------", false);
+
+                    Object receivedSnap = getObjectField(param.thisObject, Obfuscator.VIDEOSNAPRENDERER_RECEIVEDSNAP);
+                    // Check if the video is a snap or a story
+                    SnapType snapType = (storySnapClass.isInstance(receivedSnap) ? SnapType.STORY : SnapType.SNAP);
+
+                    if ((snapType == SnapType.SNAP && mModeSnapVideo == DO_NOT_SAVE) || (snapType == SnapType.STORY && mModeStoryVideo == DO_NOT_SAVE)) {
+                        Logger.log("Not saving video " + snapType.name);
+                    } else {
+                        Logger.log("Video " + snapType.name + " opened");
+                        Object videoSnapResources = param.args[0];
+                        setAdditionalInstanceField(param.thisObject, "video_overlay", callMethod(videoSnapResources, Obfuscator.VIDEOSNAPRESOURCES_GETBITMAP));
+                        setAdditionalInstanceField(param.thisObject, "video_uri", callMethod(videoSnapResources, Obfuscator.VIDEOSNAPRESOURCES_GETVIDEOURI));
+                        setAdditionalInstanceField(param.thisObject, "video_type", snapType);
+                    }
+                }
+            });
+
+            /**
+             * The ImageSnapRenderer class renders images, this method is called to start the viewing of a image.
+             * We get the Context, ReceivedSnap instance and previously stored Bitmap to save the image.
+             */
+            findAndHookMethod(Obfuscator.IMAGESNAPRENDERER_CLASS, lpparam.classLoader, Obfuscator.IMAGESNAPRENDERER_START, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    Object receivedSnap = getObjectField(param.thisObject, Obfuscator.IMAGESNAPRENDERER_RECEIVEDSNAP);
+                    Object imageView = getObjectField(param.thisObject, Obfuscator.IMAGESNAPRENDERER_IMAGEVIEW);
+                    Context context = (Context) callMethod(imageView, "getContext");
+
+                    Bitmap image = (Bitmap) removeAdditionalInstanceField(receivedSnap, "image_bitmap");
+                    SnapType snapType = (SnapType) removeAdditionalInstanceField(receivedSnap, "image_type");
+
+                    if (image == null) {
+                        Logger.log("Image is null");
                         return;
                     }
 
-                    File file = createFile(filename + ".jpg", DIR_STORIES, sender);
-                    Logger.log(mediaPath);
-
-                    if (file.exists()) {
-                        Logger.log("Image Story already Exists");
-                        isSaved = true;
-                        toastMessage = mResources.getString(R.string.image_exists);
-                    } else {
-                        isSaved = false;
-                        Bitmap image = (Bitmap) param.getResult();
-                        if (saveImage(image, file)) {
-                            Logger.log("Image Story has been Saved");
-                            toastMessage = mResources.getString(R.string.image_saved);
-                        } else {
-                            toastMessage = mResources.getString(R.string.image_not_saved);
-                        }
-                    }
+                    boolean askToSave = ((snapType == SnapType.SNAP && mModeSnapImage == SAVE_ASK) || (snapType == SnapType.STORY && mModeStoryImage == SAVE_ASK));
+                    processMedia(snapType, MediaType.IMAGE, receivedSnap, context, image, null, askToSave);
                 }
             });
 
-			/*
-			 * getVideoUri() hook The ReceivedSnap class treats videos a little
-			 * differently. Videos are not their own object, so they can't be
-			 * passed around. The Android system basically provides a VideoView
-			 * for viewing videos, which you just provide it the location of the
-			 * video and it does the rest.
-			 * 
-			 * Unsurprisingly, Snapchat makes use of this View. This method in
-			 * the ReceivedSnap class gets the URI of the video in preparation
-			 * for one of these VideoViews. We hook in, intercept the result (a
-			 * String), then copy the bytes from that location to our SD
-			 * directory. This results in a bit of a slowdown for the user, but
-			 * luckily this takes place before they actually view it.
-			 * 
-			 * The file path is stored in the mediaPath member for later use in
-			 * the showVideo() hook.
-			 */
-            findAndHookMethod(Obfuscator.RECEIVEDSNAP_CLASS, lpparam.classLoader, Obfuscator.RECEIVEDSNAP_GETVIDEOURI, new XC_MethodHook() {
-
+            /**
+             * The VideoSnapRenderer class renders videos, this method is called to start the viewing of a video.
+             * We get the Context, ReceivedSnap instance and previously stored video Uri and overlay to save the video.
+             */
+            findAndHookMethod(Obfuscator.VIDEOSNAPRENDERER_CLASS, lpparam.classLoader, Obfuscator.VIDEOSNAPRENDERER_START, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    refreshPreferences();
+                    Object receivedSnap = getObjectField(param.thisObject, Obfuscator.VIDEOSNAPRENDERER_RECEIVEDSNAP);
+                    Object snapVideoView = getObjectField(param.thisObject, Obfuscator.VIDEOSNAPRENDERER_SNAPVIDEOVIEW);
+                    Context context = (Context) callMethod(snapVideoView, "getContext");
 
-                    if (param.thisObject.toString().contains("StorySnap")) {
-                        Logger.log("----------------------- KEEPCHAT ------------------------", false);
-                        Logger.log("Video Story opened");
-                        isSnap = false;
-                        isStory = true;
+                    Bitmap overlay = (Bitmap) removeAdditionalInstanceField(param.thisObject, "video_overlay");
+                    String videoUri = (String) removeAdditionalInstanceField(param.thisObject, "video_uri");
+                    SnapType snapType = (SnapType) removeAdditionalInstanceField(param.thisObject, "video_type");
 
-                        if (mModeStoryVideo == DO_NOT_SAVE) {
-                            Logger.log("Not Saving Video");
-                            Logger.log("---------------------------------------------------------");
-                            return;
-                        }
-
-                        String sender = (String) callMethod(param.thisObject, Obfuscator.STORYSNAP_GETSENDER);
-                        Date timestamp = new Date((Long) callMethod(param.thisObject, Obfuscator.SNAP_GETTIMESTAMP));
-                        String filename = sender + "_" + dateFormat.format(timestamp);
-
-                        File file = createFile(filename + ".mp4", DIR_STORIES, sender);
-                        Logger.log(mediaPath);
-
-                        if (file.exists()) {
-                            Logger.log("Video Story already Exists");
-                            toastMessage = mResources.getString(R.string.video_exists);
-                            isSaved = true;
-                        } else {
-                            isSaved = false;
-                            String videoUri = (String) param.getResult();
-                            if (saveVideo(videoUri, file)) {
-                                Logger.log("Video Story has been Saved");
-                                toastMessage = mResources.getString(R.string.video_saved);
-                            } else {
-                                toastMessage = mResources.getString(R.string.video_not_saved);
-                            }
-                        }
-                    } else {
-                        Logger.log("----------------------- KEEPCHAT ------------------------", false);
-                        Logger.log("Video Snap opened");
-                        isSnap = true;
-                        isStory = false;
-
-                        if (mModeSnapVideo == DO_NOT_SAVE) {
-                            Logger.log("Not Saving Video");
-                            Logger.log("---------------------------------------------------------");
-                            return;
-                        }
-
-                        String sender = (String) callMethod(param.thisObject, Obfuscator.RECEIVEDSNAP_GETSENDER);
-                        Date timestamp = new Date((Long) callMethod(param.thisObject, Obfuscator.SNAP_GETTIMESTAMP));
-                        String filename = sender + "_" + dateFormat.format(timestamp);
-
-                        File file = createFile(filename + ".mp4", DIR_SNAPS, sender);
-                        Logger.log(mediaPath);
-
-                        if (file.exists()) {
-                            isSaved = true;
-                            Logger.log("Video Snap already Exists");
-                            toastMessage = mResources.getString(R.string.video_exists);
-                        } else {
-                            isSaved = false;
-                            String videoUri = (String) param.getResult();
-                            if (saveVideo(videoUri, file)) {
-                                Logger.log("Video Snap has been Saved");
-                                toastMessage = mResources.getString(R.string.video_saved);
-                            } else {
-                                toastMessage = mResources.getString(R.string.video_not_saved);
-                            }
-                        }
+                    if (videoUri == null) {
+                        Logger.log("video is null");
+                        return;
                     }
+
+                    boolean askToSave = ((snapType == SnapType.SNAP && mModeSnapVideo == SAVE_ASK) || (snapType == SnapType.STORY && mModeStoryVideo == SAVE_ASK));
+                    processMedia(snapType, MediaType.VIDEO, receivedSnap, context, overlay, videoUri, askToSave);
                 }
             });
 
+            final Class<?> snapImagebryo = findClass(Obfuscator.SNAPIMAGEBRYO_CLASS, lpparam.classLoader);
+
+            /**
+             * Method which gets called to prepare an image for sending (before selecting contacts).
+             * We check whether it's an image or a video and save it.
+             */
             findAndHookMethod(Obfuscator.SNAPPREVIEWFRAGMENT_CLASS, lpparam.classLoader, Obfuscator.SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING, new XC_MethodHook() {
-
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     refreshPreferences();
+                    Logger.log("----------------------- KEEPCHAT ------------------------", false);
 
-                    if (mSaveSentSnaps) {
-                        Logger.log("----------------------- KEEPCHAT ------------------------", false);
-                        Date cDate = new Date();
-                        String filename = dateFormat.format(cDate);
-                        Object snapbryo = getObjectField(param.thisObject, Obfuscator.SNAPPREVIEWFRAGMENT_VAR_SNAPBYRO);
+                    if (!mSaveSentSnaps) {
+                        Logger.log("Not saving sent snap");
+                        return;
+                    }
 
+                    Context context = (Context) callMethod(param.thisObject, "getActivity");
+                    Object mediabryo = getObjectField(param.thisObject, Obfuscator.SNAPPREVIEWFRAGMENT_VAR_MEDIABYRO);
+                    Bitmap image = (Bitmap) callMethod(mediabryo, Obfuscator.MEDIABRYO_GETSNAPBITMAP);
 
-                        int type = (Integer) callMethod(snapbryo, Obfuscator.SNAPBRYO_ISIMAGE);
-
-                        if (type == 0) {
-                            Logger.log("Image Sent Snap");
-                            File file = createFile(filename + ".jpg", DIR_SENT, null);
-                            Logger.log(mediaPath);
-                            if (file.exists()) {
-                                Logger.log("Image Sent Snap already exists");
-                                toastMessage = mResources.getString(R.string.image_exists);
-                            } else {
-                                Bitmap image = (Bitmap) callMethod(snapbryo, Obfuscator.SNAPBRYO_GETSNAPBITMAP);
-
-                                if (image == null) {
-                                    Logger.log("IMAGE IS NULL");
-                                }
-                                if (saveImage(image, file)) {
-                                    Logger.log("Image Sent Snap has been Saved");
-                                    toastMessage = mResources.getString(R.string.image_saved);
-                                } else {
-                                    toastMessage = mResources.getString(R.string.image_not_saved);
-                                }
-                            }
-                        } else {
-                            Logger.log("Video Sent Snap");
-                            File file = createFile(filename + ".mp4", DIR_SENT, null);
-                            Logger.log(mediaPath);
-
-                            if (file.exists()) {
-                                Logger.log("Video Sent Snap already Exists");
-                                toastMessage = mResources.getString(R.string.video_exists);
-                            } else {
-                                Uri uri = (Uri) callMethod(snapbryo, Obfuscator.SNAPBRYO_VIDEOURI);
-
-                                if (saveVideo(uri.getPath(), file)) {
-                                    Logger.log("Video Sent Snap has been Saved");
-                                    toastMessage = mResources.getString(R.string.video_saved);
-                                } else {
-                                    toastMessage = mResources.getString(R.string.video_not_saved);
-                                }
-                            }
-                        }
-
-                        runMediaScanAndToast((Context) callMethod(param.thisObject, "getActivity"));
+                    // Check if instance of SnapImageBryo and thus an image or a video
+                    if (snapImagebryo.isInstance(mediabryo)) {
+                        processMedia(SnapType.SENT, MediaType.IMAGE, null, context, image, null, false);
+                    } else {
+                        Uri videoUri = (Uri) callMethod(mediabryo, Obfuscator.MEDIABRYO_VIDEOURI);
+                        processMedia(SnapType.SENT, MediaType.VIDEO, null, context, image, videoUri.getPath(), false);
                     }
                 }
             });
 
-			/*
-			 * showVideo() and showImage() hooks Because getVideoUri() and
-			 * getImageBitmap() do not handily provide a context, nor do their
-			 * parent classes (ReceivedSnap), we are unable to get the context
-			 * necessary in order to display a notification and call the media
-			 * scanner.
-			 * 
-			 * But these getters are called from the corresponding showVideo()
-			 * and showImage() methods of com.snapchat.android.ui.SnapView,
-			 * which deliver the needed context. So the work that needs a
-			 * context is done here, while the file saving work is done in the
-			 * getters. The getters also save the file paths in the mediaPath
-			 * member, which we use here.
-			 */
-
-            findAndHookMethod(Obfuscator.SNAPVIEW_CLASS, lpparam.classLoader, Obfuscator.SNAPVIEW_SHOWIMAGE, boolean.class, boolean.class, boolean.class, boolean.class, new XC_MethodHook() {
-                @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    refreshPreferences();
-                    isSnapVideo = false;
-                    isSnapImage = true;
-
-                    if ((isSnap && (mModeSnapImage != DO_NOT_SAVE)) || (isStory && (mModeStoryImage != DO_NOT_SAVE))) {
-                        // At this point the context is put in the private member so
-                        // that the dialog can be initiated from the markViewed() hook
-                        context = (Context) callMethod(param.thisObject, "getContext");
-
-                        if ((isSnap && (mModeSnapImage == SAVE_AUTO)) || (isStory && (mModeStoryImage == SAVE_AUTO))) {
-                            runMediaScanAndToast(context);
-                        } else {
-                            displayDialog = true;
-                        }
-                    }
-                }
-            });
-
-            findAndHookMethod(Obfuscator.SNAPVIEW_CLASS, lpparam.classLoader, Obfuscator.SNAPVIEW_SHOWVIDEO, boolean.class, boolean.class, boolean.class, boolean.class, new XC_MethodHook() {
-                @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-
-                    isSnapVideo = true;
-                    isSnapImage = false;
-                    refreshPreferences();
-                    if ((isSnap && (mModeSnapVideo != DO_NOT_SAVE)) || (isStory && (mModeStoryVideo != DO_NOT_SAVE))) {
-                        // At this point the context is put in the private member so
-                        // that the dialog can be initiated from the markViewed() hook
-                        context = (Context) callMethod(param.thisObject, "getContext");
-
-                        if ((isSnap && (mModeSnapVideo == SAVE_AUTO)) || (isStory && (mModeStoryVideo == SAVE_AUTO))) {
-                            runMediaScanAndToast(context);
-                        } else {
-                            displayDialog = true;
-                        }
-                    }
-                }
-            });
-
+            /**
+             * Method to mark a snap as viewed, this means the snap is about to go away.
+             * We show a dialog to save the snap, if there has to be shown one.
+             */
             findAndHookMethod(Obfuscator.RECEIVEDSNAP_CLASS, lpparam.classLoader, Obfuscator.RECEIVEDSNAP_MARKVIEWED, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    refreshPreferences();
-                    // check if its save ask AND that it doesn't exist
-                    if (displayDialog) {
-                        if ((isSnapImage && !isSaved && (mModeSnapImage == SAVE_ASK)) || (isSnapVideo && !isSaved && (mModeSnapVideo == SAVE_ASK))) {
-                            showDialog(context);
-                            displayDialog = false;
-                        }
+                    AskToSaveModel model = (AskToSaveModel) removeAdditionalInstanceField(param.thisObject, "ask_to_save_model");
+                    if (model != null) {
+                        showDialog(model);
                     }
                 }
             });
 
-            Class<?> receivedSnapClass = findClass(Obfuscator.RECEIVEDSNAP_CLASS, lpparam.classLoader);
-            findAndHookConstructor(Obfuscator.SNAPUPDATE_CLASS, lpparam.classLoader, receivedSnapClass, new XC_MethodHook() {
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    setObjectField(param.thisObject, "c", 0);
-                }
-            });
+            /**
+             * Always return false when asked if an ReceivedSnap was screenshotted.
+             */
+            findAndHookMethod(Obfuscator.RECEIVEDSNAP_CLASS, lpparam.classLoader, Obfuscator.RECEIVEDSNAP_ISSCREENSHOTTED, XC_MethodReplacement.returnConstant(false));
 
-            findAndHookConstructor(Obfuscator.STORYVIEWRECORD_CLASS, lpparam.classLoader, String.class, long.class, int.class, new XC_MethodHook() {
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    param.args[2] = 0;
-                }
-            });
-
-            findAndHookMethod(Obfuscator.SNAPSTATEMESSAGE_BUILDER_CLASS, lpparam.classLoader, Obfuscator.SETSCREENSHOTCOUNT, long.class, new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    param.args[0] = 0L;
-                }
-            });
-
+            /**
+             * Prevent creation of the ScreenshotDetector class.
+             */
 			findAndHookMethod(Obfuscator.SCREENSHOTDETECTOR_CLASS, lpparam.classLoader, Obfuscator.SCREENSHOTDETECTOR_RUNDECTECTIONSESSION, List.class, long.class,
-                    XC_MethodReplacement.returnConstant(null));
+                    XC_MethodReplacement.DO_NOTHING);
 
 		} catch (Exception e) {
             Logger.log("Error occured: Keepchat doesn't currently support this version, wait for an update", e);
@@ -494,6 +297,110 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             });
 		}
 	}
+
+
+
+    public enum SnapType {
+        SNAP("snap", "/ReceivedSnaps"),
+        STORY("story", "/Stories"),
+        SENT("sent", "/SentSnaps");
+
+        private final String name;
+        private final String subdir;
+
+        SnapType(String name, String subdir) {
+            this.name = name;
+            this.subdir = subdir;
+        }
+    }
+
+    public enum MediaType {
+        IMAGE(".jpg"),
+        VIDEO(".mp4");
+
+        private final String fileExtension;
+
+        MediaType(String fileExtension) {
+            this.fileExtension = fileExtension;
+        }
+    }
+
+    private void processMedia(SnapType snapType, MediaType mediaType, Object receivedSnap, Context context, Bitmap image, String videoUri, boolean askToSave) {
+        String sender = null;
+        if (snapType == SnapType.SNAP) {
+            sender = (String) callMethod(receivedSnap, Obfuscator.RECEIVEDSNAP_GETSENDER);
+        } else if (snapType == SnapType.STORY) {
+            sender = (String) callMethod(receivedSnap, Obfuscator.STORYSNAP_GETSENDER);
+        }
+
+        String filename;
+        if (snapType == SnapType.SENT) {
+            filename = dateFormat.format(new Date());
+        } else {
+            Date timestamp = new Date((Long) callMethod(receivedSnap, Obfuscator.SNAP_GETTIMESTAMP));
+            filename = sender + "_" + dateFormat.format(timestamp);
+        }
+
+        File directory;
+        try {
+            directory = createFileDir(snapType.subdir, sender);
+        } catch (IOException e) {
+            Logger.log(e);
+            return;
+        }
+
+        AskToSaveModel.Builder modelBuilder = new AskToSaveModel.Builder(context, mediaType);
+        File imageFile = new File(directory, filename + MediaType.IMAGE.fileExtension);
+        File videoFile = new File(directory, filename + MediaType.VIDEO.fileExtension);
+        modelBuilder.setImageFile(imageFile);
+        modelBuilder.setVideoFile(videoFile);
+
+        if (mediaType == MediaType.IMAGE) {
+            if (imageFile.exists()) {
+                Logger.log("Image already exists");
+                showToast(context, mResources.getString(R.string.image_exists));
+                return;
+            }
+
+            if (saveImage(image, imageFile)) {
+                showToast(context, mResources.getString(R.string.image_saved));
+                Logger.log("Image " + snapType.name + " has been saved");
+                Logger.log("Path: " + imageFile.toString());
+
+                if (askToSave) {
+                    setAdditionalInstanceField(receivedSnap, "ask_to_save_model", modelBuilder.build());
+                } else {
+                    runMediaScanner(context, imageFile.getAbsolutePath());
+                }
+            } else {
+                showToast(context, mResources.getString(R.string.image_not_saved));
+            }
+        } else if (mediaType == MediaType.VIDEO) {
+            boolean hasOverlay = image != null;
+            if (videoFile.exists()) {
+                Logger.log("Video already exists");
+                showToast(context, mResources.getString(R.string.video_exists));
+                return;
+            }
+
+            if (saveVideo(videoUri, videoFile) && (!hasOverlay || saveImage(image, imageFile))) {
+                showToast(context, mResources.getString(R.string.video_saved));
+                Logger.log("Video " + snapType.name + " has been saved (" + (hasOverlay ? "has" : "no") + " overlay)");
+                Logger.log("Path: " + videoFile.toString());
+
+                if (askToSave) {
+                    modelBuilder.setHasOverlay(hasOverlay);
+                    setAdditionalInstanceField(receivedSnap, "ask_to_save_model", modelBuilder.build());
+                } else if (hasOverlay) {
+                    runMediaScanner(context, videoFile.getAbsolutePath(), imageFile.getAbsolutePath());
+                } else {
+                    runMediaScanner(context, videoFile.getAbsolutePath());
+                }
+            } else {
+                showToast(context, mResources.getString(R.string.video_not_saved));
+            }
+        }
+    }
 
 	private void refreshPreferences() {
         boolean prefsChanged = false;
@@ -520,26 +427,24 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             Logger.setDebuggingEnabled(mDebugging);
 
             if (mDebugging) {
-                Logger.log("------------------- KEEPCHAT SETTINGS -------------------", false);
+                Logger.log("----------------------- KEEPCHAT SETTINGS -----------------------", false);
+                Logger.log("Preferences have changed:");
                 String[] saveModes = {"SAVE_AUTO", "SAVE_ASK", "DO_NOT_SAVE"};
-                Logger.log("mModeSnapImage: " + saveModes[mModeSnapImage]);
-                Logger.log("mModeSnapVideo: " + saveModes[mModeSnapVideo]);
-                Logger.log("mModeStoryImage: " + saveModes[mModeStoryImage]);
-                Logger.log("mModeStoryVideo: " + saveModes[mModeStoryVideo]);
-                Logger.log("mToastEnabled: " + mToastEnabled);
-                Logger.log("mToastLength: " + mToastLength);
-                Logger.log("mSavePath: " + mSavePath);
-                Logger.log("mSaveSentSnaps: " + mSaveSentSnaps);
-                Logger.log("mSortByCategory: " + mSortByCategory);
-                Logger.log("mSortByUsername: " + mSortByUsername);
-                Logger.log("---------------------------------------------------------", false);
+                Logger.log("~ mModeSnapImage: " + saveModes[mModeSnapImage]);
+                Logger.log("~ mModeSnapVideo: " + saveModes[mModeSnapVideo]);
+                Logger.log("~ mModeStoryImage: " + saveModes[mModeStoryImage]);
+                Logger.log("~ mModeStoryVideo: " + saveModes[mModeStoryVideo]);
+                Logger.log("~ mToastEnabled: " + mToastEnabled);
+                Logger.log("~ mToastLength: " + mToastLength);
+                Logger.log("~ mSavePath: " + mSavePath);
+                Logger.log("~ mSaveSentSnaps: " + mSaveSentSnaps);
+                Logger.log("~ mSortByCategory: " + mSortByCategory);
+                Logger.log("~ mSortByUsername: " + mSortByUsername);
             }
-        } else {
-            Logger.log("Preferences haven't changed");
         }
 	}
 
-	private File createFile(String filename, String category, String sender) {
+	private File createFileDir(String category, String sender) throws IOException {
         File directory = new File(mSavePath);
 
 		if (mSortByCategory || (mSortByUsername && sender == null)) {
@@ -550,13 +455,11 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             directory = new File(directory, sender);
         }
 
-        if (!directory.exists()) {
-            directory.mkdirs();
+        if (!directory.exists() && !directory.mkdirs()) {
+            throw new IOException("Failed to create directory " + directory);
         }
 
-		File result = new File(directory, filename);
-        mediaPath = result.getAbsolutePath();
-		return result;
+        return directory;
 	}
 
 	// function to saveimage
@@ -589,11 +492,11 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 			in.close();
 			out.flush();
 			out.close();
+            return true;
 		} catch (Exception e) {
             Logger.log("Exception while saving a video", e);
 			return false;
 		}
-		return true;
 	}
 
 	/*
@@ -603,39 +506,35 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 	 * @param context Current context
 	 * @param filePath File to be scanned by the media scanner
 	 */
-	private void runMediaScanAndToast(Context context) {
-		try {
-			Logger.log("MediaScanner running ");
-			// Run MediaScanner on file, so it shows up in Gallery instantly
-            MediaScannerConnection.scanFile(context, new String[] { mediaPath }, null,
+    private void runMediaScanner(Context context, String... mediaPath) {
+        try {
+            Logger.log("MediaScanner started");
+            MediaScannerConnection.scanFile(context, mediaPath, null,
                     new MediaScannerConnection.OnScanCompletedListener() {
                         public void onScanCompleted(String path, Uri uri) {
-                            if (uri != null) {
-                                Logger.log("MediaScanner ran successfully: " + uri.toString());
-                            } else {
-                                Logger.log("Unknown error occurred while trying to run MediaScanner");
-                            }
-                            Logger.log("---------------------------------------------------------");
+                            Logger.log("MediaScanner scanned file: " + uri.toString());
                         }
                     });
-		} catch (Exception e) {
+        } catch (Exception e) {
             Logger.log("Error occurred while trying to run MediaScanner", e);
-		}
-		// construct the toast notification
-		if (mToastEnabled) {
-			Logger.log("Toast Displayed");
-			if (mToastLength == TOAST_LENGTH_SHORT) {
-				Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
-			} else {
-				Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
-			}
-		}
-	}
+        }
+    }
 
-	private void showDialog(final Context dContext) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(dContext);
+    private void showToast(Context context, String toastMessage) {
+        if (mToastEnabled) {
+            if (mToastLength == TOAST_LENGTH_SHORT) {
+                Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
-		if (isSnapImage) {
+	private void showDialog(final AskToSaveModel model) {
+        Logger.log("Showing dialog asking to save snap");
+		AlertDialog.Builder builder = new AlertDialog.Builder(model.getContext());
+
+		if (model.getMediaType() == MediaType.IMAGE) {
             builder.setMessage(mResources.getString(R.string.save_dialog_message_image));
             builder.setTitle(mResources.getString(R.string.save_dialog_title_image));
 		} else {
@@ -645,7 +544,14 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
 		builder.setPositiveButton(mResources.getString(R.string.save_button), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                runMediaScanAndToast(dContext);
+                Logger.log("User wants to save, keeping files");
+                if (model.getMediaType() == MediaType.IMAGE) {
+                    runMediaScanner(model.getContext(), model.getImageFile().getAbsolutePath());
+                } else if (model.hasOverlay()) {
+                    runMediaScanner(model.getContext(), model.getVideoFile().getAbsolutePath(), model.getImageFile().getAbsolutePath());
+                } else {
+                    runMediaScanner(model.getContext(), model.getVideoFile().getAbsolutePath());
+                }
             }
         });
 
@@ -658,17 +564,15 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 		builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
 			@Override
 			public void onCancel(DialogInterface dialog) {
-                if ((new File(mediaPath)).delete()) {
-                    Logger.log("File deleted successfully");
+                if ((!model.getImageFile().exists() || model.getImageFile().delete()) && (!model.getVideoFile().exists() || model.getVideoFile().delete())) {
+                    Logger.log("User has canceled, file(s) deleted successfully");
                 } else {
-                    Logger.log("Could not delete file.");
+                    Logger.log("User has canceled, could not delete file(s)");
                 }
-				Logger.log("---------------------------------------------------------");
 			}
 		});
 
         builder.show();
-		Logger.log("Shown dialog");
 	}
 
 	@Override

@@ -28,63 +28,78 @@ public class Obfuscator {
         return versionCode >= SUPPORTED_VERSION_CODE;
     }
 
-    // Keepchat supports v5.0.38.1 and up
-    private static final int SUPPORTED_VERSION_CODE = 427;
+    // Keepchat supports v8.1.0 and up
+    private static final int SUPPORTED_VERSION_CODE = 454;
+
+    // com.snapchat.model.Snap
+    // Snap.getTimestamp()
+    public static final String SNAP_GETTIMESTAMP = "ac";
+    // Snap.isVideo()
+    public static final String SNAP_ISVIDEO = "al";
 
     // ReceivedSnap class
     public static final String RECEIVEDSNAP_CLASS = "com.snapchat.android.model.ReceivedSnap";
     // ReceivedSnap.getImageBitmap(Context)
     public static final String RECEIVEDSNAP_GETIMAGEBITMAP = "b";
-    // ReceivedSnap.getVideoUri()
-    public static final String RECEIVEDSNAP_GETVIDEOURI = "N";
     // ReceivedSnap.markViewed()
     public static final String RECEIVEDSNAP_MARKVIEWED = "p";
     // ReceivedSnap.getSender()
     public static final String RECEIVEDSNAP_GETSENDER = "j";
+    // ReceivedSnap.isScreenshotted()
+    public static final String RECEIVEDSNAP_ISSCREENSHOTTED = "F";
 
     // StorySnap class
     public static final String STORYSNAP_CLASS = "com.snapchat.android.model.StorySnap";
     // StorySnap.getImageBitmap(Context)
     public static final String STORYSNAP_GETIMAGEBITMAP = "a";
     // StorySnap.getSender()
-    public static final String STORYSNAP_GETSENDER = "aD";
+    public static final String STORYSNAP_GETSENDER = "aB";
 
-    // SnapView class
-    public static final String SNAPVIEW_CLASS = "com.snapchat.android.ui.SnapView";
-    // SnapView.showImage(Boolean, Boolean, Boolean, Boolean)
-    public static final String SNAPVIEW_SHOWIMAGE = "b";
-    // SnapView.showVideo(Boolean, Boolean, Boolean, Boolean)
-    public static final String SNAPVIEW_SHOWVIDEO = "a";
+    // ImageSnapRenderer Class
+    public static final String IMAGESNAPRENDERER_CLASS = "com.snapchat.android.rendering.image.ImageSnapRenderer";
+    // ImageSnapRenderer.start()
+    public static final String IMAGESNAPRENDERER_START = "a";
+    // ImageView instance in ImageSnapRenderer
+    public static final String IMAGESNAPRENDERER_IMAGEVIEW = "h";
+    // ReceivedSnap instance in ImageSnapRenderer
+    public static final String IMAGESNAPRENDERER_RECEIVEDSNAP = "i";
 
-    // com.snapchat.model.Snap
-    // Snap.getTimestamp()
-    public static final String SNAP_GETTIMESTAMP = "ac";
+    // VideoSnapRenderer Class
+    public static final String VIDEOSNAPRENDERER_CLASS = "com.snapchat.android.rendering.video.VideoSnapRenderer";
+    // VideoSnapRenderer.start()
+    public static final String VIDEOSNAPRENDERER_START = "a";
+    // VideoSnapRenderer.loadResources(VideoSnapResources)
+    public static final String VIDEOSNAPRENDERER_LOADRES = "a";
+    // ReceivedSnap instance in VideoSnapRenderer
+    public static final String VIDEOSNAPRENDERER_RECEIVEDSNAP = "u";
+    // SnapVideoView instance in VideoSnapRenderer
+    public static final String VIDEOSNAPRENDERER_SNAPVIDEOVIEW = "o";
+
+    // VideoSnapResources class
+    public static final String VIDEOSNAPRESOURCES_CLASS = "com.snapchat.android.rendering.video.VideoSnapResources";
+    // VideoSnapResources.getBitmap()
+    public static final String VIDEOSNAPRESOURCES_GETBITMAP = "c";
+    // VideoSnapResources.getUri()
+    public static final String VIDEOSNAPRESOURCES_GETVIDEOURI = "b";
+
 
     // SnapPreviewFragment class
     public static final String SNAPPREVIEWFRAGMENT_CLASS = "com.snapchat.android.SnapPreviewFragment";
     // SnapPreviewFragment.prepareSnapForSending()
-    public static final String SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING = "E";
-    // Snapbryo instance variable name in SnapPreviewFragment
-    public static final String SNAPPREVIEWFRAGMENT_VAR_SNAPBYRO = "s";
+    public static final String SNAPPREVIEWFRAGMENT_PREPARESNAPFORSENDING = "F";
+    // AnnotatedMediabryo instance variable name in SnapPreviewFragment
+    public static final String SNAPPREVIEWFRAGMENT_VAR_MEDIABYRO = "w";
 
-    // com.snapchat.android.model.Snapbryo
-    // Snapbryo.getImageBitmap()
-    public static final String SNAPBRYO_GETSNAPBITMAP = "B";
-    // Snapbryo.getVideoUri()
-    public static final String SNAPBRYO_VIDEOURI = "D";
-    // Snapbryo.isImage()
-    public static final String SNAPBRYO_ISIMAGE = "y";
+    // SnapImagebryo Class
+    public static final String SNAPIMAGEBRYO_CLASS = "com.snapchat.android.model.SnapImagebryo";
 
-    // SnapUpdate class
-    public static final String SNAPUPDATE_CLASS = "com.snapchat.android.model.server.SnapUpdate";
+    // com.snapchat.android.model.AnnotatedMediabryo
+    // AnnotatedMediabryo.getImageBitmap()
+    public static final String MEDIABRYO_GETSNAPBITMAP = "j";
 
-    // StoryViewRecord class
-    public static final String STORYVIEWRECORD_CLASS = "com.snapchat.android.model.StoryViewRecord";
-
-    // SnapStateMessage class
-    public static final String SNAPSTATEMESSAGE_BUILDER_CLASS = "com.snapchat.android.model.server.chat.SnapStateMessage.Builder";
-    // SnapStateMessage.Builder.setScreenshotCount(Long)
-    public static final String SETSCREENSHOTCOUNT = "setScreenshotCount";
+    // com.snapchat.android.model.Mediabryo
+    // Mediabryo.getVideoUri()
+    public static final String MEDIABRYO_VIDEOURI = "q";
 
     // ScreenshotDetector class
     public static final String SCREENSHOTDETECTOR_CLASS = "com.snapchat.android.screenshotdetection.ScreenshotDetector";
