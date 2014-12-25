@@ -423,8 +423,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             mSaveSentSnaps = sharedPreferences.getBoolean("pref_key_save_sent_snaps", mSaveSentSnaps);
             mSortByCategory = sharedPreferences.getBoolean("pref_key_sort_files_mode", mSortByCategory);
             mSortByUsername = sharedPreferences.getBoolean("pref_key_sort_files_username", mSortByUsername);
-            // mDebugging = sharedPreferences.getBoolean("pref_key_debug_mode", mDebugging);
-            mDebugging = true;
+            mDebugging = sharedPreferences.getBoolean("pref_key_debug_mode", mDebugging);
             Logger.setDebuggingEnabled(mDebugging);
 
             if (mDebugging) {
