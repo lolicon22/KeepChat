@@ -18,9 +18,7 @@
  */
 package com.ramis.keepchat;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.res.XModuleResources;
 import android.graphics.Bitmap;
@@ -36,13 +34,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
@@ -201,8 +197,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                         return;
                     }
 
-                    boolean askToSave = ((snapType == SnapType.SNAP && mModeSnapImage == SAVE_ASK) || (snapType == SnapType.STORY && mModeStoryImage == SAVE_ASK));
-                    processMedia(snapType, MediaType.IMAGE, receivedSnap, context, image, null, askToSave);
+                    processMedia(snapType, MediaType.IMAGE, receivedSnap, context, image, null);
                 }
             });
 
@@ -226,8 +221,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                         return;
                     }
 
-                    boolean askToSave = ((snapType == SnapType.SNAP && mModeSnapVideo == SAVE_ASK) || (snapType == SnapType.STORY && mModeStoryVideo == SAVE_ASK));
-                    processMedia(snapType, MediaType.VIDEO, receivedSnap, context, overlay, videoUri, askToSave);
+                    processMedia(snapType, MediaType.VIDEO, receivedSnap, context, overlay, videoUri);
                 }
             });
 
@@ -254,24 +248,10 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
                     // Check if instance of SnapImageBryo and thus an image or a video
                     if (snapImagebryo.isInstance(mediabryo)) {
-                        processMedia(SnapType.SENT, MediaType.IMAGE, null, context, image, null, false);
+                        processMedia(SnapType.SENT, MediaType.IMAGE, null, context, image, null);
                     } else {
                         Uri videoUri = (Uri) callMethod(mediabryo, Obfuscator.MEDIABRYO_VIDEOURI);
-                        processMedia(SnapType.SENT, MediaType.VIDEO, null, context, image, videoUri.getPath(), false);
-                    }
-                }
-            });
-
-            /**
-             * Method to mark a snap as viewed, this means the snap is about to go away.
-             * We show a dialog to save the snap, if there has to be shown one.
-             */
-            findAndHookMethod(Obfuscator.RECEIVEDSNAP_CLASS, lpparam.classLoader, Obfuscator.RECEIVEDSNAP_MARKVIEWED, new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    AskToSaveModel model = (AskToSaveModel) removeAdditionalInstanceField(param.thisObject, "ask_to_save_model");
-                    if (model != null) {
-                        showDialog(model);
+                        processMedia(SnapType.SENT, MediaType.VIDEO, null, context, image, videoUri.getPath());
                     }
                 }
             });
@@ -325,7 +305,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
         }
     }
 
-    private void processMedia(SnapType snapType, MediaType mediaType, Object receivedSnap, Context context, Bitmap image, String videoUri, boolean askToSave) {
+    private void processMedia(SnapType snapType, MediaType mediaType, Object receivedSnap, Context context, Bitmap image, String videoUri) {
         String sender = null;
         if (snapType == SnapType.SNAP) {
             sender = (String) callMethod(receivedSnap, Obfuscator.RECEIVEDSNAP_GETSENDER);
@@ -349,11 +329,8 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             return;
         }
 
-        AskToSaveModel.Builder modelBuilder = new AskToSaveModel.Builder(context, mediaType);
         File imageFile = new File(directory, filename + MediaType.IMAGE.fileExtension);
         File videoFile = new File(directory, filename + MediaType.VIDEO.fileExtension);
-        modelBuilder.setImageFile(imageFile);
-        modelBuilder.setVideoFile(videoFile);
 
         if (mediaType == MediaType.IMAGE) {
             if (imageFile.exists()) {
@@ -367,11 +344,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                 Logger.log("Image " + snapType.name + " has been saved");
                 Logger.log("Path: " + imageFile.toString());
 
-                if (askToSave) {
-                    setAdditionalInstanceField(receivedSnap, "ask_to_save_model", modelBuilder.build());
-                } else {
-                    runMediaScanner(context, imageFile.getAbsolutePath());
-                }
+                runMediaScanner(context, imageFile.getAbsolutePath());
             } else {
                 showToast(context, mResources.getString(R.string.image_not_saved));
             }
@@ -388,10 +361,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                 Logger.log("Video " + snapType.name + " has been saved (" + (hasOverlay ? "has" : "no") + " overlay)");
                 Logger.log("Path: " + videoFile.toString());
 
-                if (askToSave) {
-                    modelBuilder.setHasOverlay(hasOverlay);
-                    setAdditionalInstanceField(receivedSnap, "ask_to_save_model", modelBuilder.build());
-                } else if (hasOverlay) {
+                if (hasOverlay) {
                     runMediaScanner(context, videoFile.getAbsolutePath(), imageFile.getAbsolutePath());
                 } else {
                     runMediaScanner(context, videoFile.getAbsolutePath());
@@ -529,51 +499,6 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             }
         }
     }
-
-	private void showDialog(final AskToSaveModel model) {
-        Logger.log("Showing dialog asking to save snap");
-		AlertDialog.Builder builder = new AlertDialog.Builder(model.getContext());
-
-		if (model.getMediaType() == MediaType.IMAGE) {
-            builder.setMessage(mResources.getString(R.string.save_dialog_message_image));
-            builder.setTitle(mResources.getString(R.string.save_dialog_title_image));
-		} else {
-            builder.setMessage(mResources.getString(R.string.save_dialog_message_video));
-            builder.setMessage(mResources.getString(R.string.save_dialog_title_video));
-		}
-
-		builder.setPositiveButton(mResources.getString(R.string.save_button), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Logger.log("User wants to save, keeping files");
-                if (model.getMediaType() == MediaType.IMAGE) {
-                    runMediaScanner(model.getContext(), model.getImageFile().getAbsolutePath());
-                } else if (model.hasOverlay()) {
-                    runMediaScanner(model.getContext(), model.getVideoFile().getAbsolutePath(), model.getImageFile().getAbsolutePath());
-                } else {
-                    runMediaScanner(model.getContext(), model.getVideoFile().getAbsolutePath());
-                }
-            }
-        });
-
-		builder.setNegativeButton(mResources.getString(R.string.discard_button), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-
-		builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-			@Override
-			public void onCancel(DialogInterface dialog) {
-                if ((!model.getImageFile().exists() || model.getImageFile().delete()) && (!model.getVideoFile().exists() || model.getVideoFile().delete())) {
-                    Logger.log("User has canceled, file(s) deleted successfully");
-                } else {
-                    Logger.log("User has canceled, could not delete file(s)");
-                }
-			}
-		});
-
-        builder.show();
-	}
 
 	@Override
 	public void initZygote(StartupParam startupParam) throws Throwable {
