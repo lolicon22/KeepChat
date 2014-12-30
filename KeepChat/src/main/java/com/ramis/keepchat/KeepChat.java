@@ -70,6 +70,8 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
     // Length of toasts
     public static final int TOAST_LENGTH_SHORT = 0;
     public static final int TOAST_LENGTH_LONG = 1;
+    // Minimum timer duration disabled
+    public static final int TIMER_MINIMUM_DISABLED = 0;
 
     // Preferences and their default values
     public int mModeSnapImage = SAVE_AUTO;
@@ -78,6 +80,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
     public int mModeStoryVideo = SAVE_AUTO;
     public boolean mToastEnabled = true;
     public int mToastLength = TOAST_LENGTH_LONG;
+    public int mTimerMinimum = TIMER_MINIMUM_DISABLED;
     public String mSavePath = Environment.getExternalStorageDirectory().toString() + "/keepchat";
     public boolean mSaveSentSnaps = false;
     public boolean mSortByCategory = true;
@@ -334,6 +337,21 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                 }
             });
 
+
+            /**
+             * If the snap's duration is under the limit, set it to the limit.
+             */
+            findAndHookMethod(Obfuscator.RECEIVEDSNAP_CLASS, lpparam.classLoader, "K", new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    Double currentResult = (Double) param.getResult();
+                    if (mTimerMinimum != TIMER_MINIMUM_DISABLED && currentResult < mTimerMinimum) {
+                        param.setResult(mTimerMinimum);
+                    }
+                }
+            });
+
+
             /**
              * Always return false when asked if an ReceivedSnap was screenshotted.
              */
@@ -472,6 +490,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             mModeStoryVideo = sharedPreferences.getInt("pref_key_stories_videos", mModeStoryVideo);
             mToastEnabled = sharedPreferences.getBoolean("pref_key_toasts_checkbox", mToastEnabled);
             mToastLength = sharedPreferences.getInt("pref_key_toasts_duration", mToastLength);
+            mTimerMinimum = sharedPreferences.getInt("pref_key_timer_minimum", mTimerMinimum);
             mSavePath = sharedPreferences.getString("pref_key_save_location", mSavePath);
             mSaveSentSnaps = sharedPreferences.getBoolean("pref_key_save_sent_snaps", mSaveSentSnaps);
             mSortByCategory = sharedPreferences.getBoolean("pref_key_sort_files_mode", mSortByCategory);
@@ -489,6 +508,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                 Logger.log("~ mModeStoryVideo: " + saveModes[mModeStoryVideo]);
                 Logger.log("~ mToastEnabled: " + mToastEnabled);
                 Logger.log("~ mToastLength: " + mToastLength);
+                Logger.log("~ mTimerMinimum: " + mTimerMinimum);
                 Logger.log("~ mSavePath: " + mSavePath);
                 Logger.log("~ mSaveSentSnaps: " + mSaveSentSnaps);
                 Logger.log("~ mSortByCategory: " + mSortByCategory);

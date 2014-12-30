@@ -57,6 +57,13 @@
             android:entryValues="@array/pref_toasts_duration_values"
             android:key="pref_key_toasts_duration"
             android:title="@string/pref_toasts_duration_title" />
+
+        <com.ramis.keepchat.BetterListPreference
+            android:defaultValue="@string/pref_timer_minimum_default_value"
+            android:entries="@array/pref_timer_minimum_entries"
+            android:entryValues="@array/pref_timer_minimum_values"
+            android:key="pref_key_timer_minimum"
+            android:title="@string/pref_timer_minimum_title" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_category_folder">
