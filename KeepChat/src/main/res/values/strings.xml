@@ -29,30 +29,11 @@
         <item>2</item>
     </string-array>
 
-    <!-- Toasts -->
-    <string name="pref_category_toasts">Toasts</string>
-
-    <string name="pref_toasts_title">Show toast messages</string>
-    <string name="pref_toasts_summary_on">Toast messages are enabled</string>
-    <string name="pref_toasts_summary_off">Toast messages are disabled</string>
-
-
-    <string name="pref_toasts_duration_title">Toast duration</string>
-    <string name="pref_toasts_duration_default_value" translatable="false">0</string>
-
-    <string-array name="pref_toasts_duration_entries">
-        <item>Short</item>
-        <item>Long</item>
-    </string-array>
-    <string-array name="pref_toasts_duration_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-    </string-array>
-
+    <!-- Viewing settings -->
+    <string name="pref_category_viewing">Viewing</string>
 
     <string name="pref_timer_minimum_title">Minimum timer duration</string>
     <string name="pref_timer_minimum_default_value" translatable="false">0</string>
-
     <string-array name="pref_timer_minimum_entries">
         <item>Disabled</item>
         <item>3 seconds</item>
@@ -68,6 +49,20 @@
         <item>10</item>
     </string-array>
 
+    <string name="pref_toasts_title">Show toast messages</string>
+    <string name="pref_toasts_summary_on">Toast messages are enabled</string>
+    <string name="pref_toasts_summary_off">Toast messages are disabled</string>
+
+    <string name="pref_toasts_duration_title">Toast duration</string>
+    <string name="pref_toasts_duration_default_value" translatable="false">0</string>
+    <string-array name="pref_toasts_duration_entries">
+        <item>Short</item>
+        <item>Long</item>
+    </string-array>
+    <string-array name="pref_toasts_duration_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
 
     <!-- Folder settings -->
     <string name="pref_category_folder">Folder</string>
@@ -103,16 +98,6 @@
 
     <string name="pref_support_title">Support</string>
     <string name="pref_support_summary">Navigate to the XDA-thread, please read the OP first if you\'re facing problems.</string>
-
-    <!-- Ask to Save dialog -->
-    <string name="save_dialog_title_image">Save image</string>
-    <string name="save_dialog_title_video">Save video</string>
-
-    <string name="save_dialog_message_image">Would you like to save this image?</string>
-    <string name="save_dialog_message_video">Would you like to save this video?</string>
-
-    <string name="save_button">Save</string>
-    <string name="discard_button">Discard</string>
 
     <!-- Toast messages -->
     <string name="image_exists">This image already exists.</string>
