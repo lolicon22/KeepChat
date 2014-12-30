@@ -11,14 +11,10 @@
   <string name="pref_save_sent_snaps_title">Gesendete Snaps</string>
   <string name="pref_save_sent_snaps_summary_on">Gesendete Snaps werden gespeichert</string>
   <string name="pref_save_sent_snaps_summary_off">Gesendete Snaps werden nicht gespeichert</string>
-  <string-array name="pref_snaps_entries">
-    <item>Speichere automatisch</item>
-    <item>Fragen, ob gespeichert werden soll</item>
-    <item>Nicht speichern</item>
-  </string-array>
-  <string-array name="pref_stories_entries">
-    <item>Speichere automatisch</item>
-    <item>Nicht speichern</item>
+  <string-array name="pref_save_mode_entries">
+    <item>Automatisch speichern</item>
+    <item>Streichen um zu speichern</item>
+    <item>Nicht gespeichert</item>
   </string-array>
   <string name="pref_category_toasts">Toasts</string>
   <string name="pref_toasts_title">Zeige Toast-Benachrichtigungen</string>

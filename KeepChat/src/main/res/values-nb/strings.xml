@@ -11,13 +11,9 @@
   <string name="pref_save_sent_snaps_title">Sendte snapper</string>
   <string name="pref_save_sent_snaps_summary_on">Snapper du sender vil bli lagret</string>
   <string name="pref_save_sent_snaps_summary_off">Snapper du sender vil ikke bli lagret</string>
-  <string-array name="pref_snaps_entries">
+  <string-array name="pref_save_mode_entries">
     <item>Lagre automatisk</item>
-    <item>Spør om å lagre</item>
-    <item>Ikke lagre</item>
-  </string-array>
-  <string-array name="pref_stories_entries">
-    <item>Lagre automatisk</item>
+    <item>Sweep to save</item>
     <item>Ikke lagre</item>
   </string-array>
   <string name="pref_category_toasts">Popup-melding</string>

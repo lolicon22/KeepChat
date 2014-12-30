@@ -11,13 +11,9 @@
   <string name="pref_save_sent_snaps_title">Wysyłane snapy</string>
   <string name="pref_save_sent_snaps_summary_on">Wysyłane snapy będą zapisywane</string>
   <string name="pref_save_sent_snaps_summary_off">Wysyłane snapy nie będą zapisywane</string>
-  <string-array name="pref_snaps_entries">
+  <string-array name="pref_save_mode_entries">
     <item>Zapisuj automatycznie</item>
-    <item>Pytaj czy zapisać</item>
-    <item>Nie zapisuj</item>
-  </string-array>
-  <string-array name="pref_stories_entries">
-    <item>Zapisuj automatycznie</item>
+    <item>Sweep to save</item>
     <item>Nie zapisuj</item>
   </string-array>
   <string name="pref_category_toasts">Powiadomienia Toast</string>

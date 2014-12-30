@@ -11,13 +11,9 @@
   <string name="pref_save_sent_snaps_title">Snap inviati</string>
   <string name="pref_save_sent_snaps_summary_on">Gli snap inviati saranno salvati</string>
   <string name="pref_save_sent_snaps_summary_off">Gli snap inviati non saranno salvati</string>
-  <string-array name="pref_snaps_entries">
+  <string-array name="pref_save_mode_entries">
     <item>Salvataggio automatico</item>
-    <item>Chiedi prima di salvare</item>
-    <item>Non salvare</item>
-  </string-array>
-  <string-array name="pref_stories_entries">
-    <item>Salvataggio automatico</item>
+    <item>Sweep to save</item>
     <item>Non salvare</item>
   </string-array>
   <string name="pref_category_toasts">Toast</string>

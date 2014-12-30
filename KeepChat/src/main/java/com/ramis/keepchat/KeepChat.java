@@ -173,7 +173,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                     setAdditionalInstanceField(param.thisObject, "snap_type", SnapType.STORY);
 
                     if (mModeStoryImage == SAVE_S2S) {
-                        Logger.log("Mode: sweep2save");
+                        Logger.log("Mode: sweep to save");
                         gestureModel = new GestureModel(param.thisObject, screenHeight);
                     } else {
                         Logger.log("Mode: auto save");

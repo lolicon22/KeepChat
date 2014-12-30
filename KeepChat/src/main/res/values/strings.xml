@@ -20,23 +20,14 @@
     <string name="pref_save_sent_snaps_summary_on">Sent snaps will be saved</string>
     <string name="pref_save_sent_snaps_summary_off">Sent snaps won\'t be saved</string>
 
-    <string-array name="pref_snaps_entries">
+    <string-array name="pref_save_mode_entries">
         <item>Save automatically</item>
-        <item>Ask to save</item>
+        <item>Sweep to save</item>
         <item>Don\'t save</item>
     </string-array>
-    <string-array name="pref_snaps_values" translatable="false">
+    <string-array name="pref_save_mode_values" translatable="false">
         <item>0</item>
         <item>1</item>
-        <item>2</item>
-    </string-array>
-
-    <string-array name="pref_stories_entries">
-        <item>Save automatically</item>
-        <item>Don\'t save</item>
-    </string-array>
-    <string-array name="pref_stories_values" translatable="false">
-        <item>0</item>
         <item>2</item>
     </string-array>
 

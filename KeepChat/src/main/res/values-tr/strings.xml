@@ -11,13 +11,9 @@
   <string name="pref_save_sent_snaps_title">Gönderi̇lmi̇ş snapler</string>
   <string name="pref_save_sent_snaps_summary_on">Gönderi̇len snapler kaydedi̇lecek</string>
   <string name="pref_save_sent_snaps_summary_off">Gönderilen snapler kaydedilmeyecek</string>
-  <string-array name="pref_snaps_entries">
+  <string-array name="pref_save_mode_entries">
     <item>Otomati̇k olarak kaydet</item>
-    <item>Kaydetmek i̇çi̇n sor</item>
-    <item>Kaydetme</item>
-  </string-array>
-  <string-array name="pref_stories_entries">
-    <item>Otomati̇k olarak kaydet</item>
+    <item>Sweep to save</item>
     <item>Kaydetme</item>
   </string-array>
   <string name="pref_category_toasts">Toast\'lar</string>
