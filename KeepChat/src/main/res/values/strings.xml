@@ -1,6 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-    tools:locale="en"
-    tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="en">
 
     <string name="app_name" translatable="false">Keepchat</string>
     <string name="keepchat_settings">Keepchat Settings</string>

@@ -8,8 +8,12 @@ android {
         applicationId "com.ramis.keepchat"
         minSdkVersion 15
         targetSdkVersion 19
-        versionCode 63
-        versionName "4.1.0"
+        versionCode 64
+        versionName "4.2.0-beta1"
+    }
+
+    lintOptions {
+        disable 'MissingTranslation'
     }
 }
 
