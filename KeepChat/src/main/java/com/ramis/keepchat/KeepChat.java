@@ -26,6 +26,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.MotionEvent;
 import android.widget.Toast;
 
 import java.io.File;
@@ -34,11 +35,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
@@ -57,9 +60,12 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
     private static XModuleResources mResources;
     private XSharedPreferences sharedPreferences;
 
+    private GestureModel gestureModel;
+    private int screenHeight;
+
     // Modes for saving Snapchats
     public static final int SAVE_AUTO = 0;
-    public static final int SAVE_ASK = 1;
+    public static final int SAVE_S2S = 1;
     public static final int DO_NOT_SAVE = 2;
     // Length of toasts
     public static final int TOAST_LENGTH_SHORT = 0;
@@ -98,6 +104,9 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             if (!Obfuscator.isSupported(piSnapChat.versionCode)) {
                 Logger.log("This snapchat version is unsupported, now quiting", true, true);
             }
+
+            // Get screen height for S2S
+            screenHeight = context.getResources().getDisplayMetrics().heightPixels;
         } catch (Exception e) {
             Logger.log("Exception while trying to get version info", e);
             return;
@@ -118,13 +127,24 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
                     refreshPreferences();
                     Logger.log("----------------------- KEEPCHAT ------------------------", false);
+                    Logger.log("Image snap opened");
 
                     if (mModeSnapImage == DO_NOT_SAVE) {
-                        Logger.log("Not saving image snap");
+                        Logger.log("Mode: don't save");
+                        return;
+                    }
+
+                    setAdditionalInstanceField(param.thisObject, "snap_bitmap", param.getResult());
+                    setAdditionalInstanceField(param.thisObject, "snap_media_type", MediaType.IMAGE);
+                    setAdditionalInstanceField(param.thisObject, "snap_type", SnapType.SNAP);
+
+                    if (mModeSnapImage == SAVE_S2S) {
+                        Logger.log("Mode: sweep2save");
+                        gestureModel = new GestureModel(param.thisObject, screenHeight);
                     } else {
-                        Logger.log("Image snap opened");
-                        setAdditionalInstanceField(param.thisObject, "image_bitmap", param.getResult());
-                        setAdditionalInstanceField(param.thisObject, "image_type", SnapType.SNAP);
+                        Logger.log("Mode: auto save");
+                        setAdditionalInstanceField(param.thisObject, "snap_save_auto", true);
+                        gestureModel = null;
                     }
                 }
             });
@@ -141,13 +161,24 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
                     refreshPreferences();
                     Logger.log("----------------------- KEEPCHAT ------------------------", false);
+                    Logger.log("Image story opened");
 
                     if (mModeStoryImage == DO_NOT_SAVE) {
-                        Logger.log("Not saving image story");
+                        Logger.log("Mode: don't save");
+                        return;
+                    }
+
+                    setAdditionalInstanceField(param.thisObject, "snap_bitmap", param.getResult());
+                    setAdditionalInstanceField(param.thisObject, "snap_media_type", MediaType.IMAGE);
+                    setAdditionalInstanceField(param.thisObject, "snap_type", SnapType.STORY);
+
+                    if (mModeStoryImage == SAVE_S2S) {
+                        Logger.log("Mode: sweep2save");
+                        gestureModel = new GestureModel(param.thisObject, screenHeight);
                     } else {
-                        Logger.log("Image story opened");
-                        setAdditionalInstanceField(param.thisObject, "image_bitmap", param.getResult());
-                        setAdditionalInstanceField(param.thisObject, "image_type", SnapType.STORY);
+                        Logger.log("Mode: auto save");
+                        setAdditionalInstanceField(param.thisObject, "snap_save_auto", true);
+                        gestureModel = null;
                     }
                 }
             });
@@ -160,20 +191,32 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     refreshPreferences();
-                    Logger.log("----------------------- KEEPCHAT ------------------------", false);
 
                     Object receivedSnap = getObjectField(param.thisObject, Obfuscator.VIDEOSNAPRENDERER_RECEIVEDSNAP);
                     // Check if the video is a snap or a story
                     SnapType snapType = (storySnapClass.isInstance(receivedSnap) ? SnapType.STORY : SnapType.SNAP);
 
+                    Logger.log("----------------------- KEEPCHAT ------------------------", false);
+                    Logger.log("Video " + snapType.name + " opened");
+
                     if ((snapType == SnapType.SNAP && mModeSnapVideo == DO_NOT_SAVE) || (snapType == SnapType.STORY && mModeStoryVideo == DO_NOT_SAVE)) {
-                        Logger.log("Not saving video " + snapType.name);
+                        Logger.log("Mode: don't save");
+                        return;
+                    }
+
+                    Object videoSnapResources = param.args[0];
+                    setAdditionalInstanceField(receivedSnap, "snap_bitmap", callMethod(videoSnapResources, Obfuscator.VIDEOSNAPRESOURCES_GETBITMAP));
+                    setAdditionalInstanceField(receivedSnap, "snap_video_uri", callMethod(videoSnapResources, Obfuscator.VIDEOSNAPRESOURCES_GETVIDEOURI));
+                    setAdditionalInstanceField(receivedSnap, "snap_media_type", MediaType.VIDEO);
+                    setAdditionalInstanceField(receivedSnap, "snap_type", snapType);
+
+                    if ((snapType == SnapType.SNAP && mModeSnapVideo == SAVE_S2S) || (snapType == SnapType.STORY && mModeStoryVideo == SAVE_S2S)) {
+                        Logger.log("Mode: sweep2save");
+                        gestureModel = new GestureModel(receivedSnap, screenHeight);
                     } else {
-                        Logger.log("Video " + snapType.name + " opened");
-                        Object videoSnapResources = param.args[0];
-                        setAdditionalInstanceField(param.thisObject, "video_overlay", callMethod(videoSnapResources, Obfuscator.VIDEOSNAPRESOURCES_GETBITMAP));
-                        setAdditionalInstanceField(param.thisObject, "video_uri", callMethod(videoSnapResources, Obfuscator.VIDEOSNAPRESOURCES_GETVIDEOURI));
-                        setAdditionalInstanceField(param.thisObject, "video_type", snapType);
+                        Logger.log("Mode: auto save");
+                        setAdditionalInstanceField(receivedSnap, "snap_save_auto", true);
+                        gestureModel = null;
                     }
                 }
             });
@@ -186,18 +229,12 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     Object receivedSnap = getObjectField(param.thisObject, Obfuscator.IMAGESNAPRENDERER_RECEIVEDSNAP);
+                    if (removeAdditionalInstanceField(receivedSnap, "snap_save_auto") == null) return;
+
                     Object imageView = getObjectField(param.thisObject, Obfuscator.IMAGESNAPRENDERER_IMAGEVIEW);
                     Context context = (Context) callMethod(imageView, "getContext");
 
-                    Bitmap image = (Bitmap) removeAdditionalInstanceField(receivedSnap, "image_bitmap");
-                    SnapType snapType = (SnapType) removeAdditionalInstanceField(receivedSnap, "image_type");
-
-                    if (image == null) {
-                        Logger.log("Image is null");
-                        return;
-                    }
-
-                    processMedia(snapType, MediaType.IMAGE, receivedSnap, context, image, null);
+                    saveReceivedSnap(context, receivedSnap);
                 }
             });
 
@@ -209,21 +246,61 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     Object receivedSnap = getObjectField(param.thisObject, Obfuscator.VIDEOSNAPRENDERER_RECEIVEDSNAP);
+                    if (removeAdditionalInstanceField(receivedSnap, "snap_save_auto") == null) return;
+
                     Object snapVideoView = getObjectField(param.thisObject, Obfuscator.VIDEOSNAPRENDERER_SNAPVIDEOVIEW);
                     Context context = (Context) callMethod(snapVideoView, "getContext");
 
-                    Bitmap overlay = (Bitmap) removeAdditionalInstanceField(param.thisObject, "video_overlay");
-                    String videoUri = (String) removeAdditionalInstanceField(param.thisObject, "video_uri");
-                    SnapType snapType = (SnapType) removeAdditionalInstanceField(param.thisObject, "video_type");
-
-                    if (videoUri == null) {
-                        Logger.log("video is null");
-                        return;
-                    }
-
-                    processMedia(snapType, MediaType.VIDEO, receivedSnap, context, overlay, videoUri);
+                    saveReceivedSnap(context, receivedSnap);
                 }
             });
+
+            XC_MethodHook gestureMethodHook = new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    // Check if it should be saved or already is saved
+                    if (gestureModel == null || gestureModel.isSaved()) return;
+
+                    MotionEvent motionEvent = (MotionEvent) param.args[0];
+                    if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
+                        Object snapView = getObjectField(param.thisObject, Obfuscator.SNAPLISTITEMHANDLER_IMAGEVIEW);
+                        boolean viewing = (Boolean) callMethod(snapView, Obfuscator.SNAPVIEW_ISVIEWING);
+                        if (!viewing) return;
+
+                        // Result true means the event is handled
+                        param.setResult(true);
+
+                        if (!gestureModel.isInitialized()) {
+                            gestureModel.initialize(motionEvent.getRawX(), motionEvent.getRawY());
+                        } else if (!gestureModel.isSaved()){
+                            float deltaX = (motionEvent.getRawX() - gestureModel.getStartX());
+                            float deltaY = (motionEvent.getRawY() - gestureModel.getStartY());
+                            // Pythagorean theorem to calculate the distance between to points
+                            float currentDistance = (float) Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+
+                            // Distance is bigger than previous, re-set reference point
+                            if (currentDistance > gestureModel.getDistance()) {
+                                gestureModel.setDistance(currentDistance);
+                            } else { // On its way back
+                                // Meaning it's at least 70% back to the start poing and the gesture was longer then 20% of the screen
+                                if (currentDistance < gestureModel.getDistance() * 0.3 && gestureModel.getDistance() > 0.2 * gestureModel.getDisplayHeight()) {
+                                    gestureModel.setSaved();
+                                    Context context = (Context) callMethod(snapView, "getContext");
+                                    saveReceivedSnap(context, gestureModel.getReceivedSnap());
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            // Hook gesture handling for snaps
+            findAndHookMethod(Obfuscator.SNAPLISTITEMHANDLER_CLASS, lpparam.classLoader, Obfuscator.SNAPLISTITEMHANDLER_TOUCHEVENT_SNAP,
+                    MotionEvent.class, float.class, float.class, int.class, gestureMethodHook);
+
+            // Hook gesture handling for stories
+            findAndHookMethod(Obfuscator.SNAPLISTITEMHANDLER_CLASS, lpparam.classLoader, Obfuscator.SNAPLISTITEMHANDLER_TOUCHEVENT_STORY,
+                    MotionEvent.class, float.class, float.class, int.class, gestureMethodHook);
 
             final Class<?> snapImagebryo = findClass(Obfuscator.SNAPIMAGEBRYO_CLASS, lpparam.classLoader);
 
@@ -245,13 +322,14 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                     Context context = (Context) callMethod(param.thisObject, "getActivity");
                     Object mediabryo = getObjectField(param.thisObject, Obfuscator.SNAPPREVIEWFRAGMENT_VAR_MEDIABYRO);
                     Bitmap image = (Bitmap) callMethod(mediabryo, Obfuscator.MEDIABRYO_GETSNAPBITMAP);
+                    String fileName = dateFormat.format(new Date());
 
                     // Check if instance of SnapImageBryo and thus an image or a video
                     if (snapImagebryo.isInstance(mediabryo)) {
-                        processMedia(SnapType.SENT, MediaType.IMAGE, null, context, image, null);
+                        saveSnap(SnapType.SENT, MediaType.IMAGE, context, image, null, fileName, null);
                     } else {
                         Uri videoUri = (Uri) callMethod(mediabryo, Obfuscator.MEDIABRYO_VIDEOURI);
-                        processMedia(SnapType.SENT, MediaType.VIDEO, null, context, image, videoUri.getPath());
+                        saveSnap(SnapType.SENT, MediaType.VIDEO, context, image, videoUri.getPath(), fileName, null);
                     }
                 }
             });
@@ -305,7 +383,10 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
         }
     }
 
-    private void processMedia(SnapType snapType, MediaType mediaType, Object receivedSnap, Context context, Bitmap image, String videoUri) {
+    private void saveReceivedSnap(Context context, Object receivedSnap) {
+        MediaType mediaType = (MediaType) removeAdditionalInstanceField(receivedSnap, "snap_media_type");
+        SnapType snapType = (SnapType) removeAdditionalInstanceField(receivedSnap, "snap_type");
+
         String sender = null;
         if (snapType == SnapType.SNAP) {
             sender = (String) callMethod(receivedSnap, Obfuscator.RECEIVEDSNAP_GETSENDER);
@@ -313,14 +394,16 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             sender = (String) callMethod(receivedSnap, Obfuscator.STORYSNAP_GETSENDER);
         }
 
-        String filename;
-        if (snapType == SnapType.SENT) {
-            filename = dateFormat.format(new Date());
-        } else {
-            Date timestamp = new Date((Long) callMethod(receivedSnap, Obfuscator.SNAP_GETTIMESTAMP));
-            filename = sender + "_" + dateFormat.format(timestamp);
-        }
+        Date timestamp = new Date((Long) callMethod(receivedSnap, Obfuscator.SNAP_GETTIMESTAMP));
+        String filename = sender + "_" + dateFormat.format(timestamp);
 
+        Bitmap image = (Bitmap) removeAdditionalInstanceField(receivedSnap, "snap_bitmap");
+        String videoUri = (String) removeAdditionalInstanceField(receivedSnap, "snap_video_uri");
+
+        saveSnap(snapType, mediaType, context, image, videoUri, filename, sender);
+    }
+
+    private void saveSnap(SnapType snapType, MediaType mediaType, Context context, Bitmap image, String videoUri, String filename, String sender) {
         File directory;
         try {
             directory = createFileDir(snapType.subdir, sender);
@@ -399,7 +482,7 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             if (mDebugging) {
                 Logger.log("----------------------- KEEPCHAT SETTINGS -----------------------", false);
                 Logger.log("Preferences have changed:");
-                String[] saveModes = {"SAVE_AUTO", "SAVE_ASK", "DO_NOT_SAVE"};
+                String[] saveModes = {"SAVE_AUTO", "SAVE_S2S", "DO_NOT_SAVE"};
                 Logger.log("~ mModeSnapImage: " + saveModes[mModeSnapImage]);
                 Logger.log("~ mModeSnapVideo: " + saveModes[mModeSnapVideo]);
                 Logger.log("~ mModeStoryImage: " + saveModes[mModeStoryImage]);

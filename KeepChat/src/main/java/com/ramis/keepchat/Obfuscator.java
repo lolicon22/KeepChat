@@ -41,8 +41,6 @@ public class Obfuscator {
     public static final String RECEIVEDSNAP_CLASS = "com.snapchat.android.model.ReceivedSnap";
     // ReceivedSnap.getImageBitmap(Context)
     public static final String RECEIVEDSNAP_GETIMAGEBITMAP = "b";
-    // ReceivedSnap.markViewed()
-    public static final String RECEIVEDSNAP_MARKVIEWED = "p";
     // ReceivedSnap.getSender()
     public static final String RECEIVEDSNAP_GETSENDER = "j";
     // ReceivedSnap.isScreenshotted()
@@ -82,6 +80,18 @@ public class Obfuscator {
     // VideoSnapResources.getUri()
     public static final String VIDEOSNAPRESOURCES_GETVIDEOURI = "b";
 
+    // SnapListItemHandler class
+    public static final String SNAPLISTITEMHANDLER_CLASS = "com.snapchat.android.util.SnapListItemHandler";
+    // SnapListItemHandler.dispatchTouchEventSnap(MotionEvent, float, float, int)
+    public static final String SNAPLISTITEMHANDLER_TOUCHEVENT_SNAP = "a";
+    // SnapListItemHandler.dispatchTouchEventStory(MotionEvent, float, float, int)
+    public static final String SNAPLISTITEMHANDLER_TOUCHEVENT_STORY = "b";
+    // ImageView instance in SnapListItemHandler
+    public static final String SNAPLISTITEMHANDLER_IMAGEVIEW = "d";
+
+    // com.snapchat.android.ui.SnapView
+    // SnapView.isViewing()
+    public static final String SNAPVIEW_ISVIEWING = "b";
 
     // SnapPreviewFragment class
     public static final String SNAPPREVIEWFRAGMENT_CLASS = "com.snapchat.android.SnapPreviewFragment";
