@@ -5,6 +5,11 @@
   <string name="pref_category_snapchats">Сохранение</string>
   <string name="pref_save_stories_images">Фото истории</string>
   <string name="pref_save_stories_videos">Видео истории</string>
+  <string-array name="pref_save_mode_entries">
+    <item>Сохраняется автоматически</item>
+    <item>Sweep to save</item>
+    <item>Не сохранять</item>
+  </string-array>
   <string-array name="pref_toasts_duration_entries">
     <item>Короткая</item>
     <item>Длинная</item>
@@ -18,10 +23,6 @@
   <string name="pref_about">Подробнее</string>
   <string name="pref_donate_title">Помочь проекту</string>
   <string name="pref_support_title">Техподдержка</string>
-  <string name="save_dialog_title_image">Сохранить фото</string>
-  <string name="save_dialog_title_video">Сохранить видео</string>
-  <string name="save_button">Сохранить</string>
-  <string name="discard_button">Отмена</string>
   <string name="image_exists">Это фото уже есть.</string>
   <string name="video_exists">Это видео уже есть.</string>
   <string name="image_saved">Это фото сохранено.</string>

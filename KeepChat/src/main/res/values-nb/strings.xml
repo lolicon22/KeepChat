@@ -13,10 +13,9 @@
   <string name="pref_save_sent_snaps_summary_off">Snapper du sender vil ikke bli lagret</string>
   <string-array name="pref_save_mode_entries">
     <item>Lagre automatisk</item>
-    <item>Sweep to save</item>
+    <item>Sveip for å lagre</item>
     <item>Ikke lagre</item>
   </string-array>
-  <string name="pref_category_toasts">Popup-melding</string>
   <string name="pref_toasts_title">Vis popup-meldinger</string>
   <string name="pref_toasts_summary_on">Popup-meldinger er på</string>
   <string name="pref_toasts_summary_off">Popup-meldinger er av</string>
@@ -46,12 +45,6 @@
   <string name="pref_donate_summary">Støtt meg, kjøp øl til meg via PayPal. Donasjoner er høyt verdsatt.</string>
   <string name="pref_support_title">Støtte</string>
   <string name="pref_support_summary">Gå til XDA-siden, vennligst les OP (Original Post) først hvis du har problemer.</string>
-  <string name="save_dialog_title_image">Lagre bilde</string>
-  <string name="save_dialog_title_video">Lagre video</string>
-  <string name="save_dialog_message_image">Vil du lagre dette bildet?</string>
-  <string name="save_dialog_message_video">Vil du lagre denne videoen?</string>
-  <string name="save_button">Lagre</string>
-  <string name="discard_button">Avbryt</string>
   <string name="image_exists">Dette bildet eksisterer fra før.</string>
   <string name="video_exists">Denne videoen eksisterer fra før.</string>
   <string name="image_saved">Dette bildet er lagret.</string>

@@ -13,10 +13,18 @@
   <string name="pref_save_sent_snaps_summary_off">Les snaps envoyés ne seront pas sauvegardés</string>
   <string-array name="pref_save_mode_entries">
     <item>Sauvegarde automatique</item>
-    <item>Sweep to save</item>
+    <item>Glisser pour sauvegarder</item>
     <item>Ne pas sauvegarder</item>
   </string-array>
-  <string name="pref_category_toasts">Toasts</string>
+  <string name="pref_category_viewing">Affichage</string>
+  <string name="pref_timer_minimum_title">Durée minimale du snap</string>
+  <string-array name="pref_timer_minimum_entries">
+    <item>Désactivé</item>
+    <item>3 secondes</item>
+    <item>5 secondes</item>
+    <item>7 secondes</item>
+    <item>10 secondes</item>
+  </string-array>
   <string name="pref_toasts_title">Montrer les messages toasts</string>
   <string name="pref_toasts_summary_on">Les messages toasts sont activés</string>
   <string name="pref_toasts_summary_off">Les messages toasts sont désactivés</string>
@@ -46,12 +54,6 @@
   <string name="pref_donate_summary">Soutenez-moi, offrez-moi un bière avec PayPal. Les dons sont très appréciés.</string>
   <string name="pref_support_title">Aide</string>
   <string name="pref_support_summary">Se rendre sur le topic XDA, merci de prendre le temps de lire le premier post si vous êtes confrontés à des problèmes.</string>
-  <string name="save_dialog_title_image">Sauvegarder l\'image</string>
-  <string name="save_dialog_title_video">Sauvegarder la vidéo</string>
-  <string name="save_dialog_message_image">Voulez-vous sauvegarder cette image?</string>
-  <string name="save_dialog_message_video">Voulez-vous sauvegarder cette vidéo?</string>
-  <string name="save_button">Sauvegarde</string>
-  <string name="discard_button">Ignorer</string>
   <string name="image_exists">Cette image existe déjà.</string>
   <string name="video_exists">Cette vidéo existe déjà.</string>
   <string name="image_saved">Cette image a été sauvegardée.</string>

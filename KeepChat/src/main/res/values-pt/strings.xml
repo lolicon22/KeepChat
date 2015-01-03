@@ -16,7 +16,6 @@
     <item>Sweep to save</item>
     <item>Não guardar</item>
   </string-array>
-  <string name="pref_category_toasts">Pop-up</string>
   <string name="pref_toasts_title">Mostrar mensagem pop-up</string>
   <string name="pref_toasts_summary_on">Mensagens pop-up estão ativas</string>
   <string name="pref_toasts_summary_off">Mensagens pop-up estão desativas</string>
@@ -46,12 +45,6 @@
   <string name="pref_donate_summary">Ajude-me pagando-me uma cerveja pelo Paypal. Ficarei eternamente grato.</string>
   <string name="pref_support_title">Ajuda</string>
   <string name="pref_support_summary">Abra o thread do XDA e leia a OP primeiro se está com problemas.</string>
-  <string name="save_dialog_title_image">Guardar imagem</string>
-  <string name="save_dialog_title_video">Guardar vídeo</string>
-  <string name="save_dialog_message_image">Gostaria de guardar esta imagem?</string>
-  <string name="save_dialog_message_video">Gostaria de guardar este vídeo?</string>
-  <string name="save_button">Guardar</string>
-  <string name="discard_button">Ignorar</string>
   <string name="image_exists">Esta imagem já existe.</string>
   <string name="video_exists">Este vídeo já existe.</string>
   <string name="image_saved">Imagem guardada.</string>

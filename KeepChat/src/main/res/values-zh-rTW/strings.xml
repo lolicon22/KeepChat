@@ -11,7 +11,11 @@
   <string name="pref_save_sent_snaps_title">發出的 Snap</string>
   <string name="pref_save_sent_snaps_summary_on">發出的 Snap 將會被儲存</string>
   <string name="pref_save_sent_snaps_summary_off">發出的 Snap 將不會比儲存</string>
-  <string name="pref_category_toasts">多士（小視窗）</string>
+  <string-array name="pref_save_mode_entries">
+    <item>自動儲存</item>
+    <item>Sweep to save</item>
+    <item>不要儲存</item>
+  </string-array>
   <string name="pref_toasts_title">顯示小視窗</string>
   <string name="pref_toasts_summary_on">小視窗-啟動</string>
   <string name="pref_toasts_summary_off">小視窗-停止</string>

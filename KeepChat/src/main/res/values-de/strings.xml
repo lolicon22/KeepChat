@@ -14,9 +14,9 @@
   <string-array name="pref_save_mode_entries">
     <item>Automatisch speichern</item>
     <item>Streichen um zu speichern</item>
-    <item>Nicht gespeichert</item>
+    <item>Nicht speichern</item>
   </string-array>
-  <string name="pref_category_toasts">Toasts</string>
+  <string name="pref_category_viewing">Am betrachten</string>
   <string name="pref_toasts_title">Zeige Toast-Benachrichtigungen</string>
   <string name="pref_toasts_summary_on">Toast-Benachrichtigungen aktiviert</string>
   <string name="pref_toasts_summary_off">Toast-Benachrichtigungen deaktiviert</string>
@@ -46,12 +46,6 @@
   <string name="pref_donate_summary">Unterstütze mich! Kaufe mir ein Bier über PayPal. Spenden sind gern gesehen.</string>
   <string name="pref_support_title">Hilfe</string>
   <string name="pref_support_summary">Besuche zuerst den XDA-Thread, falls Probleme auftreten sollten.</string>
-  <string name="save_dialog_title_image">Bild speichern</string>
-  <string name="save_dialog_title_video">Video speichern</string>
-  <string name="save_dialog_message_image">Willst du dieses Bild speichern?</string>
-  <string name="save_dialog_message_video">Willst du dieses Video speichern?</string>
-  <string name="save_button">Speichern</string>
-  <string name="discard_button">Verwerfen</string>
   <string name="image_exists">Dieses Bild existiert bereits.</string>
   <string name="video_exists">Dieses Video existiert bereits.</string>
   <string name="image_saved">Bild wurde gespeichert.</string>

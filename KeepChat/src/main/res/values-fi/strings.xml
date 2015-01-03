@@ -13,10 +13,18 @@
   <string name="pref_save_sent_snaps_summary_off">Lähetettyjä snäppejä ei tallenneta</string>
   <string-array name="pref_save_mode_entries">
     <item>Tallenna automaattisesti</item>
-    <item>Sweep to save</item>
+    <item>Tallenna pyyhkäisemällä</item>
     <item>Älä tallenna</item>
   </string-array>
-  <string name="pref_category_toasts">Ponnahdusviestit</string>
+  <string name="pref_category_viewing">Snäppien katselu</string>
+  <string name="pref_timer_minimum_title">Ajastimen minimi kesto</string>
+  <string-array name="pref_timer_minimum_entries">
+    <item>Pois päältä</item>
+    <item>3 sekuntia</item>
+    <item>5 sekuntia</item>
+    <item>7 sekuntia</item>
+    <item>10 sekuntia</item>
+  </string-array>
   <string name="pref_toasts_title">Näytä ponnahdusviestit</string>
   <string name="pref_toasts_summary_on">Ponnahdusviestit ovat päällä</string>
   <string name="pref_toasts_summary_off">Ponnahdusviestit eivät ole päällä</string>
@@ -46,12 +54,6 @@
   <string name="pref_donate_summary">Tue minua, osta minulle kalja PayPalin kautta. Lahjoitukset ovat erittäin arvostettuja.</string>
   <string name="pref_support_title">Tuki</string>
   <string name="pref_support_summary">Mene sovelluksen XDA-sivulle, luethan OP postaus ensin jos kohtaat ongelmia.</string>
-  <string name="save_dialog_title_image">Tallenna kuva</string>
-  <string name="save_dialog_title_video">Tallenna video</string>
-  <string name="save_dialog_message_image">Tallenetaanko kuva?</string>
-  <string name="save_dialog_message_video">Tallenetaanko video?</string>
-  <string name="save_button">Tallenna</string>
-  <string name="discard_button">Ohita</string>
   <string name="image_exists">Tämä kuva on jo tallenettu.</string>
   <string name="video_exists">Tämä video on jo tallenettu.</string>
   <string name="image_saved">Kuva tallennettu.</string>

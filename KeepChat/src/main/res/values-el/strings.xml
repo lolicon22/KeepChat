@@ -13,10 +13,18 @@
   <string name="pref_save_sent_snaps_summary_off">Σταλθέντα snaps δεν θα αποθηκεύονται</string>
   <string-array name="pref_save_mode_entries">
     <item>Αυτόματη αποθήκευση</item>
-    <item>Sweep to save</item>
+    <item>σαρώστε για αποθήκευση</item>
     <item>Να μην αποθηκεύεται</item>
   </string-array>
-  <string name="pref_category_toasts">Pop-up ενημέρωση</string>
+  <string name="pref_category_viewing">προβολή</string>
+  <string name="pref_timer_minimum_title">Ελάχιστη διάρκεια χρονομέτρου</string>
+  <string-array name="pref_timer_minimum_entries">
+    <item>Απενεργοποιημένο</item>
+    <item>3 δευτερόλεπτα</item>
+    <item>5 δευτερόλεπτα</item>
+    <item>7 δευτερόλεπτα</item>
+    <item>10 δευτερόλεπτα</item>
+  </string-array>
   <string name="pref_toasts_title">Να εμφανίζεται  pop-up ενημέρωση</string>
   <string name="pref_toasts_summary_on">Pop-up ενημέρωση είναι ενεργή</string>
   <string name="pref_toasts_summary_off">Pop-up ενημέρωση δεν είναι ενεργή</string>
@@ -45,14 +53,8 @@
   <string name="pref_donate_title">Δωρήστε</string>
   <string name="pref_donate_summary">Βοηθήστε με, αγοράζοντάς μου μια μπύρα μέσο PayPal.  
 Οι δωρεές εκτιμούνται πάρα πολύ.</string>
-  <string name="pref_support_title">Στηρίζω</string>
+  <string name="pref_support_title">Υποστήρηξη</string>
   <string name="pref_support_summary">Πλοηγηθείτε στο XDA-thread και διαβάστε πρώτα το OP  αν  αντιμετωπίζετε προβλήματα.</string>
-  <string name="save_dialog_title_image">Αποθήκευση εικόνας</string>
-  <string name="save_dialog_title_video">Αποθήκευση βίντεο</string>
-  <string name="save_dialog_message_image">Θα θέλατε να αποθηκεύσετε αυτή την εικόνα;</string>
-  <string name="save_dialog_message_video">Θα θέλατε να αποθηκεύσετε αυτό το βίντεο;</string>
-  <string name="save_button">Αποθήκευση</string>
-  <string name="discard_button">Απόρριψη</string>
   <string name="image_exists">Η εικόνα υπάρχει ήδη.</string>
   <string name="video_exists">Το βίντεο υπάρχει ήδη.</string>
   <string name="image_saved">Οι εικόνα έχει αποθηκευτεί.</string>

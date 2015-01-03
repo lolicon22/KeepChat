@@ -13,10 +13,9 @@
   <string name="pref_save_sent_snaps_summary_off">Sendte snaps vil ikke blive gemt</string>
   <string-array name="pref_save_mode_entries">
     <item>Gem automatisk</item>
-    <item>Sweep to save</item>
+    <item>Stryg for at gemme</item>
     <item>Gem ikke</item>
   </string-array>
-  <string name="pref_category_toasts">Toasts</string>
   <string name="pref_toasts_title">Vis toast meddelelser</string>
   <string name="pref_toasts_summary_on">Toast meddelelser er slået til</string>
   <string name="pref_toasts_summary_off">Toast meddelelser er slået fra</string>
@@ -46,12 +45,6 @@
   <string name="pref_donate_summary">Støt mig, køb mig en øl via PayPal. Donationer er meget værdsat.</string>
   <string name="pref_support_title">Hjælp</string>
   <string name="pref_support_summary">Gå til XDA-tråden, læs venligst den originale post først hvis du oplever problemer.</string>
-  <string name="save_dialog_title_image">Gem billede</string>
-  <string name="save_dialog_title_video">Gem video</string>
-  <string name="save_dialog_message_image">Vil du gemme dette billede?</string>
-  <string name="save_dialog_message_video">Vil du gemme denne video?</string>
-  <string name="save_button">Gem</string>
-  <string name="discard_button">Slet</string>
   <string name="image_exists">Billedet eksisterer allerede.</string>
   <string name="video_exists">Videoen eksisterer allerede.</string>
   <string name="image_saved">Billedet er blevet gemt.</string>

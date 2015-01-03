@@ -16,7 +16,6 @@
     <item>Sweep to save</item>
     <item>Ne mentse</item>
   </string-array>
-  <string name="pref_category_toasts">Toast értesítés</string>
   <string name="pref_toasts_title">Toast értesítések megjelenítése</string>
   <string name="pref_toasts_summary_on">A Toast értesítések be vannak kapcsolva</string>
   <string name="pref_toasts_summary_off">A Toast értesítések ki vannak kapcsolva</string>
@@ -47,12 +46,6 @@
 Az adományokat szívesen fogadom.</string>
   <string name="pref_support_title">Támogatás</string>
   <string name="pref_support_summary">XDA témához ugrás, kérlek olvasd el azt, ha valami problémád akad az alkalmazással.</string>
-  <string name="save_dialog_title_image">Kép mentése</string>
-  <string name="save_dialog_title_video">Videó mentése</string>
-  <string name="save_dialog_message_image">Szeretnéd ezt a képet lementeni?</string>
-  <string name="save_dialog_message_video">Szeretnéd ezt a videót lementeni?</string>
-  <string name="save_button">Mentés</string>
-  <string name="discard_button">Mégse</string>
   <string name="image_exists">Ez a kép már létezik.</string>
   <string name="video_exists">Ez a videó már létezik.</string>
   <string name="image_saved">A kép lementése megtörtént.</string>

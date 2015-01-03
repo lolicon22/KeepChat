@@ -13,10 +13,18 @@
   <string name="pref_save_sent_snaps_summary_off">Verzonden snaps worden niet opgeslagen</string>
   <string-array name="pref_save_mode_entries">
     <item>Automatisch opslaan</item>
-    <item>Sweep2save</item>
+    <item>Veeg om op te slaan</item>
     <item>Niet opslaan</item>
   </string-array>
-  <string name="pref_category_toasts">Meldingen</string>
+  <string name="pref_category_viewing">Bekijken</string>
+  <string name="pref_timer_minimum_title">Minimum timer duur</string>
+  <string-array name="pref_timer_minimum_entries">
+    <item>Uitgeschakeld</item>
+    <item>3 seconden</item>
+    <item>5 seconden</item>
+    <item>7 seconden</item>
+    <item>10 seconden</item>
+  </string-array>
   <string name="pref_toasts_title">Meldingen weergeven</string>
   <string name="pref_toasts_summary_on">Meldingen worden weergegeven</string>
   <string name="pref_toasts_summary_off">Meldingen worden niet weergegeven</string>
@@ -46,12 +54,6 @@
   <string name="pref_donate_summary">Steun me door een biertje te kopen via PayPal. Donaties worden zeer gewaardeerd.</string>
   <string name="pref_support_title">Ondersteuning</string>
   <string name="pref_support_summary">Ga naar de XDA-thread, lees de eerste post eerst als je problemen ondervindt.</string>
-  <string name="save_dialog_title_image">Foto opslaan</string>
-  <string name="save_dialog_title_video">Video opslaan</string>
-  <string name="save_dialog_message_image">Wil je deze foto opslaan?</string>
-  <string name="save_dialog_message_video">Wil je deze video opslaan?</string>
-  <string name="save_button">Opslaan</string>
-  <string name="discard_button">Annuleren</string>
   <string name="image_exists">Deze foto bestaat al.</string>
   <string name="video_exists">Deze video bestaat al.</string>
   <string name="image_saved">Deze foto is opgeslagen.</string>

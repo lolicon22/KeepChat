@@ -16,7 +16,6 @@
     <item>Sweep to save</item>
     <item>Spara inte</item>
   </string-array>
-  <string name="pref_category_toasts">Toasts</string>
   <string name="pref_toasts_title">Visa toast-meddelanden</string>
   <string name="pref_toasts_summary_on">Toast-meddelanden är aktiverade</string>
   <string name="pref_toasts_summary_off">Toast-meddelanden är inaktiverade</string>
@@ -46,12 +45,6 @@
   <string name="pref_donate_summary">Stöd mig, köp mig en öl via PayPal. Donationer är väldigt uppskattade.</string>
   <string name="pref_support_title">Support</string>
   <string name="pref_support_summary">Om du stött på problem gå till XDA-tråden och läs första inlägget.</string>
-  <string name="save_dialog_title_image">Spara bild</string>
-  <string name="save_dialog_title_video">Spara video</string>
-  <string name="save_dialog_message_image">Vill du spara bilden?</string>
-  <string name="save_dialog_message_video">Vill du spara videon?</string>
-  <string name="save_button">Spara</string>
-  <string name="discard_button">Kasta</string>
   <string name="image_exists">Bilden finns redan.</string>
   <string name="video_exists">Videon finns redan.</string>
   <string name="image_saved">Bilden har sparats.</string>

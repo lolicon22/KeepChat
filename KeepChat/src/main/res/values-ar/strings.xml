@@ -13,10 +13,9 @@
   <string name="pref_save_sent_snaps_summary_off">السناب المرسل لن يتم حفظه</string>
   <string-array name="pref_save_mode_entries">
     <item>حفظ تلقائي</item>
-    <item>Sweep to save</item>
+    <item>التمرير للحفظ</item>
     <item>لا تحفظ</item>
   </string-array>
-  <string name="pref_category_toasts">صندوق الملاحظات</string>
   <string name="pref_toasts_title">اظهار صندوق الملاحظات </string>
   <string name="pref_toasts_summary_on">صندوق الملاحظات مفعل</string>
   <string name="pref_toasts_summary_off">صندوق الملاحظات غير مفعل</string>
@@ -46,12 +45,6 @@
   <string name="pref_donate_summary">ادعمني، اشترلي شراب من خلال باي-بال PayPal. نقدر بشده تبرعاتكم.</string>
   <string name="pref_support_title">الدعم</string>
   <string name="pref_support_summary">اذهب الى مقال XDA، الرجاء قراءة الـOP اولاً ان كنت تواجه المشاكل مع البرنامج.</string>
-  <string name="save_dialog_title_image">حفظ الصورة</string>
-  <string name="save_dialog_title_video">حفظ الفيديو</string>
-  <string name="save_dialog_message_image">هل تريد حفظ هذه الصورة؟</string>
-  <string name="save_dialog_message_video">هل تريد حفظ هذا الفيديو؟</string>
-  <string name="save_button">حفظ</string>
-  <string name="discard_button">حذف</string>
   <string name="image_exists">هذه الصورة موجودة.</string>
   <string name="video_exists">هذا الفيديو موجود.</string>
   <string name="image_saved">لقد تم حفظ الصورة.</string>

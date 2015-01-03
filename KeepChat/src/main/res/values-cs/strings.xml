@@ -13,10 +13,18 @@
   <string name="pref_save_sent_snaps_summary_off">Odeslané snapy nebudou uloženy</string>
   <string-array name="pref_save_mode_entries">
     <item>Uložit automaticky</item>
-    <item>Sweep to save</item>
+    <item>Tahem uložit</item>
     <item>Neukládat</item>
   </string-array>
-  <string name="pref_category_toasts">Informační text</string>
+  <string name="pref_category_viewing">Náhled</string>
+  <string name="pref_timer_minimum_title">Minimální trvání časovače</string>
+  <string-array name="pref_timer_minimum_entries">
+    <item>Neaktivní</item>
+    <item>3 sekundy</item>
+    <item>5 sekund</item>
+    <item>7 sekund</item>
+    <item>10 sekund</item>
+  </string-array>
   <string name="pref_toasts_title">Ukázat informační text</string>
   <string name="pref_toasts_summary_on">Informační text je povolen</string>
   <string name="pref_toasts_summary_off">Informační text není povolen</string>
@@ -46,12 +54,6 @@
   <string name="pref_donate_summary">Podpořte mě, kupte mi pivo použitím PayPalu. Dary jsou vysoce ceněny.</string>
   <string name="pref_support_title">Podpora</string>
   <string name="pref_support_summary">Přesměrovat na XDA vlákno. Prosím čtěte první OP, pokud narazíte na problém.</string>
-  <string name="save_dialog_title_image">Uložit obrázek</string>
-  <string name="save_dialog_title_video">Uložit video</string>
-  <string name="save_dialog_message_image">Přejete si uložit tento obrázek?</string>
-  <string name="save_dialog_message_video">Přejete si uložit toto video?</string>
-  <string name="save_button">Uložit</string>
-  <string name="discard_button">Zahodit</string>
   <string name="image_exists">Tento obrázek již existuje.</string>
   <string name="video_exists">Toto video již existuje.</string>
   <string name="image_saved">Obrázek uložen.</string>

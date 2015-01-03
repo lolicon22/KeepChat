@@ -14,9 +14,8 @@
   <string-array name="pref_save_mode_entries">
     <item>Guardar automáticamente</item>
     <item>Mover el dedo para guardar</item>
-    <item>No guarde</item>
+    <item>No guardar</item>
   </string-array>
-  <string name="pref_category_toasts">Notificaciones flotantes</string>
   <string name="pref_toasts_title">Mostrar notificaciones flotantes</string>
   <string name="pref_toasts_summary_on">Las notificaciones flotantes están activadas</string>
   <string name="pref_toasts_summary_off">Las notificaciones flotantes están desactivadas</string>
@@ -46,12 +45,6 @@
   <string name="pref_donate_summary">Apoyame, comprame una cerveza usando PayPal. Cualquier donación será muy apreciada.</string>
   <string name="pref_support_title">Soporte</string>
   <string name="pref_support_summary">Entra en el hilo de XDA, y lee el post principal si estas teniendo problemas.</string>
-  <string name="save_dialog_title_image">Guardar imagen</string>
-  <string name="save_dialog_title_video">Guardar vídeo</string>
-  <string name="save_dialog_message_image">¿Te gustaría guardar esta imagen?</string>
-  <string name="save_dialog_message_video">¿Te gustaría guardar este vídeo?</string>
-  <string name="save_button">Guardar</string>
-  <string name="discard_button">Cancelar</string>
   <string name="image_exists">Esta imagen ya existe.</string>
   <string name="video_exists">Este vídeo ya existe.</string>
   <string name="image_saved">Imagen guardada.</string>

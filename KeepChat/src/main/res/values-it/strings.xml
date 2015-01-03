@@ -13,10 +13,9 @@
   <string name="pref_save_sent_snaps_summary_off">Gli snap inviati non saranno salvati</string>
   <string-array name="pref_save_mode_entries">
     <item>Salvataggio automatico</item>
-    <item>Sweep to save</item>
+    <item>Trascina il dito per salvare</item>
     <item>Non salvare</item>
   </string-array>
-  <string name="pref_category_toasts">Toast</string>
   <string name="pref_toasts_title">Mostra le notifiche toast</string>
   <string name="pref_toasts_summary_on">Le notifiche toast sono attive</string>
   <string name="pref_toasts_summary_off">Le notifiche toast non sono attive</string>
@@ -46,12 +45,6 @@
   <string name="pref_donate_summary">Supportami offrendomi una birra con PayPal. Le donazioni sono molto apprezzate.</string>
   <string name="pref_support_title">Supporto</string>
   <string name="pref_support_summary">Vai alla discussione su XDA, in caso di problemi per favore inizia dal primo messaggio.</string>
-  <string name="save_dialog_title_image">Salva immagine</string>
-  <string name="save_dialog_title_video">Salva video</string>
-  <string name="save_dialog_message_image">Vuoi salvare questa immagine?</string>
-  <string name="save_dialog_message_video">Vuoi salvare questo video?</string>
-  <string name="save_button">Salva</string>
-  <string name="discard_button">Annulla</string>
   <string name="image_exists">Questa immagine esiste già.</string>
   <string name="video_exists">Questo video esiste già.</string>
   <string name="image_saved">Questa immagine è stata salvata.</string>

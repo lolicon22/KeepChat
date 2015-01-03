@@ -13,10 +13,9 @@
   <string name="pref_save_sent_snaps_summary_off">Gönderilen snapler kaydedilmeyecek</string>
   <string-array name="pref_save_mode_entries">
     <item>Otomati̇k olarak kaydet</item>
-    <item>Sweep to save</item>
+    <item>Kaydetmek için kaydır</item>
     <item>Kaydetme</item>
   </string-array>
-  <string name="pref_category_toasts">Toast\'lar</string>
   <string name="pref_toasts_title">Toast mesajlarını göster</string>
   <string name="pref_toasts_summary_on">Toast mesajları etkin</string>
   <string name="pref_toasts_summary_off">Toast mesajları etkin değil</string>
@@ -46,12 +45,6 @@
   <string name="pref_donate_summary">PayPal kullanarak bana bir bira ısmarlayın. Bağışlarınız takdir edilir.</string>
   <string name="pref_support_title">Destek</string>
   <string name="pref_support_summary">XDA konusuna gider, sorun yaşıyorsan lütfen orijinal konuya bir göz at.</string>
-  <string name="save_dialog_title_image">Görüntüyü kaydet</string>
-  <string name="save_dialog_title_video">Vi̇deoyu kaydet</string>
-  <string name="save_dialog_message_image">Bu resmi kaydetmek ister misiniz?</string>
-  <string name="save_dialog_message_video">Bu videoyu kaydetmek ister misiniz?</string>
-  <string name="save_button">Kaydet</string>
-  <string name="discard_button">Yoksay</string>
   <string name="image_exists">Bu resim zaten kaydedildi.</string>
   <string name="video_exists">Bu video zaten kaydedildi.</string>
   <string name="image_saved">Resim kaydedildi.</string>

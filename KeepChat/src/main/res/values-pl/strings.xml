@@ -13,10 +13,9 @@
   <string name="pref_save_sent_snaps_summary_off">Wysyłane snapy nie będą zapisywane</string>
   <string-array name="pref_save_mode_entries">
     <item>Zapisuj automatycznie</item>
-    <item>Sweep to save</item>
+    <item>Przesuń, aby zapisać</item>
     <item>Nie zapisuj</item>
   </string-array>
-  <string name="pref_category_toasts">Powiadomienia Toast</string>
   <string name="pref_toasts_title">Pokazuj powiadomienia Toast</string>
   <string name="pref_toasts_summary_on">Powiadomienia Toast są włączone</string>
   <string name="pref_toasts_summary_off">Powiadomienia Toast są włączone</string>
@@ -46,12 +45,6 @@
   <string name="pref_donate_summary">Wesprzyj mnie, kup mi piwo poprzez PayPal. Jestem bardzo wdzięczny za wszystkie darowizny.</string>
   <string name="pref_support_title">Pomoc</string>
   <string name="pref_support_summary">Przenosi do tematu na XDA - przeczytaj proszę pierwszy post, jeżeli napotykasz się na problemy.</string>
-  <string name="save_dialog_title_image">Zapisz zdjęcie</string>
-  <string name="save_dialog_title_video">Zapisz film</string>
-  <string name="save_dialog_message_image">Czy chcesz zapisać to zdjęcie?</string>
-  <string name="save_dialog_message_video">Czy chcesz zapisać ten film?</string>
-  <string name="save_button">Zapisz</string>
-  <string name="discard_button">Odrzuć</string>
   <string name="image_exists">To zdjęcie już było wcześniej zapisane.</string>
   <string name="video_exists">Ten film już był wcześniej zapisany.</string>
   <string name="image_saved">Zdjęcie zostało zapisane.</string>

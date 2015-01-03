@@ -16,7 +16,13 @@
     <item>Sweep to save</item>
     <item>Não salvar</item>
   </string-array>
-  <string name="pref_category_toasts">Mensagens na tela</string>
+  <string-array name="pref_timer_minimum_entries">
+    <item>Desativado</item>
+    <item>3 segundos</item>
+    <item>5 segundos</item>
+    <item>7 segundos</item>
+    <item>10 segundos</item>
+  </string-array>
   <string name="pref_toasts_title">Mostrar mensagens na tela</string>
   <string name="pref_toasts_summary_on">Mensagens na tela estão ativadas</string>
   <string name="pref_toasts_summary_off">Mensagens na tela estão desativadas</string>
@@ -46,12 +52,6 @@
   <string name="pref_donate_summary">Apoie-me, compre-me uma cerveja usando o PayPal. Doações são altamente apreciadas.</string>
   <string name="pref_support_title">Suporte</string>
   <string name="pref_support_summary">Acesse o post do Xda, por favor leia a postagem  original primeiro se você estiver enfrentando algum problema.</string>
-  <string name="save_dialog_title_image">Salvar imagem</string>
-  <string name="save_dialog_title_video">Salvar vídeo</string>
-  <string name="save_dialog_message_image">Gostaria de salvar esta imagem?</string>
-  <string name="save_dialog_message_video">Gostaria de salvar este vídeo?</string>
-  <string name="save_button">Salvar</string>
-  <string name="discard_button">Descartar</string>
   <string name="image_exists">Esta imagem já existe.</string>
   <string name="video_exists">Este vídeo já existe.</string>
   <string name="image_saved">Esta imagem foi salva.</string>
