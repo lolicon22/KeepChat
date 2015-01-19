@@ -17,7 +17,7 @@
     <item>Niet opslaan</item>
   </string-array>
   <string name="pref_category_viewing">Bekijken</string>
-  <string name="pref_timer_minimum_title">Minimum timer duur</string>
+  <string name="pref_timer_minimum_title">Minimale timerduur</string>
   <string-array name="pref_timer_minimum_entries">
     <item>Uitgeschakeld</item>
     <item>3 seconden</item>

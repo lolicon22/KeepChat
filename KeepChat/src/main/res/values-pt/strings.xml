@@ -3,32 +3,41 @@
 <resources>
   <string name="keepchat_settings">Definições do Keepchat</string>
   <string name="xposed_description">Guardar qualquer snap e história, imagens e vídeos, enviados e recebidos pelo Snapchat.</string>
-  <string name="pref_category_snapchats">A guardar</string>
-  <string name="pref_save_snaps_images">Snaps em imagem</string>
-  <string name="pref_save_snaps_videos">Snaps em vídeo</string>
-  <string name="pref_save_stories_images">Imagem da história</string>
-  <string name="pref_save_stories_videos">Vídeo da história</string>
-  <string name="pref_save_sent_snaps_title">Snaps enviados</string>
-  <string name="pref_save_sent_snaps_summary_on">Snaps enviados serão guardados</string>
-  <string name="pref_save_sent_snaps_summary_off">Snaps enviados não serão guardados</string>
+  <string name="pref_category_snapchats">Guardar</string>
+  <string name="pref_save_snaps_images">Snaps em Imagem</string>
+  <string name="pref_save_snaps_videos">Snaps em Vídeo</string>
+  <string name="pref_save_stories_images">Imagens da História</string>
+  <string name="pref_save_stories_videos">Vídeos da História</string>
+  <string name="pref_save_sent_snaps_title">Snaps Enviados</string>
+  <string name="pref_save_sent_snaps_summary_on">Os Snaps enviados serão guardados</string>
+  <string name="pref_save_sent_snaps_summary_off">Os Snaps enviados não serão guardados</string>
   <string-array name="pref_save_mode_entries">
     <item>Guardar automaticamente</item>
-    <item>Sweep to save</item>
+    <item>Deslizar para Guardar</item>
     <item>Não guardar</item>
   </string-array>
+  <string name="pref_category_viewing">Visualização</string>
+  <string name="pref_timer_minimum_title">Tempo minimo de duração</string>
+  <string-array name="pref_timer_minimum_entries">
+    <item>Desactivado</item>
+    <item>3 segundos</item>
+    <item>5 segundos</item>
+    <item>7 segundos</item>
+    <item>10 segundos</item>
+  </string-array>
   <string name="pref_toasts_title">Mostrar mensagem pop-up</string>
-  <string name="pref_toasts_summary_on">Mensagens pop-up estão ativas</string>
-  <string name="pref_toasts_summary_off">Mensagens pop-up estão desativas</string>
-  <string name="pref_toasts_duration_title">Duração pop-up</string>
+  <string name="pref_toasts_summary_on">As mensagens pop-up estão ativas</string>
+  <string name="pref_toasts_summary_off">As mensagens pop-up estão desativas</string>
+  <string name="pref_toasts_duration_title">Duração do pop-up</string>
   <string-array name="pref_toasts_duration_entries">
     <item>Pequeno</item>
     <item>Longo</item>
   </string-array>
   <string name="pref_category_folder">Pasta</string>
   <string name="pref_save_location_title">Localização para guardar</string>
-  <string name="pref_sort_files_mode_title">Ordenar por categoria</string>
-  <string name="pref_sort_files_mode_summary_on">Snaps e histórias serão gravados em pastas diferentes</string>
-  <string name="pref_sort_files_mode_summary_off">Snaps e histórias serão guardados na mesma pasta</string>
+  <string name="pref_sort_files_mode_title">Ordenar por Categoria</string>
+  <string name="pref_sort_files_mode_summary_on">Snaps e Histórias serão gravados em pastas diferentes</string>
+  <string name="pref_sort_files_mode_summary_off">Snaps e Histórias serão guardados na mesma pasta</string>
   <string name="pref_sort_files_username_title">Ordenar ficheiros por remetente</string>
   <string name="pref_sort_files_username_summary_on">Ficheiros serão guardados em subpastas por remetente</string>
   <string name="pref_sort_files_username_summary_off">Ficheiros serão guardados na mesma pasta por remetente</string>
@@ -42,9 +51,9 @@
   <string name="pref_about">Acerca</string>
   <string name="pref_about_summary">Keepchat foi lançado sob licença GPLv3.</string>
   <string name="pref_donate_title">Doar</string>
-  <string name="pref_donate_summary">Ajude-me pagando-me uma cerveja pelo Paypal. Ficarei eternamente grato.</string>
+  <string name="pref_donate_summary">Agradece-me pagando uma cerveja pelo Paypal. Ficarei eternamente grato.</string>
   <string name="pref_support_title">Ajuda</string>
-  <string name="pref_support_summary">Abra o thread do XDA e leia a OP primeiro se está com problemas.</string>
+  <string name="pref_support_summary">Abra o thread do XDA e leia primeiro se está com problemas.</string>
   <string name="image_exists">Esta imagem já existe.</string>
   <string name="video_exists">Este vídeo já existe.</string>
   <string name="image_saved">Imagem guardada.</string>

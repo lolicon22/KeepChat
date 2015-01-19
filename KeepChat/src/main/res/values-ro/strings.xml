@@ -16,6 +16,19 @@
     <item>Trage pentru a salva</item>
     <item>Nu salva</item>
   </string-array>
+  <string name="pref_category_viewing">Vizualizare</string>
+  <string name="pref_timer_minimum_title">Durată minimă de vizualizare</string>
+  <string-array name="pref_timer_minimum_entries">
+    <item>Dezactivat</item>
+    <item>3 secunde</item>
+    <item>5 secunde</item>
+    <item>7 secunde</item>
+    <item>10 secunde</item>
+  </string-array>
+  <string name="pref_toasts_title">Arată notificări toast</string>
+  <string name="pref_toasts_summary_on">Notificările toast sunt activate</string>
+  <string name="pref_toasts_summary_off">Notificările toast sunt dezactivat</string>
+  <string name="pref_toasts_duration_title">Durată toast</string>
   <string-array name="pref_toasts_duration_entries">
     <item>Scurt</item>
     <item>Lung</item>
@@ -24,4 +37,8 @@
   <string name="pref_save_location_title">Locație salvare</string>
   <string name="pref_sort_files_mode_title">Organizează după categorii</string>
   <string name="pref_sort_files_mode_summary_on">Snapurile şi poveştile vor fi salvate in fişiere diferite</string>
+  <string name="pref_sort_files_mode_summary_off">Snap-urile și pozele de pe story vor fi salvate în același folder</string>
+  <string name="pref_sort_files_username_title">Sortează fișierele după expeditor</string>
+  <string name="pref_sort_files_username_summary_on">Fișiere vor fi salvate în câte un subfolder pentru fiecare expeditor</string>
+  <string name="pref_other">Altele</string>
 </resources>

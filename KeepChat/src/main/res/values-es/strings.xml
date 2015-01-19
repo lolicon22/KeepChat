@@ -13,8 +13,17 @@
   <string name="pref_save_sent_snaps_summary_off">Los snaps enviados no serán guardados</string>
   <string-array name="pref_save_mode_entries">
     <item>Guardar automáticamente</item>
-    <item>Mover el dedo para guardar</item>
+    <item>Deslice para guardar</item>
     <item>No guardar</item>
+  </string-array>
+  <string name="pref_category_viewing">Visualización</string>
+  <string name="pref_timer_minimum_title">mínima duración del tiempo</string>
+  <string-array name="pref_timer_minimum_entries">
+    <item>Desactivado</item>
+    <item>3 segundos</item>
+    <item>5 segundos</item>
+    <item>7 segundos</item>
+    <item>10 segundos</item>
   </string-array>
   <string name="pref_toasts_title">Mostrar notificaciones flotantes</string>
   <string name="pref_toasts_summary_on">Las notificaciones flotantes están activadas</string>

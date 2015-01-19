@@ -16,9 +16,18 @@
     <item>Przesuń, aby zapisać</item>
     <item>Nie zapisuj</item>
   </string-array>
+  <string name="pref_category_viewing">Oglądanie</string>
+  <string name="pref_timer_minimum_title">Minimalny czas wyświetlania</string>
+  <string-array name="pref_timer_minimum_entries">
+    <item>Nieaktywny</item>
+    <item>3 sekundy</item>
+    <item>5 sekund</item>
+    <item>7 sekund</item>
+    <item>10 sekund</item>
+  </string-array>
   <string name="pref_toasts_title">Pokazuj powiadomienia Toast</string>
   <string name="pref_toasts_summary_on">Powiadomienia Toast są włączone</string>
-  <string name="pref_toasts_summary_off">Powiadomienia Toast są włączone</string>
+  <string name="pref_toasts_summary_off">Powiadomienia Toast są wyłączone</string>
   <string name="pref_toasts_duration_title">Długość powiadomienia</string>
   <string-array name="pref_toasts_duration_entries">
     <item>Krótkie</item>
@@ -27,7 +36,7 @@
   <string name="pref_category_folder">Folder</string>
   <string name="pref_save_location_title">Lokalizacja do zapisywania</string>
   <string name="pref_sort_files_mode_title">Sortuj pliki według kategorii</string>
-  <string name="pref_sort_files_mode_summary_on">Snapy i historie będą zapisywane w różnych folderach</string>
+  <string name="pref_sort_files_mode_summary_on">Snapy i historie będą zapisywane w osobnych folderach</string>
   <string name="pref_sort_files_mode_summary_off">Snapy i historie będą posortowane w tym samym folderze</string>
   <string name="pref_sort_files_username_title">Sortuj pliki według wysyłającego</string>
   <string name="pref_sort_files_username_summary_on">Pliki będą posortowane w odpowiednich podfolderach dla każdego wysyłającego</string>

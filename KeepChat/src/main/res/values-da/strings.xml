@@ -16,6 +16,15 @@
     <item>Stryg for at gemme</item>
     <item>Gem ikke</item>
   </string-array>
+  <string name="pref_category_viewing">Visning</string>
+  <string name="pref_timer_minimum_title">Minimum timer varighed</string>
+  <string-array name="pref_timer_minimum_entries">
+    <item>Deaktiveret</item>
+    <item>3 sekunder</item>
+    <item>5 sekunder</item>
+    <item>7 sekunder</item>
+    <item>10 sekunder</item>
+  </string-array>
   <string name="pref_toasts_title">Vis toast meddelelser</string>
   <string name="pref_toasts_summary_on">Toast meddelelser er slået til</string>
   <string name="pref_toasts_summary_off">Toast meddelelser er slået fra</string>

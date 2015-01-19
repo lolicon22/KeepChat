@@ -13,9 +13,11 @@
   <string name="pref_save_sent_snaps_summary_off">Snaps enviados não serão salvos</string>
   <string-array name="pref_save_mode_entries">
     <item>Salvar automaticamente</item>
-    <item>Sweep to save</item>
+    <item>Varrer para salvar</item>
     <item>Não salvar</item>
   </string-array>
+  <string name="pref_category_viewing">Visualizando</string>
+  <string name="pref_timer_minimum_title">Duração mínima do temporizador</string>
   <string-array name="pref_timer_minimum_entries">
     <item>Desativado</item>
     <item>3 segundos</item>
@@ -36,7 +38,7 @@
   <string name="pref_sort_files_mode_title">Ordenar arquivos por categoria</string>
   <string name="pref_sort_files_mode_summary_on">Snaps e histórias serão salvados dentro de pastas diferentes</string>
   <string name="pref_sort_files_mode_summary_off">Snaps e histórias serão ordenados dentro da mesma pasta</string>
-  <string name="pref_sort_files_username_title">Ordenar ficheiros por remetente</string>
+  <string name="pref_sort_files_username_title">Organize os arquivos por remetente</string>
   <string name="pref_sort_files_username_summary_on">Arquivos serão organizados em uma subpasta por pessoa que enviou</string>
   <string name="pref_sort_files_username_summary_off">Arquivos serão organizados em uma mesma pasta por pessoa que enviou</string>
   <string name="pref_other">Outras</string>

@@ -16,6 +16,15 @@
     <item>Trascina il dito per salvare</item>
     <item>Non salvare</item>
   </string-array>
+  <string name="pref_category_viewing">Visualizzazione</string>
+  <string name="pref_timer_minimum_title">Durata minima del timer</string>
+  <string-array name="pref_timer_minimum_entries">
+    <item>Disabilitata</item>
+    <item>3 secondi</item>
+    <item>5 secondi</item>
+    <item>7 secondi</item>
+    <item>10 secondi</item>
+  </string-array>
   <string name="pref_toasts_title">Mostra le notifiche toast</string>
   <string name="pref_toasts_summary_on">Le notifiche toast sono attive</string>
   <string name="pref_toasts_summary_off">Le notifiche toast non sono attive</string>

@@ -16,10 +16,19 @@
     <item>التمرير للحفظ</item>
     <item>لا تحفظ</item>
   </string-array>
-  <string name="pref_toasts_title">اظهار صندوق الملاحظات </string>
+  <string name="pref_category_viewing">العرض</string>
+  <string name="pref_timer_minimum_title">أدنى حد للوقت</string>
+  <string-array name="pref_timer_minimum_entries">
+    <item>تعطيل</item>
+    <item>3 ثواني</item>
+    <item>5 ثواني</item>
+    <item>7 ثواني</item>
+    <item>10 ثواني</item>
+  </string-array>
+  <string name="pref_toasts_title">اظهار نافذة الملاحظات </string>
   <string name="pref_toasts_summary_on">صندوق الملاحظات مفعل</string>
-  <string name="pref_toasts_summary_off">صندوق الملاحظات غير مفعل</string>
-  <string name="pref_toasts_duration_title">مدة صندوق الملاحظات</string>
+  <string name="pref_toasts_summary_off">نافذة الملاحظات غير مفعلة</string>
+  <string name="pref_toasts_duration_title">مدة نافذة الملاحظات</string>
   <string-array name="pref_toasts_duration_entries">
     <item>قصير</item>
     <item>طويل</item>
@@ -27,20 +36,20 @@
   <string name="pref_category_folder">مجلد</string>
   <string name="pref_save_location_title">مكان الحفظ</string>
   <string name="pref_sort_files_mode_title">رتب حسب النوع</string>
-  <string name="pref_sort_files_mode_summary_on">الsnaps و الstories سيتم حفظها في مجلدات مختلفة</string>
-  <string name="pref_sort_files_mode_summary_off">الsnaps و الstories سيتم حفظها في نفس المجلد</string>
+  <string name="pref_sort_files_mode_summary_on">السنابات و القصص سيتم حفظها في مجلدات مختلفة</string>
+  <string name="pref_sort_files_mode_summary_off">السنابات و القصص سيتم حفظها في نفس المجلد</string>
   <string name="pref_sort_files_username_title">رتب الملفات حسب المرسل</string>
-  <string name="pref_sort_files_username_summary_on">سيتم ترتيب المجلدات لكل مرسل</string>
+  <string name="pref_sort_files_username_summary_on">سيتم ترتيب الملفات لكل المجلدات على حسب مرسل</string>
   <string name="pref_sort_files_username_summary_off">سيتم ترتيب الملفات في مجلدات لكل مرسل</string>
   <string name="pref_other">اخرى</string>
   <string name="pref_launcher_title">إظهار البرنامج في صفحة الهاتف الرئيسية</string>
   <string name="pref_launcher_on">الدخول للإعدادات من خلال صفخة الهاتف الرئيسية</string>
   <string name="pref_launcher_off">دخول الاعدادات من خلال إكسبوسد</string>
-  <string name="pref_debug_mode_title">وضع التصحيح</string>
-  <string name="pref_debug_mode_summary_on">بيانات وضع التصحيح سوف تظهر في سجل xposed</string>
-  <string name="pref_debug_mode_summary_off">بيانات وضع التصحيح غير ظاهره في سجل Xposed</string>
+  <string name="pref_debug_mode_title">وضع تصحيح الأخطاء</string>
+  <string name="pref_debug_mode_summary_on">بيانات وضع تصحيح الأخطاء سوف تظهر في سجل xposed</string>
+  <string name="pref_debug_mode_summary_off">بيانات وضع تصحيح الاخطاء غير ظاهره في سجل Xposed</string>
   <string name="pref_about">عن</string>
-  <string name="pref_about_summary">ترخيص كيب-شات تم اصداره من GPLv3. </string>
+  <string name="pref_about_summary">ترخيص كيب-شات تم اصداره من قبل GPLv3. </string>
   <string name="pref_donate_title">تبرع</string>
   <string name="pref_donate_summary">ادعمني، اشترلي شراب من خلال باي-بال PayPal. نقدر بشده تبرعاتكم.</string>
   <string name="pref_support_title">الدعم</string>

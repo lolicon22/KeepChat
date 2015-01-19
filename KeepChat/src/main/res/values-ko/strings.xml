@@ -17,7 +17,7 @@
     <item>저장하지 않음</item>
   </string-array>
   <string name="pref_category_viewing">보기</string>
-  <string name="pref_timer_minimum_title">최소한으로 걸릴 시간</string>
+  <string name="pref_timer_minimum_title">타이머가 최소한으로 켜 있을 시간</string>
   <string-array name="pref_timer_minimum_entries">
     <item>사용 안함</item>
     <item>3초</item>
