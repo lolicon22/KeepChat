@@ -25,12 +25,12 @@
     <item>7 segundos</item>
     <item>10 segundos</item>
   </string-array>
-  <string name="pref_toasts_title">Mostrar mensagem pop-up</string>
+  <string name="pref_toasts_title">Mostrar mensagens de aviso</string>
   <string name="pref_toasts_summary_on">As mensagens pop-up estão ativas</string>
-  <string name="pref_toasts_summary_off">As mensagens pop-up estão desativas</string>
+  <string name="pref_toasts_summary_off">As mensagens pop-up estão desactivas</string>
   <string name="pref_toasts_duration_title">Duração do pop-up</string>
   <string-array name="pref_toasts_duration_entries">
-    <item>Pequeno</item>
+    <item>Curto</item>
     <item>Longo</item>
   </string-array>
   <string name="pref_category_folder">Pasta</string>

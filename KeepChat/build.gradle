@@ -8,8 +8,8 @@ android {
         applicationId "com.ramis.keepchat"
         minSdkVersion 15
         targetSdkVersion 19
-        versionCode 65
-        versionName "4.2.0"
+        versionCode 66
+        versionName "4.2.1"
     }
 
     lintOptions {
