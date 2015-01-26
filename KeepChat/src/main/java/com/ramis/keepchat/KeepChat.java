@@ -351,12 +351,6 @@ public class KeepChat implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                 }
             });
 
-
-            /**
-             * Always return false when asked if an ReceivedSnap was screenshotted.
-             */
-            findAndHookMethod(Obfuscator.RECEIVEDSNAP_CLASS, lpparam.classLoader, Obfuscator.RECEIVEDSNAP_ISSCREENSHOTTED, XC_MethodReplacement.returnConstant(false));
-
             /**
              * Prevent creation of the ScreenshotDetector class.
              */
